@@ -1088,6 +1088,8 @@ function applyMode(){
       '@media(max-width:640px){' +
         'body{overflow-x:auto;}' +
         '.page{padding:2px;min-width:920px;}' +
+        '@media print{body{overflow-x:hidden!important;}' +
+        '.page{min-width:0!important;width:293mm!important;padding:0!important;}}' +
         '.ev-photo-wrap{display:flex!important;}' +
         '.ev-inner{display:flex!important;}' +
         '.ev-text{flex:1;min-width:0;}' +
