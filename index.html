@@ -289,6 +289,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
   <div class="toolbar">
     <button class="green" onclick="openSeminarSite()">🌐 セミナーサイトを見る</button>
     <button class="blue" onclick="openPasteModal()">📋 テキストを貼り付けて取り込む</button>
+    <button onclick="openSavedTextModal()" style="padding:6px 13px;border-radius:8px;font-size:12px;font-family:inherit;cursor:pointer;border:1px solid #2e7d32;background:white;color:#2e7d32;font-weight:700;">📖 保存済みテキストを見る</button>
     <button onclick="document.getElementById('import-file').click()">📥 JSONを読み込む</button>
     <input type="file" id="import-file" accept=".json" style="display:none" onchange="importJSON(event)">
     <button onclick="clearMonth()" style="color:#c62828;border-color:#ffaaaa;font-weight:700;">🗑️ この月を全削除</button>
@@ -428,6 +429,22 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
 </div>
 
 <!-- 貼り付けモーダル -->
+<!-- 保存済みテキストモーダル -->
+<div id="saved-text-overlay" class="paste-overlay">
+  <div class="paste-modal">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+      <h3 style="font-size:14px;font-weight:700;">📖 保存済みテキスト</h3>
+      <button onclick="closeSavedTextModal()" style="background:none;border:none;font-size:20px;cursor:pointer;color:#888;">✕</button>
+    </div>
+    <div id="saved-text-info" style="font-size:11px;color:#888;margin-bottom:8px;"></div>
+    <textarea id="saved-text-area" style="width:100%;height:300px;font-size:11px;border-radius:8px;border:1.5px solid #ddd;padding:10px;font-family:monospace;resize:vertical;"></textarea>
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px;">
+      <button onclick="closeSavedTextModal()" style="padding:7px 15px;border-radius:8px;font-size:13px;cursor:pointer;border:1px solid #ddd;background:white;font-family:inherit;">閉じる</button>
+      <button onclick="loadSavedToPaste()" style="padding:7px 15px;border-radius:8px;font-size:13px;cursor:pointer;border:1px solid #1565c0;background:white;color:#1565c0;font-weight:700;font-family:inherit;">📋 貼り付け欄に読み込む</button>
+    </div>
+  </div>
+</div>
+
 <div id="paste-overlay" class="paste-overlay">
   <div class="paste-modal">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
@@ -449,6 +466,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
       <button onclick="closePasteModal()" style="padding:7px 15px;border-radius:8px;font-size:13px;cursor:pointer;border:1px solid #ddd;background:white;font-family:inherit;">キャンセル</button>
       <button onclick="parsePaste()" style="padding:7px 15px;border-radius:8px;font-size:13px;cursor:pointer;border:1px solid #1565c0;background:white;color:#1565c0;font-weight:700;font-family:inherit;">🔍 解析する</button>
       <button id="paste-import-btn" onclick="importParsed()" style="display:none;padding:7px 15px;border-radius:8px;font-size:13px;cursor:pointer;border:none;background:#cc0000;color:white;font-weight:700;font-family:inherit;">✅ カレンダーに取り込む</button>
+      <button onclick="saveRawText()" style="padding:7px 15px;border-radius:8px;font-size:13px;cursor:pointer;border:1px solid #2e7d32;background:white;color:#2e7d32;font-weight:700;font-family:inherit;">💾 テキストを保存</button>
     </div>
   </div>
 </div>
@@ -891,6 +909,51 @@ function mergeBebt(evList){
   return merged;
 }
 
+// テキストのFirebaseパス
+function rawTextPath(){return 'rawtext/'+currentEdition+'/'+currentYear+'/'+currentMonth;}
+
+function saveRawText(){
+  var raw=document.getElementById('paste-area').value.trim();
+  if(!raw){alert('テキストが空です。');return;}
+  var saveTarget=fbOk()?db.ref(rawTextPath()):null;
+  var meta={text:raw, savedAt:new Date().toLocaleString('ja-JP'), edition:currentEdition, year:currentYear, month:currentMonth};
+  if(saveTarget){
+    saveTarget.set(meta).then(function(){alert('✅ テキストをクラウドに保存しました！');}).catch(function(){alert('保存に失敗しました。');});
+  } else {
+    try{localStorage.setItem('rawtext_'+currentEdition+'_'+currentYear+'_'+currentMonth, JSON.stringify(meta));alert('✅ テキストをローカルに保存しました！');}catch(e){alert('保存に失敗しました。');}
+  }
+}
+
+function openSavedTextModal(){
+  document.getElementById('saved-text-area').value='読み込み中...';
+  document.getElementById('saved-text-info').textContent='';
+  document.getElementById('saved-text-overlay').style.display='flex';
+  if(fbOk()){
+    db.ref(rawTextPath()).once('value').then(function(s){
+      var d=s.val();
+      if(d&&d.text){
+        document.getElementById('saved-text-area').value=d.text;
+        document.getElementById('saved-text-info').textContent='保存日時: '+d.savedAt;
+      } else {
+        document.getElementById('saved-text-area').value='（まだテキストが保存されていません）';
+      }
+    }).catch(function(){document.getElementById('saved-text-area').value='読み込みに失敗しました。';});
+  } else {
+    try{var r=localStorage.getItem('rawtext_'+currentEdition+'_'+currentYear+'_'+currentMonth);var d=r?JSON.parse(r):null;if(d&&d.text){document.getElementById('saved-text-area').value=d.text;document.getElementById('saved-text-info').textContent='保存日時: '+d.savedAt;}else{document.getElementById('saved-text-area').value='（まだテキストが保存されていません）';}}catch(e){document.getElementById('saved-text-area').value='読み込みに失敗しました。';}
+  }
+}
+
+function closeSavedTextModal(){document.getElementById('saved-text-overlay').style.display='none';}
+document.getElementById('saved-text-overlay').addEventListener('click',function(e){if(e.target===this)closeSavedTextModal();});
+
+function loadSavedToPaste(){
+  var txt=document.getElementById('saved-text-area').value;
+  if(!txt||txt.includes('まだ')||txt.includes('失敗')){alert('読み込めるテキストがありません。');return;}
+  closeSavedTextModal();
+  openPasteModal();
+  document.getElementById('paste-area').value=txt;
+}
+
 function openPasteModal(){
   document.getElementById('paste-area').value='';
   document.getElementById('paste-preview').style.display='none';
@@ -1016,7 +1079,9 @@ function importParsed(){
     if(!cb||!cb.checked)return;
     var d=item.day;
     if(!byDay[d])byDay[d]=[];
-    byDay[d].push({type:item.type,koushi:item.koushi,koushi2:item.koushi2||'',time:item.time,venue:item.venue,address:'',region:item.region,shusai:item.shusai||'',note:'',focus:false,photo:null,photo2:null});
+    var autoP1=item.koushi&&photoLib[item.koushi]?photoLib[item.koushi]:null;
+    var autoP2=item.koushi2&&photoLib[item.koushi2]?photoLib[item.koushi2]:null;
+    byDay[d].push({type:item.type,koushi:item.koushi,koushi2:item.koushi2||'',time:item.time,venue:item.venue,address:'',region:item.region,shusai:item.shusai||'',note:'',focus:false,photo:autoP1,photo2:autoP2});
   });
   Object.keys(byDay).forEach(function(d){
     var merged=mergeBebt(byDay[d]);
