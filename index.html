@@ -575,7 +575,8 @@ function changeMonth(d){
   currentMonth+=d;
   if(currentMonth>11){currentMonth=0;currentYear++;}
   if(currentMonth<0){currentMonth=11;currentYear--;}
-  loadEvents();render();
+  if(window._syncRef){window._syncRef.off();window._syncRef=null;}
+  loadEvents(function(){render();startSync();});
 }
 function getInit(n){if(!n)return'?';var m=n.match(/[\u4e00-\u9fff\u3040-\u30ff]+/g);return m?m[0].slice(0,1):n[0].toUpperCase();}
 function openSeminarSite(){
