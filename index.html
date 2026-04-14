@@ -66,7 +66,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;
 .cal-header{display:grid;grid-template-columns:repeat(7,1fr);}
 .cal-header-cell{padding:7px 4px;text-align:center;font-size:12px;font-weight:700;background:#f8f7f3;border-bottom:1px solid #e8e6e0;}
 .cal-header-cell.sun{color:#cc0000;}.cal-header-cell.sat{color:#1565c0;}
-.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);align-items:start;}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);}
 .cal-cell{height:140px;border-right:1px solid #ece9e2;border-bottom:1px solid #ece9e2;padding:3px;background:white;position:relative;overflow:hidden;}
 .cal-cell.has-multi{overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scrollbar-color:#ddd transparent;}
 .cal-cell:nth-child(7n){border-right:none;}
@@ -153,10 +153,9 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;
 .paste-modal{background:white;border-radius:14px;padding:22px;width:500px;max-width:96vw;max-height:90vh;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,0.2);}
 .paste-hint{background:#e3f2fd;border-radius:8px;padding:12px;margin-bottom:14px;font-size:12px;color:#1565c0;line-height:1.8;}
 @media(max-width:640px){
-  /* 基本スクロール */
-  html{overflow-y:scroll;height:auto;}
-  body{overflow-y:scroll;height:auto;-webkit-overflow-scrolling:touch;}
-  .page{padding:2px;overflow:visible;}
+  /* スクロール */
+  html,body{overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+  .page{padding:2px;}
 
   /* ヘッダー */
   .header{padding:8px 10px;gap:4px;flex-wrap:wrap;border-radius:10px;}
@@ -174,51 +173,57 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;
   /* カレンダーヘッダー */
   .cal-header-cell{font-size:10px;padding:4px 1px;font-weight:700;}
 
-  /* セル：高さ統一・内部スクロールなし */
-  .cal-cell{
-    height:auto !important;
-    min-height:80px;
-    padding:2px;
-    overflow:visible;
-    position:relative;
+  /* グリッドを行ごとに高さ統一 */
+  .cal-grid{
+    display:grid;
+    grid-template-columns:repeat(7,1fr);
+    grid-auto-rows:auto;
+    align-items:stretch;
   }
-  .date-num{font-size:11px;width:18px;height:18px;margin-bottom:2px;z-index:1;position:relative;}
 
-  /* カード */
-  .event-card{padding:2px 3px;margin-bottom:2px;border-radius:5px;position:static !important;}
-  .ev-inner{display:flex;gap:3px;align-items:flex-start;}
+  /* セル：行内で高さ統一（stretchで揃える） */
+  .cal-cell{
+    height:auto;
+    min-height:60px;
+    padding:2px;
+    overflow:hidden;
+    position:relative;
+    display:flex;
+    flex-direction:column;
+  }
+  .date-num{font-size:10px;width:16px;height:16px;margin-bottom:1px;z-index:1;position:relative;flex-shrink:0;}
+
+  /* カード：フレックスで縦並び */
+  .event-card{padding:2px 3px;margin-bottom:1px;border-radius:4px;flex-shrink:0;}
+  .ev-inner{display:flex;gap:2px;align-items:flex-start;}
   .ev-text{flex:1;min-width:0;overflow:hidden;}
 
-  /* 写真 */
+  /* 写真：最小限のサイズ */
   .ev-photo-wrap{display:flex!important;flex-direction:column;gap:1px;align-items:center;flex-shrink:0;}
-  .ev-photo-r,.ev-photo-rph{width:22px!important;height:22px!important;font-size:8px!important;}
-  .ev-photo-wrap.collab .ev-photo-r,.ev-photo-wrap.collab .ev-photo-rph{width:16px!important;height:16px!important;font-size:6px!important;}
+  .ev-photo-r,.ev-photo-rph{width:20px!important;height:20px!important;font-size:7px!important;}
+  .ev-photo-wrap.collab .ev-photo-r,.ev-photo-wrap.collab .ev-photo-rph{width:15px!important;height:15px!important;font-size:6px!important;}
   .ev-name2-lbl{display:none;}
 
-  /* テキスト */
-  .ev-type-badge{font-size:8px;padding:0 2px;margin-bottom:1px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  .ev-name{font-size:9px;font-weight:700;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  .ev-time{font-size:8px;white-space:nowrap;overflow:hidden;}
-  .ev-venue{font-size:7px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:none;padding:0;}
-  .ev-shusai{font-size:7px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  /* テキスト：小さく */
+  .ev-type-badge{font-size:7px;padding:0 1px;margin-bottom:0;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .ev-name{font-size:8px;font-weight:700;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .ev-time{font-size:7px;white-space:nowrap;overflow:hidden;}
+  .ev-venue{font-size:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:none;padding:0;}
+  .ev-shusai{font-size:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 
-  /* 1件表示：singleもstaticに */
-  .event-card.single{
-    position:static !important;
-    display:block;
-    padding:4px 5px;
-  }
-  .event-card.single .ev-inner{align-items:center;}
-  .event-card.single .ev-photo-r,.event-card.single .ev-photo-rph{width:30px!important;height:30px!important;font-size:11px!important;}
-  .event-card.single .ev-name{font-size:10px;white-space:normal;word-break:break-all;}
+  /* 1件表示：大きく */
+  .event-card.single{position:static!important;flex:1;display:flex;flex-direction:column;justify-content:center;}
+  .event-card.single .ev-inner{align-items:center;flex:1;}
+  .event-card.single .ev-photo-r,.event-card.single .ev-photo-rph{width:32px!important;height:32px!important;font-size:11px!important;}
+  .event-card.single .ev-name{font-size:10px;white-space:normal;word-break:break-all;line-height:1.3;}
   .event-card.single .ev-time{font-size:9px;}
   .event-card.single .ev-venue{font-size:8px;white-space:normal;}
 
   /* 集中会場 */
-  .event-card.focus-venue .ev-inner{padding-top:13px;}
+  .event-card.focus-venue .ev-inner{padding-top:12px;}
 
   /* 追加ボタン */
-  .add-btn{font-size:13px;padding:2px 5px;z-index:1;position:relative;}
+  .add-btn{font-size:11px;padding:1px 4px;z-index:1;position:relative;}
 
   /* モーダル */
   .modal{width:100%!important;max-width:100%!important;border-radius:16px 16px 0 0;position:fixed;bottom:0;left:0;right:0;top:auto;margin:0;max-height:92vh;padding:16px;overflow-y:auto;}
@@ -247,7 +252,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;
   .brand{font-size:10px;}.sub{font-size:6px;}.month-display{font-size:11px;}
   .calendar{box-shadow:none;border-radius:0;border:0.5px solid #999;width:287mm;}
   .cal-header-cell{padding:1px;font-size:7px;height:5mm;line-height:5mm;}
-  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);align-items:start;}
+  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);}
   .cal-cell{border-right:0.5px solid #ccc;border-bottom:0.5px solid #ccc;padding:2px;overflow:hidden;background:white;position:relative;display:flex;flex-direction:column;}
   .cal-cell:nth-child(7n){border-right:none;}
   .cal-cell.empty{background:#faf9f6;}
