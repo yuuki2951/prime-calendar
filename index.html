@@ -141,40 +141,63 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;
 .paste-modal{background:white;border-radius:14px;padding:22px;width:500px;max-width:96vw;max-height:90vh;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,0.2);}
 .paste-hint{background:#e3f2fd;border-radius:8px;padding:12px;margin-bottom:14px;font-size:12px;color:#1565c0;line-height:1.8;}
 @media(max-width:640px){
-  html,body{overflow-x:hidden;}
-  .page{padding:2px;}
+  html,body{overflow-x:clip;width:100%;max-width:100vw;}
+  .page{padding:2px;max-width:100vw;overflow:visible;}
+
+  /* ヘッダー */
   .header{padding:8px 10px;gap:4px;flex-wrap:wrap;border-radius:10px;}
   .brand{font-size:14px;}
   .month-display{font-size:17px;text-align:center;}
   .month-nav button{padding:6px 14px;font-size:18px;touch-action:manipulation;z-index:10;}
-  #edition-select{font-size:12px;padding:4px 6px;}
+  #edition-select{font-size:12px;padding:4px 6px;max-width:120px;}
+
+  /* ツールバー */
   .toolbar{gap:4px;padding:2px;flex-wrap:wrap;}
   .toolbar button{padding:8px 6px;font-size:11px;flex:1 1 40%;min-width:0;}
   .info-bar{display:none;}
-  .cal-header-cell{font-size:10px;padding:4px 1px;font-weight:700;}
-  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);}
-  .cal-cell{height:auto;min-height:60px;padding:2px;position:relative;display:flex;flex-direction:column;}
-  .date-num{font-size:10px;width:16px;height:16px;margin-bottom:1px;flex-shrink:0;}
-  .event-card{padding:2px 3px;margin-bottom:1px;border-radius:4px;flex-shrink:0;overflow:hidden;}
+
+  /* カレンダー */
+  .calendar{width:100%;overflow:visible;}
+  .cal-header-cell{font-size:9px;padding:3px 0;font-weight:700;}
+  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);width:100%;}
+
+  /* セル */
+  .cal-cell{height:auto;min-height:60px;padding:1px;position:relative;display:flex;flex-direction:column;overflow:hidden;}
+  .date-num{font-size:10px;width:15px;height:15px;margin-bottom:1px;flex-shrink:0;font-weight:700;}
+
+  /* カード */
+  .event-card{padding:1px 2px;margin-bottom:1px;border-radius:3px;flex-shrink:0;overflow:hidden;}
+  .ev-inner{display:flex;gap:1px;align-items:flex-start;}
+  .ev-text{flex:1;min-width:0;overflow:hidden;}
+
+  /* 写真：極小表示（全て表示） */
+  .ev-photo-wrap{display:flex!important;flex-direction:column;gap:1px;align-items:center;flex-shrink:0;}
+  .ev-photo-r,.ev-photo-rph{width:16px!important;height:16px!important;font-size:6px!important;}
+  .ev-photo-wrap.collab .ev-photo-r,.ev-photo-wrap.collab .ev-photo-rph{width:13px!important;height:13px!important;font-size:5px!important;}
+  .ev-name2-lbl{display:none;}
+
+  /* テキスト */
+  .ev-type-badge{font-size:6px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.2;}
+  .ev-name{font-size:7px;font-weight:700;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .ev-time{font-size:6px;white-space:nowrap;overflow:hidden;line-height:1.2;}
+  .ev-venue{font-size:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:none;padding:0;line-height:1.2;}
+  .ev-shusai{font-size:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+  /* 1件のみ */
   .event-card.single{position:static!important;flex:1;overflow:hidden;}
   .event-card.single .ev-inner{padding-top:10px;align-items:center;}
-  .event-card.single .ev-photo-r,.event-card.single .ev-photo-rph{width:30px!important;height:30px!important;font-size:10px!important;}
-  .event-card.single .ev-name{font-size:10px;white-space:normal;word-break:break-all;}
-  .event-card.single .ev-time{font-size:9px;}
-  .event-card.single .ev-venue{font-size:8px;white-space:normal;}
+  .event-card.single .ev-photo-r,.event-card.single .ev-photo-rph{width:30px!important;height:30px!important;font-size:11px!important;}
+  .event-card.single .ev-name{font-size:9px;white-space:normal;word-break:break-all;line-height:1.2;}
+  .event-card.single .ev-time{font-size:8px;}
+  .event-card.single .ev-venue{font-size:7px;white-space:normal;}
+
+  /* 集中会場 */
   .event-card.focus-venue .ev-inner{padding-top:12px;}
-  .ev-inner{display:flex;gap:2px;align-items:flex-start;}
-  .ev-text{flex:1;min-width:0;overflow:hidden;}
-  .ev-photo-wrap{display:flex!important;flex-direction:column;gap:1px;align-items:center;flex-shrink:0;}
-  .ev-photo-r,.ev-photo-rph{width:20px!important;height:20px!important;font-size:7px!important;}
-  .ev-photo-wrap.collab .ev-photo-r,.ev-photo-wrap.collab .ev-photo-rph{width:15px!important;height:15px!important;font-size:6px!important;}
-  .ev-name2-lbl{display:none;}
-  .ev-type-badge{font-size:7px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  .ev-name{font-size:8px;font-weight:700;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  .ev-time{font-size:7px;white-space:nowrap;overflow:hidden;}
-  .ev-venue{font-size:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:none;padding:0;}
-  .ev-shusai{font-size:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  .add-btn{font-size:11px;padding:1px 4px;}
+
+  /* 追加ボタン */
+  .add-btn{font-size:10px;padding:1px 3px;}
+
+  /* モーダル */
   .modal{width:100%!important;border-radius:16px 16px 0 0;position:fixed;bottom:0;left:0;right:0;top:auto;margin:0;max-height:92vh;padding:16px;overflow-y:auto;}
   .modal-overlay{align-items:flex-end;}
   .crop-modal,.lib-modal,.paste-modal{width:100%!important;border-radius:16px 16px 0 0;max-height:90vh;overflow-y:auto;}
