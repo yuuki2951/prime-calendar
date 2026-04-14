@@ -440,7 +440,9 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
     <textarea id="saved-text-area" style="width:100%;height:300px;font-size:11px;border-radius:8px;border:1.5px solid #ddd;padding:10px;font-family:monospace;resize:vertical;"></textarea>
     <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px;">
       <button onclick="closeSavedTextModal()" style="padding:7px 15px;border-radius:8px;font-size:13px;cursor:pointer;border:1px solid #ddd;background:white;font-family:inherit;">閉じる</button>
-      <button onclick="loadSavedToPaste()" style="padding:7px 15px;border-radius:8px;font-size:13px;cursor:pointer;border:1px solid #1565c0;background:white;color:#1565c0;font-weight:700;font-family:inherit;">📋 貼り付け欄に読み込む</button>
+      <button onclick="extractScheduleText()" style="padding:7px 15px;border-radius:8px;font-size:13px;cursor:pointer;border:1px solid #e65100;background:white;color:#e65100;font-weight:700;font-family:inherit;">🔄 スケジュールからテキスト生成</button>
+      <button onclick="copyExtractedText()" style="padding:7px 15px;border-radius:8px;font-size:13px;cursor:pointer;border:1px solid #2e7d32;background:white;color:#2e7d32;font-weight:700;font-family:inherit;">📋 コピー</button>
+      <button onclick="loadSavedToPaste()" style="padding:7px 15px;border-radius:8px;font-size:13px;cursor:pointer;border:1px solid #1565c0;background:white;color:#1565c0;font-weight:700;font-family:inherit;">📝 貼り付け欄へ</button>
     </div>
   </div>
 </div>
@@ -944,6 +946,67 @@ function openSavedTextModal(){
 }
 
 function closeSavedTextModal(){document.getElementById('saved-text-overlay').style.display='none';}
+
+function extractScheduleText(){
+  // 現在のeventsからテキスト形式を生成
+  var mns=['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+  var days=Object.keys(events).map(Number).sort(function(a,b){return a-b;});
+  if(!days.length){
+    document.getElementById('saved-text-area').value='（スケジュールが登録されていません）';
+    return;
+  }
+  var dow=['日','月','火','水','木','金','土'];
+  var lines=[];
+  lines.push('=== '+currentYear+'年'+mns[currentMonth]+' '+
+    (EDITIONS[currentEdition]?EDITIONS[currentEdition].label.replace(/[🌐🔵🟠🔴🟣🟢🟦🟩⭐]/gu,'').trim():'全国版')+' ===');
+  lines.push('');
+  days.forEach(function(d){
+    var date=new Date(currentYear,currentMonth,d);
+    var dayStr=d+' ('+dow[date.getDay()]+')';
+    lines.push(dayStr);
+    var evs=events[d]||[];
+    evs.forEach(function(ev){
+      // 時間
+      var times=ev.time?ev.time.split(' / '):[''];
+      times.forEach(function(t,ti){
+        if(ti===0){
+          // 種別・時間
+          lines.push(ev.type);
+          if(t)lines.push(t.replace('〜',' - '));
+          // 講師
+          var k=ev.koushi+(ev.koushi2?' & '+ev.koushi2:'');
+          // 会場
+          lines.push(k+'	'+ev.venue);
+        } else {
+          // 2つ目の時間（BE&BT等）
+          lines.push(t.replace('〜',' - '));
+        }
+      });
+      if(ev.shusai)lines.push(ev.shusai);
+      lines.push('');
+    });
+  });
+  var text=lines.join('
+');
+  document.getElementById('saved-text-area').value=text;
+  document.getElementById('saved-text-info').textContent=
+    currentYear+'年'+mns[currentMonth]+' '+
+    (EDITIONS[currentEdition]?EDITIONS[currentEdition].label.replace(/[🌐🔵🟠🔴🟣🟢🟦🟩⭐]/gu,'').trim():'全国版')+
+    ' スケジュールから生成（'+days.length+'日分）';
+}
+
+function copyExtractedText(){
+  var txt=document.getElementById('saved-text-area').value;
+  if(!txt){alert('テキストがありません。');return;}
+  navigator.clipboard.writeText(txt).then(function(){
+    alert('✅ クリップボードにコピーしました！');
+  }).catch(function(){
+    // fallback
+    document.getElementById('saved-text-area').select();
+    document.execCommand('copy');
+    alert('✅ コピーしました！');
+  });
+}
 document.getElementById('saved-text-overlay').addEventListener('click',function(e){if(e.target===this)closeSavedTextModal();});
 
 function loadSavedToPaste(){
