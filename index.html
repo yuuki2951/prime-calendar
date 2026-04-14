@@ -128,30 +128,45 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
 .paste-modal{background:white;border-radius:14px;padding:22px;width:500px;max-width:96vw;max-height:90vh;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,0.2);}
 .paste-hint{background:#e3f2fd;border-radius:8px;padding:12px;margin-bottom:14px;font-size:12px;color:#1565c0;line-height:1.8;}
 @media(max-width:640px){
-  .page{padding:6px;}
-  .header{padding:10px 12px;gap:8px;flex-wrap:wrap;}
-  .brand{font-size:16px;}
-  .month-display{font-size:18px;}
-  .month-nav button{padding:6px 12px;font-size:16px;}
-  #edition-select{font-size:12px;padding:4px 6px;}
-  .toolbar{gap:5px;}
-  .toolbar button{padding:8px 8px;font-size:11px;}
+  .page{padding:4px;}
+  .header{padding:10px 12px;gap:6px;flex-wrap:wrap;}
+  .brand{font-size:15px;}
+  .month-display{font-size:20px;min-width:110px;}
+  .month-nav button{padding:8px 14px;font-size:18px;}
+  #edition-select{font-size:13px;padding:5px 8px;border-radius:8px;}
+  .toolbar{gap:5px;padding:0 2px;}
+  .toolbar button{padding:10px 8px;font-size:12px;flex:1 1 auto;min-width:0;border-radius:10px;}
   .info-bar{display:none;}
-  .cal-header-cell{font-size:10px;padding:5px 1px;}
-  .cal-cell{height:78px;padding:2px;}
-  .ev-type-badge{font-size:8px;}
-  .ev-name{font-size:8px;}
-  .ev-time,.ev-venue,.ev-shusai{font-size:7px;}
-  .ev-photo-r,.ev-photo-rph{width:26px;height:26px;font-size:10px;}
-  .event-card.single .ev-photo-r,.event-card.single .ev-photo-rph{width:34px;height:34px;}
-  .event-card.single .ev-name{font-size:10px;}
-  .event-card.single .ev-time,.event-card.single .ev-venue{font-size:9px;}
-  .modal{width:100% !important;max-width:100% !important;border-radius:14px 14px 0 0;position:fixed;bottom:0;left:0;right:0;top:auto;margin:0;max-height:88vh;}
+  /* カレンダーヘッダー */
+  .cal-header-cell{font-size:11px;padding:6px 1px;font-weight:700;}
+  /* セル：スクロール可能・高さ固定 */
+  .cal-cell{height:90px;padding:2px;overflow-y:auto;}
+  .date-num{font-size:12px;width:20px;height:20px;margin-bottom:2px;}
+  /* カード文字 */
+  .ev-type-badge{font-size:9px;padding:0 3px;}
+  .ev-name{font-size:9px;line-height:1.3;}
+  .ev-time{font-size:9px;}
+  .ev-venue{font-size:8px;}
+  .ev-shusai{font-size:8px;}
+  /* 写真 */
+  .ev-photo-r,.ev-photo-rph{width:30px;height:30px;font-size:11px;}
+  .ev-photo-wrap.collab .ev-photo-r,.ev-photo-wrap.collab .ev-photo-rph{width:20px;height:20px;font-size:8px;}
+  /* 1件表示 */
+  .event-card.single .ev-photo-r,.event-card.single .ev-photo-rph{width:40px;height:40px;font-size:14px;}
+  .event-card.single .ev-name{font-size:11px;}
+  .event-card.single .ev-time,.event-card.single .ev-venue{font-size:10px;}
+  .event-card.single .ev-shusai{font-size:9px;}
+  /* 追加ボタン */
+  .add-btn{font-size:14px;padding:3px 7px;}
+  /* モーダル：下から出る */
+  .modal{width:100%!important;max-width:100%!important;border-radius:16px 16px 0 0;position:fixed;bottom:0;left:0;right:0;top:auto;margin:0;max-height:92vh;padding:16px;}
   .modal-overlay{align-items:flex-end;}
-  .crop-modal,.lib-modal,.paste-modal{width:100% !important;border-radius:14px 14px 0 0;}
+  .crop-modal,.lib-modal,.paste-modal{width:100%!important;border-radius:16px 16px 0 0;}
   .crop-overlay,.lib-overlay,.paste-overlay{align-items:flex-end;}
-  .add-btn{font-size:12px;padding:2px 5px;}
-  .date-num{font-size:11px;width:18px;height:18px;}
+  .crop-con{width:100%;max-width:100%;height:70vw;}
+  /* フォーム */
+  .form-row input,.form-row select,.form-row textarea{font-size:16px;padding:10px 12px;}
+  .modal-btns button{padding:12px 18px;font-size:14px;}
 }
 @media print{
   @page{size:A4 landscape;margin:3mm;}
@@ -178,12 +193,12 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
   .event-card{flex:1;min-height:0;padding:1px 2px;margin:0 0 1px 0;border-left-width:2px;border-radius:2px;overflow:hidden;display:flex;flex-direction:column;justify-content:center;}
   .event-card:last-child{margin-bottom:0;}
   .has-multi .event-card{position:static !important;}
-  .ev-inner{display:flex;gap:2px;align-items:center;height:100%;}
+  .ev-inner{display:flex;gap:1px;align-items:flex-start;height:100%;}
   .ev-text{flex:1;min-width:0;}
   .ev-photo-r{width:24px;height:24px;border-radius:50%;object-fit:cover;flex-shrink:0;}
   .ev-photo-rph{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:white;flex-shrink:0;}
   .ev-photo-wrap{display:flex;flex-direction:column;gap:2px;align-items:center;flex-shrink:0;}
-  .ev-name2-lbl{font-size:5px;text-align:center;line-height:1.1;max-width:28px;}
+  .ev-name2-lbl{display:none !important;}
   .ev-type-badge{font-size:6px;font-weight:700;margin-bottom:0;padding:0 1px;display:block;line-height:1.2;}
   .ev-name{font-size:6px;line-height:1.2;font-weight:700;margin-bottom:0;}
   .ev-time{font-size:6px;margin-bottom:0;line-height:1.2;}
@@ -212,8 +227,23 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
   .cal-cell.print-4 .ev-venue{font-size:4.5px;}
 }
 </style>
+<style id="view-mode-style"></style>
 </head>
 <body>
+
+<!-- パスワードモーダル -->
+<div id="pw-overlay" style="position:fixed;top:0;left:0;right:0;bottom:0;background:linear-gradient(135deg,#1565c0,#0d47a1);display:flex;align-items:center;justify-content:center;z-index:9999;">
+  <div style="background:white;border-radius:20px;padding:32px 28px;width:320px;max-width:90vw;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,0.3);">
+    <div style="font-size:48px;margin-bottom:12px;">🔥</div>
+    <div style="font-size:18px;font-weight:700;color:#cc0000;margin-bottom:4px;">三浦グループ</div>
+    <div style="font-size:13px;color:#888;margin-bottom:20px;">プライム日程表</div>
+    <input type="password" id="pw-input" placeholder="編集パスワードを入力" style="width:100%;font-size:15px;border-radius:10px;border:2px solid #ddd;padding:10px 14px;font-family:inherit;outline:none;margin-bottom:10px;box-sizing:border-box;">
+    <button onclick="checkPw()" style="width:100%;padding:12px;border-radius:10px;background:#cc0000;color:white;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:inherit;margin-bottom:10px;">✏️ 編集モードで開く</button>
+    <button onclick="viewOnly()" style="width:100%;padding:12px;border-radius:10px;background:#f5f5f5;color:#555;font-size:14px;font-weight:700;border:none;cursor:pointer;font-family:inherit;">👁️ 閲覧のみで開く</button>
+    <div id="pw-error" style="color:#cc0000;font-size:12px;margin-top:8px;display:none;">パスワードが違います</div>
+  </div>
+</div>
+
 <div class="page">
   <div id="print-header" style="display:none;">
     <span id="ph-title" style="font-size:16px;font-weight:700;color:#cc0000;"></span>
@@ -226,9 +256,12 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
       <div style="display:flex;align-items:center;gap:8px;margin-top:4px;flex-wrap:wrap;">
         <select id="edition-select" onchange="changeEdition(this.value)" style="font-size:14px;border-radius:8px;border:2px solid #ddd;padding:5px 10px;background:white;font-family:inherit;font-weight:700;cursor:pointer;">
           <option value="all">🌐 全国版</option>
+          <option value="hokkaido">🟦 北海道版</option>
+          <option value="tohoku">🟩 東北版</option>
           <option value="kanto">🔵 関東版</option>
           <option value="chubu">🟠 中部版</option>
           <option value="kansai">🔴 関西版</option>
+          <option value="chugoku">🟣 中国版</option>
           <option value="shikoku">🟢 四国版</option>
           <option value="kyushu">🟢 九州版</option>
           <option value="important">⭐ 重要版</option>
@@ -337,9 +370,17 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
     <div class="form-row"><label>🏠 住所（任意）</label><input type="text" id="ev-address" placeholder="例：大阪市東淀川区豊新2-1-4"></div>
     <div class="form-row"><label>🗾 地域</label>
       <select id="ev-region">
-        <option value="kansai">関西</option><option value="kanto">関東</option>
-        <option value="tokai">東海</option><option value="kyushu">九州</option>
-        <option value="other">その他</option><option value="zoom">zoom</option>
+        <option value="hokkaido">北海道</option>
+        <option value="tohoku">東北</option>
+        <option value="kanto">関東</option>
+        <option value="hokushinetsu">北信越</option>
+        <option value="tokai">中部（東海）</option>
+        <option value="kansai">関西</option>
+        <option value="chugoku">中国</option>
+        <option value="shikoku">四国</option>
+        <option value="kyushu">九州・沖縄</option>
+        <option value="other">その他</option>
+        <option value="zoom">zoom</option>
       </select>
     </div>
     <div class="form-row"><label>👥 主催者</label><input type="text" id="ev-shusai" placeholder="例：新納昭秀"></div>
@@ -415,17 +456,19 @@ try{if(!window._fbLoadError&&typeof firebase!=='undefined'){firebase.initializeA
 function fbOk(){return db!==null;}
 function fbPath(){return 'schedule/'+currentEdition+'/'+currentYear+'/'+currentMonth;}
 
-var EDITIONS={all:{label:'🌐 全国版',color:'#cc0000',filter:null,prefs:'8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47'},kanto:{label:'🔵 関東版',color:'#1565c0',filter:['kanto'],prefs:'8,9,10,11,12,13,14'},chubu:{label:'🟠 中部版',color:'#e65100',filter:['tokai'],prefs:'15,16,17,18,19,20,21,22,23'},kansai:{label:'🔴 関西版',color:'#c62828',filter:['kansai'],prefs:'24,25,26,27,28,29,30'},shikoku:{label:'🟢 四国版',color:'#2e7d32',filter:['other'],prefs:'36,37,38,39'},kyushu:{label:'🟢 九州版',color:'#1b5e20',filter:['kyushu'],prefs:'40,41,42,43,44,45,46,47'},important:{label:'⭐ 重要版',color:'#f57f17',filter:'important',prefs:'8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47'}};
+var EDITIONS={all:{label:'🌐 全国版',color:'#cc0000',filter:null,prefs:'1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47'},hokkaido:{label:'🟦 北海道版',color:'#1a237e',filter:['hokkaido'],prefs:'1'},tohoku:{label:'🟩 東北版',color:'#1b5e20',filter:['tohoku'],prefs:'2,3,4,5,6,7'},kanto:{label:'🔵 関東版',color:'#1565c0',filter:['kanto'],prefs:'8,9,10,11,12,13,14'},chubu:{label:'🟠 中部版',color:'#e65100',filter:['hokushinetsu','tokai'],prefs:'15,16,17,18,19,20,21,22,23'},kansai:{label:'🔴 関西版',color:'#c62828',filter:['kansai'],prefs:'24,25,26,27,28,29,30'},chugoku:{label:'🟣 中国版',color:'#6a1b9a',filter:['chugoku'],prefs:'31,32,33,34,35'},shikoku:{label:'🟢 四国版',color:'#2e7d32',filter:['shikoku'],prefs:'36,37,38,39'},kyushu:{label:'🟢 九州版',color:'#1b5e20',filter:['kyushu'],prefs:'40,41,42,43,44,45,46,47'},important:{label:'⭐ 重要版',color:'#f57f17',filter:'important',prefs:'1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47'}};
 var currentEdition='all';
+var ALL_EDITION_KEYS=['all','hokkaido','tohoku','kanto','chubu','kansai','chugoku','shikoku','kyushu'];
+var ALL_EDITION_KEYS=['all','hokkaido','tohoku','kanto','chubu','kansai','chugoku','shikoku','kyushu'];
 
-function editionFilter(ev){var ed=EDITIONS[currentEdition];if(!ed||!ed.filter)return true;if(ed.filter==='important')return !!(ev.focus||(ev.type==='コンベンション'));return ed.filter.indexOf(ev.region)>-1;}
+function editionFilter(ev){var ed=EDITIONS[currentEdition];if(!ed||!ed.filter)return true;if(ed.filter==='important')return !!ev.focus;if(Array.isArray(ed.filter))return ed.filter.indexOf(ev.region)>-1;return ed.filter===ev.region;}
 function changeEdition(val){currentEdition=val;if(window._syncRef){window._syncRef.off();window._syncRef=null;}loadEvents(function(){render();startSync();});}
 
 function toggleCustomType(){var sel=document.getElementById('ev-type');var inp=document.getElementById('ev-type-custom');if(sel.value==='__custom__'){inp.style.display='block';inp.focus();}else{inp.style.display='none';}}
 function getEvType(){var sel=document.getElementById('ev-type');if(sel.value==='__custom__'){var v=document.getElementById('ev-type-custom').value.trim();return v||'PBS';}return sel.value;}
 function setEvType(val){var sel=document.getElementById('ev-type');var inp=document.getElementById('ev-type-custom');var opts=['PBS','BE','BT','BS','分科会','コンベンション','遊び'];if(opts.indexOf(val)>-1){sel.value=val;inp.style.display='none';}else{sel.value='__custom__';inp.value=val;inp.style.display='block';}}
 
-var RC={kansai:'#c62828',kanto:'#1565c0',tokai:'#e65100',kyushu:'#1b5e20',other:'#424242',zoom:'#6a1b9a'};
+var RC={hokkaido:'#1a237e',tohoku:'#1b5e20',kanto:'#1565c0',hokushinetsu:'#e65100',tokai:'#bf360c',kansai:'#c62828',chugoku:'#6a1b9a',shikoku:'#2e7d32',kyushu:'#1b5e20',other:'#424242',zoom:'#7b1fa2'};
 // 種別カラー（優先）
 var TC={
   'PBS':      {col:'#b71c1c', bg:'#ffebee', bl:'#e53935'},
@@ -436,27 +479,80 @@ var TC={
   'BS':       {col:'#0d47a1', bg:'#e3f2fd', bl:'#1565c0'},
   '遊び':     {col:'#e65100', bg:'#fff3e0', bl:'#f57c00'}
 };
-function getTypeColor(type){return TC[type]||{col:'#424242',bg:'#f5f5f5',bl:'#999'};}
-var RB={kansai:'#ffebee',kanto:'#e3f2fd',tokai:'#fff3e0',kyushu:'#e8f5e9',other:'#f5f5f5',zoom:'#f3e5f5'};
-var RBR={kansai:'#e53935',kanto:'#1565c0',tokai:'#f57c00',kyushu:'#2e7d32',other:'#555',zoom:'#7b1fa2'};
+function getTypeColor(type){
+  if(!type)return {col:'#424242',bg:'#f5f5f5',bl:'#999'};
+  // PBS・コンベンション・分科会 → 赤
+  if(type==='PBS'||type==='コンベンション'||type==='分科会')return TC[type];
+  // BE/BT/BS を含む（単独・組み合わせ）→ 青
+  if(type.indexOf('BE')>-1||type.indexOf('BT')>-1||type.indexOf('BS')>-1){
+    return {col:'#0d47a1', bg:'#e3f2fd', bl:'#1565c0'};
+  }
+  return TC[type]||{col:'#424242',bg:'#f5f5f5',bl:'#999'};
+}
+var RB={hokkaido:'#e8eaf6',tohoku:'#e8f5e9',kanto:'#e3f2fd',hokushinetsu:'#fff3e0',tokai:'#fbe9e7',kansai:'#ffebee',chugoku:'#f3e5f5',shikoku:'#e8f5e9',kyushu:'#e8f5e9',other:'#f5f5f5',zoom:'#f3e5f5'};
+var RBR={hokkaido:'#1a237e',tohoku:'#1b5e20',kanto:'#1565c0',hokushinetsu:'#e65100',tokai:'#bf360c',kansai:'#e53935',chugoku:'#6a1b9a',shikoku:'#2e7d32',kyushu:'#2e7d32',other:'#555',zoom:'#7b1fa2'};
 var TICON={PBS:'📋',BE:'💼',BT:'📈',BS:'💡','分科会':'🔖','コンベンション':'🎉','遊び':'🎊'};
 var currentYear=new Date().getFullYear(), currentMonth=new Date().getMonth();
 var events={}, editDate=null, editIdx=null, p1=null, p2=null, photoLib={};
 
 function sk(){return 'prime_v11_'+currentEdition+'_'+currentYear+'_'+currentMonth;}
 function reiwa(y){return y-2018;}
-function loadEvents(cb){if(!fbOk()){try{var r=localStorage.getItem(sk());events=r?JSON.parse(r):{};}catch(e){events={};}if(cb)cb();return;}db.ref(fbPath()).once('value').then(function(s){events=s.val()||{};if(cb)cb();}).catch(function(){try{var r=localStorage.getItem(sk());events=r?JSON.parse(r):{};}catch(e){events={};}if(cb)cb();});}
+function mergeImportant(allData){
+  var merged={};
+  ALL_EDITION_KEYS.forEach(function(ed){
+    var edData=(allData[ed]&&allData[ed][currentYear]&&allData[ed][currentYear][currentMonth])||{};
+    Object.keys(edData).forEach(function(d){
+      if(!merged[d])merged[d]=[];
+      edData[d].forEach(function(ev){if(ev.focus)merged[d].push(ev);});
+    });
+  });
+  return merged;
+}
+function loadEvents(cb){
+  if(currentEdition==='important'){
+    if(!fbOk()){
+      var merged={};
+      ALL_EDITION_KEYS.forEach(function(ed){
+        try{var r=localStorage.getItem('prime_v11_'+ed+'_'+currentYear+'_'+currentMonth);var d=r?JSON.parse(r):{};Object.keys(d).forEach(function(day){if(!merged[day])merged[day]=[];d[day].forEach(function(ev){if(ev.focus)merged[day].push(ev);});});}catch(e){}
+      });
+      events=merged;if(cb)cb();return;
+    }
+    db.ref('schedule').once('value').then(function(s){events=mergeImportant(s.val()||{});if(cb)cb();}).catch(function(){events={};if(cb)cb();});
+    return;
+  }
+  if(!fbOk()){try{var r=localStorage.getItem(sk());events=r?JSON.parse(r):{};}catch(e){events={};}if(cb)cb();return;}
+  db.ref(fbPath()).once('value').then(function(s){events=s.val()||{};if(cb)cb();}).catch(function(){try{var r=localStorage.getItem(sk());events=r?JSON.parse(r):{};}catch(e){events={};}if(cb)cb();});
+}
 function saveEvents(){if(!fbOk()){try{localStorage.setItem(sk(),JSON.stringify(events));}catch(e){}return;}db.ref(fbPath()).set(events).catch(function(){try{localStorage.setItem(sk(),JSON.stringify(events));}catch(e){}});}
 function loadLib(cb){if(!fbOk()){try{var r=localStorage.getItem('prime_lib');if(r)photoLib=JSON.parse(r);}catch(e){}if(cb)cb();return;}db.ref('library').once('value').then(function(s){photoLib=s.val()||{};if(cb)cb();}).catch(function(){try{var r=localStorage.getItem('prime_lib');if(r)photoLib=JSON.parse(r);}catch(e){}if(cb)cb();});}
 function saveLib(){if(!fbOk()){try{localStorage.setItem('prime_lib',JSON.stringify(photoLib));}catch(e){}return;}db.ref('library').set(photoLib).catch(function(){try{localStorage.setItem('prime_lib',JSON.stringify(photoLib));}catch(e){}});}
 function addToLib(name,photo){if(name&&photo){photoLib[name]=photo;saveLib();}}
-function startSync(){if(!fbOk())return;if(window._syncRef){window._syncRef.off();}window._syncRef=db.ref(fbPath());window._syncRef.on('value',function(s){if(document.getElementById('ev-modal').style.display==='none'){events=s.val()||{};render();}});}
+function startSync(){
+  if(!fbOk())return;
+  if(window._syncRef){window._syncRef.off();}
+  if(currentEdition==='important'){
+    window._syncRef=db.ref('schedule');
+    window._syncRef.on('value',function(s){
+      if(document.getElementById('ev-modal').style.display==='none'){
+        events=mergeImportant(s.val()||{});render();
+      }
+    });
+    return;
+  }
+  window._syncRef=db.ref(fbPath());
+  window._syncRef.on('value',function(s){if(document.getElementById('ev-modal').style.display==='none'){events=s.val()||{};render();}});
+}
 
 function prefToRegion(p){
-  if(/大阪|兵庫|京都|奈良|滋賀|和歌山|三重/.test(p))return 'kansai';
-  if(/東京|神奈川|埼玉|千葉|茨城|栃木|群馬/.test(p))return 'kanto';
+  if(/^東京都$/.test(p)||/神奈川|埼玉|千葉|茨城|栃木|群馬/.test(p))return 'kanto';
+  if(/^京都府$/.test(p)||/大阪|兵庫|奈良|滋賀|和歌山|三重/.test(p))return 'kansai';
   if(/愛知|岐阜|静岡/.test(p))return 'tokai';
   if(/福岡|佐賀|長崎|熊本|大分|宮崎|鹿児島|沖縄/.test(p))return 'kyushu';
+  if(/徳島|香川|愛媛|高知/.test(p))return 'shikoku';
+  if(/鳥取|島根|岡山|広島|山口/.test(p))return 'chugoku';
+  if(/北海道/.test(p))return 'hokkaido';
+  if(/青森|岩手|宮城|秋田|山形|福島/.test(p))return 'tohoku';
+  if(/新潟|富山|石川|福井|山梨|長野/.test(p))return 'hokushinetsu';
   return 'other';
 }
 
@@ -555,15 +651,22 @@ function render(){
     var dow=(firstDay+d-1)%7;
     var de=events[d]||[];
     var fl=de.filter(editionFilter);
-    var single=fl.length===1;
-    var pCls=fl.length>=4?' print-4':fl.length===3?' print-3':'';
+    // 集中会場があるか確認
+    var focusEv=null;
+    for(var fi=0;fi<fl.length;fi++){if(fl[fi].focus){focusEv=fl[fi];break;}}
+    // 集中会場がある日は集中会場のみ表示（singleとして）
+    var displayList=focusEv?[focusEv]:fl;
+    var single=displayList.length===1;
+    var pCls=displayList.length>=4?' print-4':displayList.length===3?' print-3':'';
     var cell=document.createElement('div');
-    cell.className='cal-cell'+(isCur&&d===today.getDate()?' today':'')+(fl.length>1?' has-multi':'')+pCls;
+    cell.className='cal-cell'+(isCur&&d===today.getDate()?' today':'')+(displayList.length>1?' has-multi':'')+pCls;
     var dn=document.createElement('div');
     dn.className='date-num'+(dow===0?' sun-num':dow===6?' sat-num':'');
     dn.textContent=d; cell.appendChild(dn);
-    for(var ei=0;ei<fl.length;ei++){cell.appendChild(makeCard(fl[ei],d,de.indexOf(fl[ei]),single));}
+    for(var ei=0;ei<displayList.length;ei++){cell.appendChild(makeCard(displayList[ei],d,de.indexOf(displayList[ei]),single));}
     var ab=document.createElement('div');ab.className='add-btn';ab.textContent='＋';
+    if(currentEdition==='important')ab.style.display='none';
+    if(currentEdition==='important')ab.style.display='none';
     (function(day){ab.onclick=function(){openAdd(day);};})(d);
     cell.appendChild(ab);
     grid.appendChild(cell);
@@ -723,6 +826,66 @@ function importJSON(e){
 }
 
 var parsedItems=[];
+
+function normStr(s){return (s||'').replace(/[\s\u3000]/g,'');}
+function venueCore(v){
+  var s=normStr(v);
+  // 末尾の数字・階・棟・F・号室を除去
+  s=s.replace(/(\d+階|\d+[Ff]|\d+号室|[A-Z]+棟)$/g,'');
+  // 助詞「の」を除去
+  s=s.replace(/の/g,'');
+  return s;
+}
+function venueSim(v1,v2){
+  var a=normStr(v1), b=normStr(v2);
+  if(!a||!b)return false;
+  if(a===b)return true;
+  // 正規化したまま包含判定
+  if(a.indexOf(b)>-1||b.indexOf(a)>-1)return true;
+  // 助詞除去・末尾除去後の核で比較
+  var ca=venueCore(v1), cb=venueCore(v2);
+  if(ca&&cb&&(ca===cb||ca.indexOf(cb)>-1||cb.indexOf(ca)>-1))return true;
+  // 先頭一致（小/中ホールなど）
+  var minLen=Math.min(a.length,b.length);
+  var common=0;
+  for(var i=0;i<minLen;i++){if(a[i]===b[i])common++;else break;}
+  return common>=Math.ceil(minLen*0.6);
+}
+function mergeBebt(evList){
+  var merged=[];
+  evList.forEach(function(ev){
+    if(ev.type!=='BE'&&ev.type!=='BT'){merged.push(ev);return;}
+    var pair=merged.findIndex(function(ex){
+      if(!(ex.type==='BE'||ex.type==='BT'))return false;
+      // 講師セット（koushi1+koushi2）を順不同で比較
+      var exSet=normStr(ex.koushi)+'|'+normStr(ex.koushi2||'');
+      var evSet=normStr(ev.koushi)+'|'+normStr(ev.koushi2||'');
+      var exSetR=normStr(ex.koushi2||'')+'|'+normStr(ex.koushi);
+      if(exSet!==evSet&&exSetR!==evSet)return false;
+      if(!venueSim(ex.venue,ev.venue))return false;
+      return ex.type!==ev.type||(ex.type===ev.type&&ex.time!==ev.time);
+    });
+    if(pair>=0){
+      var ex=merged[pair];
+      var t1=ex.time.split('〜')[0]||'';
+      var t2=ev.time.split('〜')[0]||'';
+      var first=t1<=t2?ex:ev;
+      var second=t1<=t2?ev:ex;
+      var k2=first.koushi2||second.koushi2||'';
+      var newType=first.type===second.type?first.type:first.type+'&'+second.type;
+      merged[pair]=Object.assign({},first,{
+        type:newType,
+        time:first.time+' / '+second.time,
+        koushi2:k2,
+        shusai:first.shusai||second.shusai||''
+      });
+    } else {
+      merged.push(ev);
+    }
+  });
+  return merged;
+}
+
 function openPasteModal(){
   document.getElementById('paste-area').value='';
   document.getElementById('paste-preview').style.display='none';
@@ -761,7 +924,7 @@ function parsePaste(){
     // 料金行: "¥500\t講師1" or "¥500\t講師1\t会場名"
     if(l.charAt(0)==='¥'&&parts.length>=2){
       var k1=(parts[1]||'').replace(/[ \u3000]/g,'');
-      var venue1=parts[2]||'';
+      var venue1=(parts[2]||'').replace(/[\u3000\s]+$/g,'').trim();
       if(parsedItems.length&&k1){
         parsedItems[parsedItems.length-1].koushi=k1;
         parsedItems[parsedItems.length-1].venue=venue1;
@@ -780,7 +943,7 @@ function parsePaste(){
       // 電話番号・都道府県・席数・状態でなければ講師名
       if(cand.length>=2&&!/^\d/.test(cand)&&!/[県都道府]$/.test(cand)&&!/席$/.test(cand)&&!/済$|受付|満席|抽選/.test(cand)){
         prev2.koushi2=cand;
-        prev2.venue=candVenue;
+        prev2.venue=(candVenue||'').replace(/[\u3000\s]+$/g,'').trim();
         prev2.needVenue=false;
         continue;
       }
@@ -807,6 +970,8 @@ function parsePaste(){
     }
   }
   parsedItems=parsedItems.filter(function(it){return it.koushi!=='';});
+  // プレビュー表示前にBE/BTマージを適用
+  parsedItems=mergeBebt(parsedItems);
   var listEl=document.getElementById('paste-list');
   listEl.innerHTML='';
   if(!parsedItems.length){
@@ -838,18 +1003,43 @@ function parsePaste(){
 
 function importParsed(){
   var count=0;
+  var overwriteCount=0;
+  // チェック済みアイテムをday別に収集してからマージ
+  var byDay={};
   parsedItems.forEach(function(item,i){
     var cb=document.getElementById('pc'+i);
     if(!cb||!cb.checked)return;
     var d=item.day;
+    if(!byDay[d])byDay[d]=[];
+    byDay[d].push({type:item.type,koushi:item.koushi,koushi2:item.koushi2||'',time:item.time,venue:item.venue,address:'',region:item.region,shusai:item.shusai||'',note:'',focus:false,photo:null,photo2:null});
+  });
+  Object.keys(byDay).forEach(function(d){
+    var merged=mergeBebt(byDay[d]);
     if(!events[d])events[d]=[];
-    var newEv={type:item.type,koushi:item.koushi,koushi2:item.koushi2||'',time:item.time,venue:item.venue,address:'',region:item.region,shusai:item.shusai||'',note:'',focus:false,photo:null,photo2:null};
-    var dup=events[d].findIndex(function(ex){return ex.koushi===newEv.koushi&&ex.time===newEv.time;});
-    if(dup>=0){events[d][dup]=Object.assign(events[d][dup],newEv);}else{events[d].push(newEv);}
-    count++;
+    merged.forEach(function(newEv){
+      // 同講師・同会場・同種別でマッチ→上書き、なければ追加
+      var dup=events[d].findIndex(function(ex){
+        return normStr(ex.koushi)===normStr(newEv.koushi)
+          &&venueSim(ex.venue,newEv.venue)
+          &&ex.type===newEv.type;
+      });
+      if(dup>=0){
+        // 写真・集中会場フラグなど手動設定は保持して他を上書き
+        events[d][dup]=Object.assign({},newEv,{
+          photo:events[d][dup].photo||newEv.photo,
+          photo2:events[d][dup].photo2||newEv.photo2,
+          focus:events[d][dup].focus||newEv.focus,
+          note:events[d][dup].note||newEv.note
+        });
+        overwriteCount++;
+      } else {
+        events[d].push(newEv);
+      }
+      count++;
+    });
   });
   saveEvents();render();closePasteModal();
-  alert('✅ '+count+'件を取り込みました！');
+  alert('✅ 取り込み完了！\n新規追加：'+(count-overwriteCount)+'件\n上書き更新：'+overwriteCount+'件');
 }
 
 function clearMonth(){
@@ -859,7 +1049,53 @@ function clearMonth(){
   if(fbOk()){db.ref(fbPath()).remove();}else{try{localStorage.removeItem(sk());}catch(e){}}
   render();
 }
-initTimeSelects();loadLib(function(){loadEvents(function(){render();startSync();});});
+// ── パスワード認証 ──
+var EDIT_PASSWORD = 'miura2026';  // ★ パスワードをここで変更
+var isEditMode = false;
+
+function checkPw(){
+  var pw = document.getElementById('pw-input').value;
+  if(pw === EDIT_PASSWORD){
+    isEditMode = true;
+    document.getElementById('pw-overlay').style.display = 'none';
+    applyMode();
+  } else {
+    document.getElementById('pw-error').style.display = 'block';
+    document.getElementById('pw-input').value = '';
+    document.getElementById('pw-input').focus();
+  }
+}
+function viewOnly(){
+  isEditMode = false;
+  document.getElementById('pw-overlay').style.display = 'none';
+  applyMode();
+}
+document.getElementById('pw-input').addEventListener('keydown', function(e){
+  if(e.key==='Enter') checkPw();
+});
+function applyMode(){
+  if(!isEditMode){
+    // 閲覧モード：ツールバー・編集ボタンを非表示
+    document.getElementById('view-mode-style').textContent =
+      '.toolbar{display:none!important;}' +
+      '.add-btn{display:none!important;}' +
+      '.cal-cell{cursor:default!important;}';
+    // カードクリックを無効化
+    document.querySelectorAll('.event-card').forEach(function(c){c.style.pointerEvents='none';});
+  }
+  // 起動時はPW認証後にapplyMode()でload
+}
+
+// カード生成後も閲覧モードを反映
+var _origRender = render;
+render = function(){
+  _origRender();
+  if(!isEditMode){
+    document.querySelectorAll('.event-card,.add-btn').forEach(function(c){c.style.pointerEvents='none';});
+  }
+};
+
+initTimeSelects();// 起動時はPW認証後にapplyMode()でload
 </script>
 </body>
 </html>
