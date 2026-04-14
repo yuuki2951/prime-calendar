@@ -132,25 +132,25 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
   .header{padding:8px 10px;gap:5px;flex-wrap:wrap;}
   .brand{font-size:14px;}
   .month-display{font-size:18px;}
-  .month-nav button{padding:7px 12px;font-size:16px;}
+  .month-nav button{padding:7px 12px;font-size:16px;z-index:1;position:relative;}
   #edition-select{font-size:12px;padding:4px 6px;}
-  .toolbar{gap:4px;padding:0 2px;}
+  .toolbar{gap:4px;padding:0 2px;flex-wrap:wrap;}
   .toolbar button{padding:8px 6px;font-size:11px;flex:1 1 auto;min-width:0;}
   .info-bar{display:none;}
   .cal-header-cell{font-size:10px;padding:5px 1px;}
-  .cal-cell{height:auto;min-height:70px;padding:2px;overflow:visible;}
-  .date-num{font-size:11px;width:18px;height:18px;}
+  .cal-cell{height:80px;padding:2px;overflow:hidden;position:relative;}
+  .date-num{font-size:11px;width:18px;height:18px;position:relative;z-index:1;}
   .ev-photo-wrap{display:flex!important;flex-direction:column;flex-shrink:0;}
   .ev-photo-r,.ev-photo-rph{width:22px!important;height:22px!important;font-size:8px!important;}
   .ev-photo-wrap.collab .ev-photo-r,.ev-photo-wrap.collab .ev-photo-rph{width:16px!important;height:16px!important;font-size:6px!important;}
   .ev-name2-lbl{display:none;}
   .ev-inner{display:flex;gap:2px;align-items:flex-start;}
-  .ev-text{flex:1;min-width:0;}
+  .ev-text{flex:1;min-width:0;overflow:hidden;}
   .ev-type-badge{font-size:9px;}
-  .ev-name{font-size:10px;line-height:1.3;font-weight:700;white-space:normal;word-break:break-all;}
-  .ev-time{font-size:9px;}
-  .ev-venue{font-size:8px;white-space:normal;word-break:break-all;background:none;padding:0;}
-  .ev-shusai{font-size:8px;}
+  .ev-name{font-size:10px;line-height:1.3;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .ev-time{font-size:9px;white-space:nowrap;}
+  .ev-venue{font-size:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:none;padding:0;}
+  .ev-shusai{font-size:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
   .event-card{padding:3px 4px;margin-bottom:2px;}
   .event-card.single{position:absolute;top:20px;left:2px;right:2px;bottom:2px;}
   .add-btn{font-size:13px;padding:2px 5px;}
@@ -165,9 +165,6 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
   html,body{margin:0;padding:0;background:white;width:294mm;overflow:hidden;}
   .page{padding:0;margin:0;width:294mm;overflow:hidden;}
 
-  *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;box-sizing:border-box;}
-  html,body{margin:0;padding:0;background:white;width:287mm;}
-  .page{padding:0;margin:0;width:287mm;}
   #view-toolbar{display:none!important;}
   #pw-overlay{display:none!important;}
   #print-header{display:flex!important;align-items:baseline;gap:8px;padding:0.3mm 2mm;border-bottom:1px solid #ddd;margin-bottom:0.3mm;}
@@ -536,7 +533,7 @@ function changeMonth(d){
   currentMonth+=d;
   if(currentMonth>11){currentMonth=0;currentYear++;}
   if(currentMonth<0){currentMonth=11;currentYear--;}
-  if(syncRef){syncRef.off();syncRef=null;}
+  if(window._syncRef){window._syncRef.off();window._syncRef=null;}
   loadEvents(function(){render();startSync();});
 }
 function getInit(n){if(!n)return'?';var m=n.match(/[\u4e00-\u9fff\u3040-\u30ff]+/g);return m?m[0].slice(0,1):n[0].toUpperCase();}
