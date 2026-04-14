@@ -281,6 +281,10 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
       <button onclick="changeMonth(1)">▶</button>
     </div>
   </div>
+  <!-- 閲覧モード用ツールバー（印刷ボタンのみ） -->
+  <div id="view-toolbar" style="display:none;margin-bottom:10px;display:none;">
+    <button onclick="var ed=EDITIONS[currentEdition]?EDITIONS[currentEdition].label:'全国版';var mns=['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];document.title='三浦Gプライム_'+ed+'_'+currentYear+'年'+mns[currentMonth];window.print();setTimeout(function(){document.title='三浦グループ プライム日程表';},2000);" style="padding:10px 20px;border-radius:10px;font-size:14px;font-family:inherit;cursor:pointer;border:none;background:#cc0000;color:white;font-weight:700;">🖨️ 印刷・PDF出力</button>
+  </div>
   <div class="toolbar">
     <button class="green" onclick="openSeminarSite()">🌐 セミナーサイトを見る</button>
     <button class="blue" onclick="openPasteModal()">📋 テキストを貼り付けて取り込む</button>
@@ -1078,6 +1082,7 @@ function applyMode(){
     // 閲覧モード：写真付きPC版レイアウトを横スクロールで表示
     document.getElementById('view-mode-style').textContent =
       '.toolbar{display:none!important;}' +
+      '#view-toolbar{display:block!important;}' +
       '.add-btn{display:none!important;}' +
       '@media(max-width:640px){' +
         'body{overflow-x:auto;}' +
