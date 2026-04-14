@@ -175,12 +175,15 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
 }
 @media print{
   @page{size:A4 landscape;margin:3mm;}
+  body{overflow-x:visible !important;min-width:0 !important;}
+  .page{min-width:0 !important;width:287mm !important;}
   *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;box-sizing:border-box;}
   html,body{margin:0;padding:0;background:white;width:287mm;}
   .page{padding:0;margin:0;width:287mm;}
   .toolbar,.info-bar,.modal-overlay,.crop-overlay,.lib-overlay,.paste-overlay{display:none !important;}
   #edition-select{display:none !important;}
   #cloud-badge{display:none !important;}
+  #view-toolbar{display:none !important;}
   #print-header{display:flex !important;align-items:baseline;gap:8px;padding:0.5mm 2mm;border-bottom:1px solid #ddd;margin-bottom:0.5mm;}
   .header{display:none !important;}
   .month-nav button,.add-btn{display:none !important;}
@@ -675,10 +678,10 @@ function render(){
     cell.appendChild(ab);
     grid.appendChild(cell);
   }
-  var ch=Math.floor(178/totalRows);
+  var ch=Math.floor(176/totalRows);
   var ps=document.getElementById('pch');
   if(!ps){ps=document.createElement('style');ps.id='pch';document.head.appendChild(ps);}
-  ps.textContent='@media print{.cal-cell{height:'+ch+'mm !important;}}';
+  ps.textContent='@media print{.cal-cell{height:'+ch+'mm !important;max-height:'+ch+'mm !important;}}';
 }
 
 function openAdd(d){editDate=d;editIdx=null;p1=null;p2=null;document.getElementById('ev-modal-title').textContent=d+'日 イベントを追加';resetForm();document.getElementById('ev-del-btn').style.display='none';document.getElementById('ev-modal').style.display='flex';}
