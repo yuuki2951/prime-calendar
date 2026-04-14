@@ -129,35 +129,37 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
 .paste-hint{background:#e3f2fd;border-radius:8px;padding:12px;margin-bottom:14px;font-size:12px;color:#1565c0;line-height:1.8;}
 @media(max-width:640px){
   .page{padding:4px;}
-  .header{padding:10px 12px;gap:6px;flex-wrap:wrap;}
-  .brand{font-size:15px;}
-  .month-display{font-size:20px;min-width:110px;}
-  .month-nav button{padding:8px 14px;font-size:18px;}
-  #edition-select{font-size:13px;padding:5px 8px;border-radius:8px;}
-  .toolbar{gap:5px;padding:0 2px;}
-  .toolbar button{padding:10px 8px;font-size:12px;flex:1 1 auto;min-width:0;border-radius:10px;}
+  .header{padding:8px 10px;gap:5px;flex-wrap:wrap;}
+  .brand{font-size:14px;}
+  .month-display{font-size:18px;min-width:100px;}
+  .month-nav button{padding:7px 12px;font-size:16px;}
+  #edition-select{font-size:12px;padding:4px 6px;border-radius:8px;}
+  .toolbar{gap:4px;padding:0 2px;}
+  .toolbar button{padding:8px 6px;font-size:11px;flex:1 1 auto;min-width:0;border-radius:8px;}
   .info-bar{display:none;}
   /* カレンダーヘッダー */
-  .cal-header-cell{font-size:11px;padding:6px 1px;font-weight:700;}
-  /* セル：スクロール可能・高さ固定 */
-  .cal-cell{height:90px;padding:2px;overflow-y:auto;}
-  .date-num{font-size:12px;width:20px;height:20px;margin-bottom:2px;}
-  /* カード文字 */
-  .ev-type-badge{font-size:9px;padding:0 3px;}
-  .ev-name{font-size:9px;line-height:1.3;}
-  .ev-time{font-size:9px;}
-  .ev-venue{font-size:8px;}
+  .cal-header-cell{font-size:10px;padding:5px 1px;font-weight:700;}
+  /* セル */
+  .cal-cell{height:auto;min-height:70px;padding:2px;overflow:visible;}
+  .date-num{font-size:11px;width:18px;height:18px;margin-bottom:1px;}
+  /* スマホでは写真を非表示→テキスト重視 */
+  .ev-photo-wrap{display:none!important;}
+  /* カード：横幅フル活用 */
+  .ev-inner{display:block;}
+  .ev-text{width:100%;}
+  .ev-type-badge{font-size:9px;padding:0 2px;margin-bottom:1px;}
+  .ev-name{font-size:10px;line-height:1.3;font-weight:700;white-space:normal;word-break:break-all;}
+  .ev-time{font-size:9px;white-space:nowrap;}
+  .ev-venue{font-size:8px;white-space:normal;word-break:break-all;background:none;padding:0;}
   .ev-shusai{font-size:8px;}
-  /* 写真 */
-  .ev-photo-r,.ev-photo-rph{width:30px;height:30px;font-size:11px;}
-  .ev-photo-wrap.collab .ev-photo-r,.ev-photo-wrap.collab .ev-photo-rph{width:20px;height:20px;font-size:8px;}
-  /* 1件表示 */
-  .event-card.single .ev-photo-r,.event-card.single .ev-photo-rph{width:40px;height:40px;font-size:14px;}
-  .event-card.single .ev-name{font-size:11px;}
-  .event-card.single .ev-time,.event-card.single .ev-venue{font-size:10px;}
-  .event-card.single .ev-shusai{font-size:9px;}
+  /* カード全面表示 */
+  .event-card{padding:3px 4px;margin-bottom:2px;}
+  .event-card.single{position:absolute;top:20px;left:2px;right:2px;bottom:2px;}
+  .event-card.single .ev-name{font-size:12px;}
+  .event-card.single .ev-time{font-size:10px;}
+  .event-card.single .ev-venue{font-size:9px;}
   /* 追加ボタン */
-  .add-btn{font-size:14px;padding:3px 7px;}
+  .add-btn{font-size:13px;padding:2px 5px;}
   /* モーダル：下から出る */
   .modal{width:100%!important;max-width:100%!important;border-radius:16px 16px 0 0;position:fixed;bottom:0;left:0;right:0;top:auto;margin:0;max-height:92vh;padding:16px;}
   .modal-overlay{align-items:flex-end;}
@@ -239,7 +241,8 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
     <div style="font-size:13px;color:#888;margin-bottom:20px;">プライム日程表</div>
     <input type="password" id="pw-input" placeholder="編集パスワードを入力" style="width:100%;font-size:15px;border-radius:10px;border:2px solid #ddd;padding:10px 14px;font-family:inherit;outline:none;margin-bottom:10px;box-sizing:border-box;">
     <button onclick="checkPw()" style="width:100%;padding:12px;border-radius:10px;background:#cc0000;color:white;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:inherit;margin-bottom:10px;">✏️ 編集モードで開く</button>
-    <button onclick="viewOnly()" style="width:100%;padding:12px;border-radius:10px;background:#f5f5f5;color:#555;font-size:14px;font-weight:700;border:none;cursor:pointer;font-family:inherit;">👁️ 閲覧のみで開く</button>
+    <button onclick="viewOnly()" style="width:100%;padding:12px;border-radius:10px;background:#1565c0;color:white;font-size:14px;font-weight:700;border:none;cursor:pointer;font-family:inherit;">👁️ 閲覧モードで開く</button>
+    <div style="font-size:10px;color:#aaa;margin-top:4px;">閲覧モードは写真付きカレンダーを横スクロールで表示</div>
     <div id="pw-error" style="color:#cc0000;font-size:12px;margin-top:8px;display:none;">パスワードが違います</div>
   </div>
 </div>
@@ -1075,15 +1078,37 @@ document.getElementById('pw-input').addEventListener('keydown', function(e){
 });
 function applyMode(){
   if(!isEditMode){
-    // 閲覧モード：ツールバー・編集ボタンを非表示
+    // 閲覧モード：写真付きPC版レイアウトを横スクロールで表示
     document.getElementById('view-mode-style').textContent =
       '.toolbar{display:none!important;}' +
       '.add-btn{display:none!important;}' +
-      '.cal-cell{cursor:default!important;}';
-    // カードクリックを無効化
-    document.querySelectorAll('.event-card').forEach(function(c){c.style.pointerEvents='none';});
+      '@media(max-width:640px){' +
+        'body{overflow-x:auto;}' +
+        '.page{padding:2px;min-width:920px;}' +
+        '.ev-photo-wrap{display:flex!important;}' +
+        '.ev-inner{display:flex!important;}' +
+        '.ev-text{flex:1;min-width:0;}' +
+        '.cal-cell{height:120px;}' +
+        '.cal-header-cell{font-size:11px;padding:5px 4px;}' +
+        '.date-num{font-size:11px;width:18px;height:18px;}' +
+        '.ev-type-badge{font-size:9px;}' +
+        '.ev-name{font-size:9px;}' +
+        '.ev-time{font-size:8px;letter-spacing:-0.3px;}' +
+        '.ev-venue{font-size:8px;white-space:normal;background:none;padding:0;}' +
+        '.ev-shusai{font-size:7px;}' +
+        '.ev-photo-r,.ev-photo-rph{width:30px;height:30px;font-size:11px;}' +
+        '.ev-photo-wrap.collab .ev-photo-r,.ev-photo-wrap.collab .ev-photo-rph{width:18px;height:18px;font-size:7px;}' +
+        '.event-card.single .ev-photo-r,.event-card.single .ev-photo-rph{width:44px;height:44px;font-size:15px;}' +
+        '.event-card.single .ev-name{font-size:11px;}' +
+        '.event-card.single .ev-time{font-size:10px;}' +
+        '.event-card.single .ev-venue{font-size:9px;}' +
+        '.brand{font-size:13px;}' +
+        '.month-display{font-size:15px;min-width:120px;}' +
+        '#edition-select{font-size:11px;padding:3px 6px;}' +
+        '.month-nav button{padding:5px 10px;font-size:14px;}' +
+      '}';
   }
-  // 起動時はPW認証後にapplyMode()でload
+  loadLib(function(){loadEvents(function(){render();startSync();});});
 }
 
 // カード生成後も閲覧モードを反映
@@ -1091,7 +1116,9 @@ var _origRender = render;
 render = function(){
   _origRender();
   if(!isEditMode){
-    document.querySelectorAll('.event-card,.add-btn').forEach(function(c){c.style.pointerEvents='none';});
+    document.querySelectorAll('.event-card,.add-btn').forEach(function(c){
+      c.style.pointerEvents='none';
+    });
   }
 };
 
