@@ -284,7 +284,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
   </div>
   <!-- 閲覧モード用ツールバー（印刷ボタンのみ） -->
   <div id="view-toolbar" style="display:none;margin-bottom:10px;display:none;">
-    <button onclick="var ed=EDITIONS[currentEdition]?EDITIONS[currentEdition].label:'全国版';var mns=['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];document.title='三浦Gプライム_'+ed+'_'+currentYear+'年'+mns[currentMonth];window.print();setTimeout(function(){document.title='三浦グループ プライム日程表';},2000);" style="padding:10px 20px;border-radius:10px;font-size:14px;font-family:inherit;cursor:pointer;border:none;background:#cc0000;color:white;font-weight:700;">🖨️ 印刷・PDF出力</button>
+    <button onclick="var ed=(EDITIONS[currentEdition]?EDITIONS[currentEdition].label:'全国版').replace(/[🌐🔵🟠🔴🟣🟢🟦🟩⭐]/gu,'').trim();var mns=['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];document.title='三浦Gプライム日程表_'+ed+'_'+currentYear+'年'+mns[currentMonth];window.print();setTimeout(function(){document.title='三浦グループ プライム日程表';},2000);" style="padding:10px 20px;border-radius:10px;font-size:14px;font-family:inherit;cursor:pointer;border:none;background:#cc0000;color:white;font-weight:700;">🖨️ 印刷・PDF出力</button>
   </div>
   <div class="toolbar">
     <button class="green" onclick="openSeminarSite()">🌐 セミナーサイトを見る</button>
@@ -292,7 +292,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
     <button onclick="document.getElementById('import-file').click()">📥 JSONを読み込む</button>
     <input type="file" id="import-file" accept=".json" style="display:none" onchange="importJSON(event)">
     <button onclick="clearMonth()" style="color:#c62828;border-color:#ffaaaa;font-weight:700;">🗑️ この月を全削除</button>
-    <button class="primary" onclick="var ed=EDITIONS[currentEdition]?EDITIONS[currentEdition].label:'全国版';var mns=['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];document.title='三浦Gプライム_'+ed+'_'+currentYear+'年'+mns[currentMonth];window.print();setTimeout(function(){document.title='三浦グループ プライム日程表';},2000);">🖨️ 印刷・PDF</button>
+    <button class="primary" onclick="var ed=(EDITIONS[currentEdition]?EDITIONS[currentEdition].label:'全国版').replace(/[🌐🔵🟠🔴🟣🟢🟦🟩⭐]/gu,'').trim();var mns=['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];document.title='三浦Gプライム日程表_'+ed+'_'+currentYear+'年'+mns[currentMonth];window.print();setTimeout(function(){document.title='三浦グループ プライム日程表';},2000);">🖨️ 印刷・PDF</button>
   </div>
   <div class="info-bar">
     <div class="abbrev-list">
