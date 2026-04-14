@@ -174,10 +174,10 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
   .modal-btns button{padding:12px 18px;font-size:14px;}
 }
 @media print{
-  @page{size:A4 landscape;margin:2mm;}
+  @page{size:A4 landscape;margin:1.5mm;}
   *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;box-sizing:border-box;}
-  html,body{margin:0;padding:0;background:white;width:293mm;overflow:hidden;}
-  .page{padding:0;margin:0;width:293mm;overflow:hidden;}
+  html,body{margin:0;padding:0;background:white;width:294mm;overflow:hidden;}
+  .page{padding:0;margin:0;width:294mm;overflow:hidden;}
   .toolbar,.info-bar,.modal-overlay,.crop-overlay,.lib-overlay,.paste-overlay{display:none !important;}
   #edition-select{display:none !important;}
   #cloud-badge{display:none !important;}
@@ -676,7 +676,7 @@ function render(){
     cell.appendChild(ab);
     grid.appendChild(cell);
   }
-  var ch=Math.floor(170/totalRows);
+  var ch=Math.floor(165/totalRows);
   var ps=document.getElementById('pch');
   if(!ps){ps=document.createElement('style');ps.id='pch';document.head.appendChild(ps);}
   ps.textContent='@media print{.cal-cell{height:'+ch+'mm !important;max-height:'+ch+'mm !important;}}';
@@ -1089,7 +1089,7 @@ function applyMode(){
         'body{overflow-x:auto;}' +
         '.page{padding:2px;min-width:920px;}' +
         '@media print{body{overflow-x:hidden!important;}' +
-        '.page{min-width:0!important;width:293mm!important;padding:0!important;}}' +
+        '.page{min-width:0!important;width:294mm!important;padding:0!important;}}' +
         '.ev-photo-wrap{display:flex!important;}' +
         '.ev-inner{display:flex!important;}' +
         '.ev-text{flex:1;min-width:0;}' +
