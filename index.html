@@ -142,11 +142,13 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
   /* セル */
   .cal-cell{height:auto;min-height:70px;padding:2px;overflow:visible;}
   .date-num{font-size:11px;width:18px;height:18px;margin-bottom:1px;}
-  /* スマホでは写真を非表示→テキスト重視 */
-  .ev-photo-wrap{display:none!important;}
-  /* カード：横幅フル活用 */
-  .ev-inner{display:block;}
-  .ev-text{width:100%;}
+  /* スマホ編集モード：写真を小さく表示（写真有無がわかる） */
+  .ev-photo-wrap{display:flex!important;flex-direction:column;flex-shrink:0;}
+  .ev-photo-r,.ev-photo-rph{width:22px!important;height:22px!important;font-size:8px!important;}
+  .ev-photo-wrap.collab .ev-photo-r,.ev-photo-wrap.collab .ev-photo-rph{width:16px!important;height:16px!important;font-size:6px!important;}
+  .ev-name2-lbl{display:none;}
+  .ev-inner{display:flex;gap:2px;align-items:flex-start;}
+  .ev-text{flex:1;min-width:0;}
   .ev-type-badge{font-size:9px;padding:0 2px;margin-bottom:1px;}
   .ev-name{font-size:10px;line-height:1.3;font-weight:700;white-space:normal;word-break:break-all;}
   .ev-time{font-size:9px;white-space:nowrap;}
