@@ -174,23 +174,21 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
   .modal-btns button{padding:12px 18px;font-size:14px;}
 }
 @media print{
-  @page{size:A4 landscape;margin:3mm;}
-  body{overflow-x:visible !important;min-width:0 !important;}
-  .page{min-width:0 !important;width:287mm !important;}
+  @page{size:A4 landscape;margin:2mm;}
   *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;box-sizing:border-box;}
-  html,body{margin:0;padding:0;background:white;width:287mm;}
-  .page{padding:0;margin:0;width:287mm;}
+  html,body{margin:0;padding:0;background:white;width:293mm;overflow:hidden;}
+  .page{padding:0;margin:0;width:293mm;overflow:hidden;}
   .toolbar,.info-bar,.modal-overlay,.crop-overlay,.lib-overlay,.paste-overlay{display:none !important;}
   #edition-select{display:none !important;}
   #cloud-badge{display:none !important;}
   #view-toolbar{display:none !important;}
-  #print-header{display:flex !important;align-items:baseline;gap:8px;padding:0.5mm 2mm;border-bottom:1px solid #ddd;margin-bottom:0.5mm;}
+  #print-header{display:flex !important;align-items:baseline;gap:8px;padding:0.3mm 2mm;border-bottom:1px solid #ddd;margin-bottom:0.3mm;}
   .header{display:none !important;}
   .month-nav button,.add-btn{display:none !important;}
   .header{box-shadow:none;border:none;border-bottom:1px solid #ddd;padding:1mm 3mm;margin-bottom:1mm;border-radius:0;height:7mm;min-height:0;align-items:center;}
   .brand{font-size:10px;}.sub{font-size:6px;}.month-display{font-size:11px;}
   .calendar{box-shadow:none;border-radius:0;border:0.5px solid #999;width:287mm;}
-  .cal-header-cell{padding:1px;font-size:7px;height:5mm;line-height:5mm;}
+  .cal-header-cell{padding:1px;font-size:7px;height:4mm;line-height:4mm;}
   .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);}
   .cal-cell{border-right:0.5px solid #ccc;border-bottom:0.5px solid #ccc;padding:2px;overflow:hidden;background:white;position:relative;display:flex;flex-direction:column;}
   .cal-cell:nth-child(7n){border-right:none;}
@@ -678,7 +676,7 @@ function render(){
     cell.appendChild(ab);
     grid.appendChild(cell);
   }
-  var ch=Math.floor(176/totalRows);
+  var ch=Math.floor(170/totalRows);
   var ps=document.getElementById('pch');
   if(!ps){ps=document.createElement('style');ps.id='pch';document.head.appendChild(ps);}
   ps.textContent='@media print{.cal-cell{height:'+ch+'mm !important;max-height:'+ch+'mm !important;}}';
