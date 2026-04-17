@@ -320,7 +320,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
 
 <div id="view-toolbar" style="display:none;margin-bottom:10px;display:flex;gap:8px;flex-wrap:wrap;">
   <button onclick="doPrint()" style="padding:10px 20px;border-radius:10px;font-size:14px;font-family:inherit;cursor:pointer;border:none;background:#cc0000;color:white;font-weight:700;">🖨️ 印刷・PDF出力</button>
-  <button onclick="openHelp()" style="padding:10px 20px;border-radius:10px;font-size:14px;font-family:inherit;cursor:pointer;border:1.5px solid #1565c0;background:white;color:#1565c0;font-weight:700;">❓ ヘルプ</button>
+  <button onclick="openHelp()" style="padding:10px 20px;border-radius:10px;font-size:14px;font-family:inherit;cursor:pointer;border:1.5px solid #1565c0;background:white;color:#1565c0;font-weight:700;">💬 使い方</button>
 </div>
 
 <div id="saved-text-overlay" class="paste-overlay">
@@ -374,7 +374,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
     <button onclick="clearMonth()" style="color:#c62828;border-color:#ffaaaa;font-weight:700;">🗑️ この月を全削除</button>
     <button onclick="openSavedTextModal()" style="padding:6px 13px;border-radius:8px;font-size:12px;font-family:inherit;cursor:pointer;border:1px solid #2e7d32;background:white;color:#2e7d32;font-weight:700;">📖 テキスト管理</button>
     <button onclick="doPrint()" class="primary">🖨️ 印刷・PDF</button>
-    <button onclick="openHelp()" style="padding:6px 13px;border-radius:8px;font-size:12px;font-family:inherit;cursor:pointer;border:1px solid #1565c0;background:white;color:#1565c0;font-weight:700;">❓ ヘルプ</button>
+    <button onclick="openHelp()" style="padding:6px 13px;border-radius:8px;font-size:12px;font-family:inherit;cursor:pointer;border:1px solid #1565c0;background:white;color:#1565c0;font-weight:700;">💬 使い方</button>
   </div>
   <div class="info-bar">
     <div class="abbrev-list">
@@ -1513,7 +1513,16 @@ var helpContent = {
 function openHelp(){
   var overlay = document.getElementById('help-overlay');
   overlay.style.display = 'flex';
-  switchHelpTab(isEditMode ? 'editor' : 'viewer');
+  var edBtn = document.getElementById('help-tab-editor');
+  if(!isEditMode){
+    // 閲覧モード：編集者タブを非表示、閲覧者タブのみ表示
+    edBtn.style.display = 'none';
+    switchHelpTab('viewer');
+  } else {
+    // 編集モード：両タブ表示、編集者タブを選択
+    edBtn.style.display = '';
+    switchHelpTab('editor');
+  }
 }
 
 function closeHelp(){
