@@ -692,6 +692,16 @@ function makeCard(ev,d,idx,single){
   }
   inner.appendChild(wrap);
   card.appendChild(inner);
+  // スマホ（640px以下）ではsingleカードもstaticに
+  if(single && window.innerWidth <= 640){
+    card.style.position = 'static';
+    card.style.top = '';
+    card.style.left = '';
+    card.style.right = '';
+    card.style.bottom = '';
+    card.style.flex = '1';
+    card.style.margin = '0';
+  }
   return card;
 }
 
