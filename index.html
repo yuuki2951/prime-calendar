@@ -565,8 +565,6 @@ var RC={kansai:'#c62828',kanto:'#1565c0',tokai:'#e65100',kyushu:'#1b5e20',other:
 var RB={kansai:'#ffebee',kanto:'#e3f2fd',tokai:'#fff3e0',kyushu:'#e8f5e9',other:'#f5f5f5',zoom:'#f3e5f5'};
 var RBR={kansai:'#e53935',kanto:'#1565c0',tokai:'#f57c00',kyushu:'#2e7d32',other:'#555',zoom:'#7b1fa2'};
 var TICON={PBS:'📋',BE:'💼',BT:'📈',BS:'💡','分科会':'🔖','コンベンション':'🎉','遊び':'🎊'};
-var currentYear=new Date().getFullYear(), currentMonth=new Date().getMonth();
-var events={}, editDate=null, editIdx=null, p1=null, p2=null, photoLib={};
 
 function sk(){return 'prime_v11_'+currentYear+'_'+currentMonth;}
 function reiwa(y){return y-2018;}
@@ -945,9 +943,18 @@ function parsePaste(){
       continue;
     }
     // 種別（単独行）
-    if(/^(PBS|BE|BT|BS|BE&BT|BT&BE|BE&BE|BT&BT|BS&BE|コンベンション|分科会|遊び)$/.test(l)&&parsedItems.length){
-      parsedItems[parsedItems.length-1].type=l;continue;
+    if(/^(PBS|BE|BT|BS|BE&BT|BT&BE|BE&BE|BT&BT|BS&BE|コンベンション|分科会|遊び)$/.test(l)){
+      // koushiが未設定の既存アイテムがあればtypeを更新、なければ新規作成
+      if(parsedItems.length&&parsedItems[parsedItems.length-1].koushi===''){
+        parsedItems[parsedItems.length-1].type=l;
+      } else {
+        parsedItems.push({day:curDay,time:'',type:l,koushi:'',koushi2:'',venue:'',region:'other',shusai:'',expectShusai:false,needVenue:false});
+      }
+      continue;
     }
+    // 状態行（種別より前に来る場合もスキップ・expectShusaiはL99で設定）
+    if(parsedItems.length&&/^(開催済|受付終了|先着受付|予約終了|受付中|受付前|中止|満席|空席あり|抽選中|抽選|キャンセル待ち|締切|受付締切|開催中止)$/.test(l)){parsedItems[parsedItems.length-1].expectShusai=true;continue;}
+    if(!parsedItems.length&&/^(開催済|受付終了|先着受付|予約終了|受付中|受付前|中止|満席|空席あり|抽選中|抽選|キャンセル待ち|締切|受付締切|開催中止)$/.test(l)){continue;}
     // 料金行: "¥500\t講師1" or "¥500\t講師1\t会場名"
     if(l.charAt(0)==='¥'&&parts.length>=2){
       var k1=(parts[1]||'').replace(/[ \u3000]/g,'');
@@ -961,15 +968,23 @@ function parsePaste(){
       }
       continue;
     }
-    // 講師+会場行（extractScheduleText形式）: "講師名\t会場名"
+    // 講師+会場行（extractScheduleText形式）: "講師名\t会場名" or "講師1 & 講師2\t会場名"
     if(parsedItems.length&&parsedItems[parsedItems.length-1].koushi===''&&parts.length>=1){
       var isType=/^(PBS|BE|BT|BS|BE&BT|BT&BE|コンベンション|分科会|遊び)$/.test(l);
       var isTime=/^\d{1,2}:\d{2}/.test(l);
       var isPref=/^(北海道|東京都|大阪府|京都府|.{2,3}県)$/.test(l);
       var isNum=/^\d/.test(l);
       var isAddr=/[市区町村丁目番地号]/.test(l);
-      if(!isType&&!isTime&&!isPref&&!isNum&&!isAddr&&l.length>=2){
-        parsedItems[parsedItems.length-1].koushi=l.replace(/[ \u3000]/g,'');
+      var isStatus2=/^(開催済|受付終了|先着受付|予約終了|受付中|受付前|中止|満席|空席あり|抽選中|抽選)/.test(l);
+      if(!isType&&!isTime&&!isPref&&!isNum&&!isAddr&&!isStatus2&&l.length>=2){
+        // & で複数講師
+        if(/ & /.test(l)){
+          var kparts=l.split(' & ');
+          parsedItems[parsedItems.length-1].koushi=kparts[0].replace(/[ \u3000]/g,'');
+          parsedItems[parsedItems.length-1].koushi2=(kparts[1]||'').replace(/[ \u3000]/g,'');
+        } else {
+          parsedItems[parsedItems.length-1].koushi=l.replace(/[ \u3000]/g,'');
+        }
         parsedItems[parsedItems.length-1].venue=parts[1]||'';
         parsedItems[parsedItems.length-1].needVenue=!(parts[1]||'');
         continue;
@@ -1084,7 +1099,6 @@ var EDITIONS={
   kyushu:   {label:'九州版',  color:'#1b5e20', filter:['kyushu']},
   important:{label:'重要版',  color:'#f57f17', filter:'important'}
 };
-var currentEdition='all';
 var ALL_EDITION_KEYS=['all','hokkaido','tohoku','kanto','chubu','kansai','chugoku','shikoku','kyushu'];
 
 function editionFilter(ev){
