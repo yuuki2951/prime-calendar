@@ -74,10 +74,11 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
 .event-card.single .ev-name{font-size:13px;}
 .event-card.single .ev-time{font-size:11px;}
 .event-card.single .ev-venue{font-size:11px;}
-.event-card.focus-venue{border-left:none;border-radius:6px;margin-top:6px;position:relative;background:white !important;isolation:isolate;}
-.event-card.single.focus-venue{top:22px;}
+.event-card.focus-venue .ev-inner{padding-top:14px;}
+.event-card.focus-venue{border-left:none;border-radius:6px;margin-top:0;position:relative;background:white !important;isolation:isolate;}
+.event-card.single.focus-venue{top:23px;}
 .event-card.focus-venue::before{content:'';position:absolute;inset:-2px;border-radius:8px;background:linear-gradient(135deg,#ff0000,#ff7700,#ffee00,#00cc44,#0088ff,#8800ff);background-size:300% 300%;animation:rbspin 2.5s linear infinite;z-index:-1;}
-.event-card.focus-venue::after{content:'🌈 集中会場';position:absolute;top:1px;right:2px;font-size:7px;font-weight:700;padding:1px 4px;border-radius:4px;white-space:nowrap;color:white;background:linear-gradient(90deg,#ff0000,#ff7700,#ffee00,#00cc44,#0088ff,#8800ff);}
+.event-card.focus-venue::after{content:'🌈 集中会場';position:absolute;top:2px;left:50%;transform:translateX(-50%);font-size:7px;font-weight:700;padding:1px 6px;border-radius:4px;white-space:nowrap;color:white;background:linear-gradient(90deg,#ff0000,#ff7700,#ffee00,#00cc44,#0088ff,#8800ff);z-index:1;pointer-events:none;}
 @keyframes rbspin{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
 .add-btn{font-size:10px;color:#bbb;cursor:pointer;padding:1px 4px;border-radius:4px;position:absolute;bottom:2px;right:2px;background:rgba(255,255,255,0.85);}
 .add-btn:hover{background:#e8f0fe;color:#1565c0;}
