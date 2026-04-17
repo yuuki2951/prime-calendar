@@ -1063,7 +1063,7 @@ function parsePaste(){
 }
 
 function importParsed(){
-  var added=0, updated=0;
+  var added=0, updated=0, deleted=0;
   // チェック済みをday別に収集
   var byDay={};
   parsedItems.forEach(function(item,i){
@@ -1071,9 +1071,8 @@ function importParsed(){
     if(!cb||!cb.checked)return;
     var d=item.day;
     if(!byDay[d])byDay[d]=[];
-    // 写真をライブラリから自動セット（講師名で検索）
+    // 写真をライブラリから自動セット
     var autoP1=null, autoP2=null;
-    // 講師名のスペースを除いて検索（ライブラリはスペースなしで保存）
     var k1=item.koushi||'';
     var k2=item.koushi2||'';
     if(k1&&photoLib[k1]) autoP1=photoLib[k1];
@@ -1087,33 +1086,51 @@ function importParsed(){
       note:'',focus:false,photo:autoP1,photo2:autoP2
     });
   });
-  // day別にmergeBebtして登録
+
+  // テキストに含まれる日付ごとに処理
   Object.keys(byDay).forEach(function(d){
     var merged=mergeBebt(byDay[d]);
-    if(!events[d])events[d]=[];
-    merged.forEach(function(newEv){
-      var dup=events[d].findIndex(function(ex){
-        return normStr(ex.koushi)===normStr(newEv.koushi)
-          &&venueSim(ex.venue,newEv.venue)
-          &&ex.type===newEv.type;
+    var existing=events[d]||[];
+
+    // 既存データのうちテキストに含まれないものを削除
+    // （集中会場フラグ・写真・メモは引き継ぎ対象として保持マップを作成）
+    var keepMap={};
+    existing.forEach(function(ex,ei){
+      // テキスト側に同じ講師+会場+種別があるか確認
+      var found=merged.findIndex(function(nev){
+        return normStr(ex.koushi)===normStr(nev.koushi)
+          &&venueSim(ex.venue,nev.venue)
+          &&ex.type===nev.type;
       });
-      if(dup>=0){
-        // 写真・集中会場・メモは既存を保持して他を上書き
-        events[d][dup]=Object.assign({},newEv,{
-          photo:events[d][dup].photo||newEv.photo,
-          photo2:events[d][dup].photo2||newEv.photo2,
-          focus:events[d][dup].focus||newEv.focus,
-          note:events[d][dup].note||newEv.note
-        });
-        updated++;
+      if(found>=0){
+        // 一致→引き継ぎデータとして保存
+        keepMap[found]={photo:ex.photo,photo2:ex.photo2,focus:ex.focus,note:ex.note};
       } else {
-        events[d].push(newEv);
-        added++;
+        // 不一致→削除カウント
+        deleted++;
       }
     });
+
+    // この日のデータをテキストの内容で完全置換
+    events[d]=merged.map(function(newEv,ni){
+      var kept=keepMap[ni]||{};
+      return Object.assign({},newEv,{
+        photo:kept.photo||newEv.photo,
+        photo2:kept.photo2||newEv.photo2,
+        focus:kept.focus||newEv.focus,
+        note:kept.note||newEv.note
+      });
+    });
+
+    // 追加・更新カウント
+    merged.forEach(function(newEv,ni){
+      if(keepMap[ni]!==undefined){ updated++; }
+      else { added++; }
+    });
   });
+
   saveEvents();render();closePasteModal();
-  alert('✅ 取り込み完了！\n新規追加：'+added+'件\n上書き更新：'+updated+'件');
+  alert('✅ 取り込み完了！\n新規追加：'+added+'件\n上書き更新：'+updated+'件\n削除：'+deleted+'件');
 }
 
 function clearMonth(){
