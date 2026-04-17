@@ -989,22 +989,28 @@ function parsePaste(){
       }
     }
     // 都道府県
+    var foundPref=false;
     for(var pi=0;pi<parts.length;pi++){
       if(/^(北海道|東京都|大阪府|京都府|.{2,3}県)$/.test(parts[pi])&&parsedItems.length){
         parsedItems[parsedItems.length-1].region=prefToRegion(parts[pi]);
         parsedItems[parsedItems.length-1].needVenue=false;
         parsedItems[parsedItems.length-1].expectShusai=true;
+        foundPref=true;
         break;
       }
     }
+    if(foundPref)continue;
     // 席数行・状態行・受付期限 → expectShusai=true
     if(parsedItems.length&&/^\d+席$/.test(l)){parsedItems[parsedItems.length-1].expectShusai=true;continue;}
-    if(parsedItems.length&&/^(開催済|受付終了|先着受付|予約終了|受付中|中止|満席|空席あり|抽選中|抽選)/.test(l)){parsedItems[parsedItems.length-1].expectShusai=true;continue;}
+    if(parsedItems.length&&/^(開催済|受付終了|先着受付|予約終了|受付中|受付前|中止|満席|空席あり|抽選中|抽選|キャンセル待ち|締切|受付締切|開催中止)/.test(l)){parsedItems[parsedItems.length-1].expectShusai=true;continue;}
     if(parsedItems.length&&/^\d{4}-\d{2}-\d{2}/.test(l)){continue;} // 受付期限行スキップ
-    // 主催者行：expectShusai=trueの後の名前（住所行は除外）
+    // 電話番号行スキップ
+    if(/^\d{2,4}-\d{2,4}-\d{4}$/.test(l)){continue;}
+    // 主催者行：expectShusai=trueの後の名前（住所・状態行は除外）
     if(parsedItems.length&&parsedItems[parsedItems.length-1].expectShusai){
       var isAddr=/[市区町村丁目番地号]/.test(l)||/^\d+-\d+/.test(l);
-      if(!isAddr&&l.length>=2&&!/^\d/.test(l)&&!/^¥/.test(l)&&!/[県都道府]$/.test(l)&&!/^\d{1,2}:\d{2}/.test(l)&&!/^(PBS|BE|BT|BS|BE&BT|BT&BE|BE&BE|BT&BT|コンベンション|分科会)$/.test(l)&&!/^\d+席$/.test(l)){
+      var isStatus=/^(開催済|受付終了|先着受付|予約終了|受付中|受付前|中止|満席|空席あり|抽選中|抽選|キャンセル待ち|締切|受付締切|開催中止)/.test(l);
+      if(!isAddr&&!isStatus&&l.length>=2&&!/^\d/.test(l)&&!/^¥/.test(l)&&!/[県都道府]$/.test(l)&&!/^\d{1,2}:\d{2}/.test(l)&&!/^(PBS|BE|BT|BS|BE&BT|BT&BE|BE&BE|BT&BT|コンベンション|分科会)$/.test(l)&&!/^\d+席$/.test(l)){
         parsedItems[parsedItems.length-1].shusai=l.replace(/　/g,' ').trim();
         parsedItems[parsedItems.length-1].expectShusai=false;
       }
