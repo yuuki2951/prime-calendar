@@ -669,7 +669,10 @@ function makeCard(ev,d,idx,single){
   var isCollab=!!(ev.koushi2||ev.photo2);
   card.className='event-card'+(f?' focus-venue':'')+(single?' single':'')+(isCollab?' collab-card':'');
   card.style.background=bg; card.style.borderLeft=bl;
-  card.onclick=function(){openEdit(d,idx);};
+  card.onclick=function(){
+    if(isEditMode){ openEdit(d,idx); }
+    else{ openDetail(ev); }
+  };
   var inner=document.createElement('div');inner.className='ev-inner';
   var text=document.createElement('div');text.className='ev-text';
   var tb=document.createElement('div');tb.className='ev-type-badge';tb.style.color=col;tb.textContent=(TICON[ev.type]||'')+' '+ev.type;text.appendChild(tb);
@@ -1341,6 +1344,69 @@ function copyExtractedText(){
   }
 }
 initTimeSelects();
+
+function openDetail(ev){
+  var tc = getTypeColor(ev.type);
+  // バッジ
+  var badge = document.getElementById('detail-badge');
+  badge.textContent = (ev.type||'');
+  badge.style.background = tc.bg;
+  badge.style.color = tc.col;
+  badge.style.border = '1.5px solid ' + tc.bl;
+
+  // 写真
+  var photos = document.getElementById('detail-photos');
+  photos.innerHTML = '';
+  function makePhoto(src, name, bg){
+    if(src){
+      var img = document.createElement('img');
+      img.src = src;
+      img.style.cssText = 'width:64px;height:64px;border-radius:50%;object-fit:cover;border:2px solid #ddd;';
+      photos.appendChild(img);
+    } else if(name){
+      var ph = document.createElement('div');
+      ph.style.cssText = 'width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:white;flex-shrink:0;';
+      ph.style.background = bg;
+      ph.textContent = getInit(name);
+      photos.appendChild(ph);
+    }
+  }
+  makePhoto(ev.photo, ev.koushi, tc.bl);
+  if(ev.koushi2 || ev.photo2){
+    makePhoto(ev.photo2, ev.koushi2, tc.bl);
+  }
+
+  // テキスト
+  var n1 = document.getElementById('detail-name');
+  var n2 = document.getElementById('detail-name2');
+  n1.textContent = ev.koushi || '';
+  n1.style.color = tc.col;
+  if(ev.koushi2){ n2.textContent = ev.koushi2; n2.style.color = tc.col; n2.style.display='block'; }
+  else { n2.style.display='none'; }
+
+  var tm = document.getElementById('detail-time');
+  tm.innerHTML = ev.time ? '🕐 ' + ev.time : '';
+  tm.style.display = ev.time ? 'block' : 'none';
+
+  var vn = document.getElementById('detail-venue');
+  vn.innerHTML = ev.venue ? '📍 ' + ev.venue : '';
+  vn.style.display = ev.venue ? 'block' : 'none';
+
+  var sh = document.getElementById('detail-shusai');
+  sh.innerHTML = ev.shusai ? '👥 ' + ev.shusai : '';
+  sh.style.display = ev.shusai ? 'block' : 'none';
+
+  var nt = document.getElementById('detail-note');
+  if(ev.note){ nt.textContent = ev.note; nt.style.display='block'; }
+  else { nt.style.display='none'; }
+
+  var overlay = document.getElementById('detail-overlay');
+  overlay.style.display = 'flex';
+}
+
+function closeDetail(){
+  document.getElementById('detail-overlay').style.display = 'none';
+}
 // 起動はapplyMode()で行う
 </script>
 <script>
@@ -1351,5 +1417,26 @@ document.addEventListener('DOMContentLoaded', function(){
   if(stOverlay) stOverlay.addEventListener('click', function(e){ if(e.target===this) closeSavedTextModal(); });
 });
 </script>
+
+<!-- 詳細表示モーダル（閲覧モード用） -->
+<div id="detail-overlay" style="position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:none;align-items:flex-end;justify-content:center;z-index:500;" onclick="closeDetail()">
+  <div id="detail-modal" style="background:white;border-radius:18px 18px 0 0;width:100%;max-width:500px;padding:20px;max-height:80vh;overflow-y:auto;box-shadow:0 -4px 20px rgba(0,0,0,0.15);" onclick="event.stopPropagation()">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+      <div id="detail-badge" style="font-size:12px;font-weight:700;padding:3px 10px;border-radius:20px;"></div>
+      <button onclick="closeDetail()" style="background:none;border:none;font-size:22px;cursor:pointer;color:#888;line-height:1;">✕</button>
+    </div>
+    <div style="display:flex;gap:14px;align-items:flex-start;">
+      <div id="detail-photos" style="display:flex;flex-direction:column;gap:6px;align-items:center;flex-shrink:0;"></div>
+      <div style="flex:1;min-width:0;">
+        <div id="detail-name" style="font-size:18px;font-weight:700;color:#1a1a1a;margin-bottom:4px;line-height:1.3;"></div>
+        <div id="detail-name2" style="font-size:15px;font-weight:700;color:#444;margin-bottom:8px;line-height:1.3;"></div>
+        <div id="detail-time" style="font-size:13px;color:#555;margin-bottom:4px;"></div>
+        <div id="detail-venue" style="font-size:13px;color:#555;margin-bottom:4px;"></div>
+        <div id="detail-shusai" style="font-size:12px;color:#888;margin-bottom:4px;"></div>
+        <div id="detail-note" style="font-size:12px;color:#888;margin-top:6px;padding:6px 8px;background:#f5f5f5;border-radius:6px;display:none;"></div>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>
