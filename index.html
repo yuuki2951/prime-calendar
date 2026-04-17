@@ -1063,19 +1063,57 @@ function parsePaste(){
 }
 
 function importParsed(){
-  var count=0;
+  var added=0, updated=0;
+  // チェック済みをday別に収集
+  var byDay={};
   parsedItems.forEach(function(item,i){
     var cb=document.getElementById('pc'+i);
     if(!cb||!cb.checked)return;
     var d=item.day;
+    if(!byDay[d])byDay[d]=[];
+    // 写真をライブラリから自動セット（講師名で検索）
+    var autoP1=null, autoP2=null;
+    // 講師名のスペースを除いて検索（ライブラリはスペースなしで保存）
+    var k1=item.koushi||'';
+    var k2=item.koushi2||'';
+    if(k1&&photoLib[k1]) autoP1=photoLib[k1];
+    else if(k1&&photoLib[k1.replace(/\s/g,'')]) autoP1=photoLib[k1.replace(/\s/g,'')];
+    if(k2&&photoLib[k2]) autoP2=photoLib[k2];
+    else if(k2&&photoLib[k2.replace(/\s/g,'')]) autoP2=photoLib[k2.replace(/\s/g,'')];
+    byDay[d].push({
+      type:item.type,koushi:k1,koushi2:k2,
+      time:item.time,venue:item.venue,address:'',
+      region:item.region,shusai:item.shusai||'',
+      note:'',focus:false,photo:autoP1,photo2:autoP2
+    });
+  });
+  // day別にmergeBebtして登録
+  Object.keys(byDay).forEach(function(d){
+    var merged=mergeBebt(byDay[d]);
     if(!events[d])events[d]=[];
-    var newEv={type:item.type,koushi:item.koushi,koushi2:item.koushi2||'',time:item.time,venue:item.venue,address:'',region:item.region,shusai:item.shusai||'',note:'',focus:false,photo:null,photo2:null};
-    var dup=events[d].findIndex(function(ex){return ex.koushi===newEv.koushi&&ex.time===newEv.time;});
-    if(dup>=0){events[d][dup]=Object.assign(events[d][dup],newEv);}else{events[d].push(newEv);}
-    count++;
+    merged.forEach(function(newEv){
+      var dup=events[d].findIndex(function(ex){
+        return normStr(ex.koushi)===normStr(newEv.koushi)
+          &&venueSim(ex.venue,newEv.venue)
+          &&ex.type===newEv.type;
+      });
+      if(dup>=0){
+        // 写真・集中会場・メモは既存を保持して他を上書き
+        events[d][dup]=Object.assign({},newEv,{
+          photo:events[d][dup].photo||newEv.photo,
+          photo2:events[d][dup].photo2||newEv.photo2,
+          focus:events[d][dup].focus||newEv.focus,
+          note:events[d][dup].note||newEv.note
+        });
+        updated++;
+      } else {
+        events[d].push(newEv);
+        added++;
+      }
+    });
   });
   saveEvents();render();closePasteModal();
-  alert('✅ '+count+'件を取り込みました！');
+  alert('✅ 取り込み完了！\n新規追加：'+added+'件\n上書き更新：'+updated+'件');
 }
 
 function clearMonth(){
