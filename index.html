@@ -1001,9 +1001,10 @@ function parsePaste(){
     if(parsedItems.length&&/^\d+席$/.test(l)){parsedItems[parsedItems.length-1].expectShusai=true;continue;}
     if(parsedItems.length&&/^(開催済|受付終了|先着受付|予約終了|受付中|中止|満席|空席あり|抽選中|抽選)/.test(l)){parsedItems[parsedItems.length-1].expectShusai=true;continue;}
     if(parsedItems.length&&/^\d{4}-\d{2}-\d{2}/.test(l)){continue;} // 受付期限行スキップ
-    // 主催者行：expectShusai=trueの後の名前
+    // 主催者行：expectShusai=trueの後の名前（住所行は除外）
     if(parsedItems.length&&parsedItems[parsedItems.length-1].expectShusai){
-      if(l.length>=2&&!/^\d/.test(l)&&!/^¥/.test(l)&&!/[県都道府]$/.test(l)&&!/^\d{1,2}:\d{2}/.test(l)&&!/^(PBS|BE|BT|BS|BE&BT|BT&BE|BE&BE|BT&BT|コンベンション|分科会)$/.test(l)){
+      var isAddr=/[市区町村丁目番地号]/.test(l)||/^\d+-\d+/.test(l);
+      if(!isAddr&&l.length>=2&&!/^\d/.test(l)&&!/^¥/.test(l)&&!/[県都道府]$/.test(l)&&!/^\d{1,2}:\d{2}/.test(l)&&!/^(PBS|BE|BT|BS|BE&BT|BT&BE|BE&BE|BT&BT|コンベンション|分科会)$/.test(l)&&!/^\d+席$/.test(l)){
         parsedItems[parsedItems.length-1].shusai=l.replace(/　/g,' ').trim();
         parsedItems[parsedItems.length-1].expectShusai=false;
       }
