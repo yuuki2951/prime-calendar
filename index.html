@@ -625,7 +625,26 @@ function saveLib(){
     try{localStorage.setItem('prime_lib',JSON.stringify(photoLib));}catch(e){}
   });
 }
-function addToLib(name,photo){if(name&&photo){photoLib[name]=photo;saveLib();}}
+function addToLib(name,photo,yomi){
+  if(name&&photo){
+    if(typeof photoLib[name]==='object'&&photoLib[name]!==null){
+      photoLib[name]={photo:photo,yomi:yomi||photoLib[name].yomi||''};
+    } else {
+      photoLib[name]={photo:photo,yomi:yomi||''};
+    }
+    saveLib();
+  }
+}
+function libPhoto(name){
+  var v=photoLib[name];
+  if(!v)return null;
+  return typeof v==='object'?v.photo:v;
+}
+function libYomi(name){
+  var v=photoLib[name];
+  if(!v)return name;
+  return typeof v==='object'&&v.yomi?v.yomi:name;
+}
 
 // prefToRegion -> see above
 
@@ -791,7 +810,9 @@ function resetForm(){
 function closeEvModal(){document.getElementById('ev-modal').style.display='none';}
 function saveEvent(){
   var k1=document.getElementById('ev-koushi').value, k2=document.getElementById('ev-koushi2').value;
-  if(k1&&p1)addToLib(k1,p1); if(k2&&p2)addToLib(k2,p2);
+  var y1=document.getElementById('ev-yomi1')?document.getElementById('ev-yomi1').value.trim():'';
+  var y2=document.getElementById('ev-yomi2')?document.getElementById('ev-yomi2').value.trim():'';
+  if(k1&&p1)addToLib(k1,p1,y1); if(k2&&p2)addToLib(k2,p2,y2);
   var ev={type:getEvType(),koushi:k1,koushi2:k2,time:document.getElementById('ev-time').value,venue:document.getElementById('ev-venue').value,address:document.getElementById('ev-address').value,region:document.getElementById('ev-region').value,shusai:document.getElementById('ev-shusai').value,note:document.getElementById('ev-note').value,focus:document.getElementById('ev-focus').checked,photo:p1,photo2:p2};
   if(!events[editDate])events[editDate]=[];
   if(editIdx!==null){events[editDate][editIdx]=ev;}else{events[editDate].push(ev);}
@@ -859,18 +880,24 @@ function openLibrary(num){
   libTarget=num;loadLib();
   var grid=document.getElementById('lib-grid'),empty=document.getElementById('lib-empty');
   var keys=Object.keys(photoLib);
-  // 五十音順でソート
+  // よみがな順でソート（よみがながない場合は名前順）
   keys.sort(function(a,b){
-    return a.localeCompare(b,'ja',{sensitivity:'base'});
+    var ya=libYomi(a), yb=libYomi(b);
+    return ya.localeCompare(yb,'ja',{sensitivity:'base'});
   });
   grid.innerHTML='';
   if(!keys.length){empty.style.display='block';grid.style.display='none';}
   else{empty.style.display='none';grid.style.display='grid';
     keys.forEach(function(name){
       var item=document.createElement('div');item.className='lib-item';
-      var ph=photoLib[name];
+      var ph=libPhoto(name);
       if(ph){var img=document.createElement('img');img.src=ph;item.appendChild(img);}
       else{var div=document.createElement('div');div.className='lib-item-ph';div.style.background='linear-gradient(135deg,#e53935,#ff8a65)';div.textContent=getInit(name);item.appendChild(div);}
+      // よみがな表示
+      var yomi=libYomi(name);
+      if(yomi!==name){
+        var ylbl=document.createElement('div');ylbl.style.cssText='font-size:9px;color:#aaa;text-align:center;line-height:1.2;';ylbl.textContent=yomi;item.appendChild(ylbl);
+      }
       var lbl=document.createElement('div');lbl.className='lib-item-name';lbl.textContent=name;item.appendChild(lbl);
       item.onclick=function(){selectLib(name,ph);};
       grid.appendChild(item);
@@ -1081,10 +1108,10 @@ function importParsed(){
     var autoP1=null, autoP2=null;
     var k1=item.koushi||'';
     var k2=item.koushi2||'';
-    if(k1&&photoLib[k1]) autoP1=photoLib[k1];
-    else if(k1&&photoLib[k1.replace(/\s/g,'')]) autoP1=photoLib[k1.replace(/\s/g,'')];
-    if(k2&&photoLib[k2]) autoP2=photoLib[k2];
-    else if(k2&&photoLib[k2.replace(/\s/g,'')]) autoP2=photoLib[k2.replace(/\s/g,'')];
+    if(k1&&photoLib[k1]) autoP1=libPhoto(k1);
+    else if(k1&&photoLib[k1.replace(/\s/g,'')]) autoP1=libPhoto(k1.replace(/\s/g,''));
+    if(k2&&photoLib[k2]) autoP2=libPhoto(k2);
+    else if(k2&&photoLib[k2.replace(/\s/g,'')]) autoP2=libPhoto(k2.replace(/\s/g,''));
     byDay[d].push({
       type:item.type,koushi:k1,koushi2:k2,
       time:item.time,venue:item.venue,address:'',
