@@ -234,23 +234,17 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
   .modal-btns button{flex:1 1 auto!important;padding:11px!important;font-size:13px!important;}
 }
 @media print{
-  @page{size:A4 landscape;margin:1.5mm;}
+  @page{size:A4 landscape;margin:3mm;}
   *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;box-sizing:border-box;}
-  html,body{margin:0;padding:0;background:white;width:294mm;overflow:hidden;}
-  .page{padding:0;margin:0;width:294mm;overflow:hidden;}
-
-  *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;box-sizing:border-box;}
-  html,body{margin:0;padding:0;background:white;width:287mm;}
-  .page{padding:0;margin:0;width:287mm;}
+  html,body{margin:0;padding:0;background:white;width:291mm;overflow:hidden;}
+  .page{padding:0;margin:0;width:291mm;}
   #view-toolbar{display:none!important;}
   #pw-overlay{display:none!important;}
   #print-header{display:flex!important;align-items:baseline;gap:8px;padding:0.3mm 2mm;border-bottom:1px solid #ddd;margin-bottom:0.3mm;}
   .header{display:none!important;}
-  .toolbar,.info-bar,.modal-overlay,.crop-overlay,.lib-overlay,.paste-overlay{display:none !important;}
-  .month-nav button,.add-btn{display:none !important;}
-  .header{box-shadow:none;border:none;border-bottom:1px solid #ddd;padding:1mm 3mm;margin-bottom:1mm;border-radius:0;height:7mm;min-height:0;align-items:center;}
-  .brand{font-size:10px;}.sub{font-size:6px;}.month-display{font-size:11px;}
-  .calendar{box-shadow:none;border-radius:0;border:0.5px solid #999;width:287mm;}
+  .toolbar,.info-bar,.modal-overlay,.crop-overlay,.lib-overlay,.paste-overlay{display:none!important;}
+  .month-nav button,.add-btn{display:none!important;}
+  .calendar{box-shadow:none;border-radius:0;border:0.5px solid #999;width:291mm;}
   .cal-header-cell{padding:1px;font-size:7px;height:5mm;line-height:5mm;}
   .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);}
   .cal-cell{border-right:0.5px solid #ccc;border-bottom:0.5px solid #ccc;padding:2px;overflow:hidden;background:white;position:relative;display:flex;flex-direction:column;}
@@ -261,7 +255,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
   .date-num.sun-num{color:#cc0000;}.date-num.sat-num{color:#1565c0;}
   .event-card{flex:1;min-height:0;padding:1px 2px;margin:0 0 1px 0;border-left-width:2px;border-radius:2px;overflow:hidden;display:flex;flex-direction:column;justify-content:center;}
   .event-card:last-child{margin-bottom:0;}
-  .has-multi .event-card{position:static !important;}
+  .has-multi .event-card{position:static!important;}
   .ev-inner{display:flex;gap:2px;align-items:center;height:100%;}
   .ev-text{flex:1;min-width:0;}
   .ev-photo-r{width:24px;height:24px;border-radius:50%;object-fit:cover;flex-shrink:0;}
@@ -274,15 +268,18 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
   .ev-venue{font-size:6px;padding:0 1px;font-weight:700;margin-bottom:0;line-height:1.2;background:none;}
   .ev-shusai{font-size:5.5px;line-height:1.2;margin-bottom:0;}
   .ev-note-tag{display:none;}
-  .event-card.single{position:static !important;flex:1;}
+  .event-card.single{position:static!important;flex:1;}
   .event-card.single .ev-photo-r{width:36px;height:36px;}
   .event-card.single .ev-photo-rph{width:36px;height:36px;font-size:13px;}
   .event-card.single .ev-type-badge{font-size:8px;margin-bottom:1px;}
   .event-card.single .ev-name{font-size:9px;}
   .event-card.single .ev-time{font-size:8px;}
   .event-card.single .ev-venue{font-size:8px;background:rgba(255,255,255,0.6);padding:1px 2px;}
-  .event-card.focus-venue::before{animation:none;}
-  .event-card.focus-venue::after{font-size:5px;top:1px;right:2px;padding:0 3px;border-radius:3px;}
+  /* 集中会場：印刷時もレインボー枠を表示 */
+  .event-card.focus-venue{overflow:visible!important;margin-top:2px!important;}
+  .event-card.focus-venue::before{content:'';position:absolute;inset:-2px;border-radius:4px;background:linear-gradient(135deg,#ff0000,#ff7700,#ffee00,#00cc44,#0088ff,#8800ff);z-index:0;animation:none!important;}
+  .event-card.focus-venue::after{content:'🌈 集中会場';position:absolute;top:1px;left:50%;transform:translateX(-50%);font-size:5px;font-weight:700;padding:0 3px;border-radius:3px;white-space:nowrap;color:white;background:linear-gradient(90deg,#ff0000,#ff7700,#ffee00,#00cc44,#0088ff,#8800ff);z-index:2;}
+  .event-card.focus-venue .ev-inner{position:relative;z-index:1;padding-top:10px;}
   .cal-cell.print-3 .ev-photo-r{width:18px;height:18px;}
   .cal-cell.print-3 .ev-photo-rph{width:18px;height:18px;font-size:7px;}
   .cal-cell.print-3 .ev-type-badge{font-size:5px;}
@@ -295,6 +292,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
   .cal-cell.print-4 .ev-time{font-size:4.5px;}
   .cal-cell.print-4 .ev-venue{font-size:4.5px;}
 }
+
 </style>
 </head>
 <body>
@@ -450,13 +448,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
         <input type="text" id="ev-koushi2" placeholder="講師名（任意）" style="width:100%;font-size:12px;border-radius:6px;border:1.5px solid #ddd;padding:5px 8px;font-family:inherit;">
       </div>
     </div>
-    <div class="form-row">
-      <label style="font-size:11px;color:#888;font-weight:700;">よみがな（五十音順用）</label>
-      <div style="display:flex;gap:6px;">
-        <input type="text" id="ev-yomi1" placeholder="例：あおきひろゆき" style="flex:1;font-size:12px;border-radius:6px;border:1.5px solid #ddd;padding:5px 8px;font-family:inherit;">
-        <input type="text" id="ev-yomi2" placeholder="講師2のよみがな" style="flex:1;font-size:12px;border-radius:6px;border:1.5px solid #ddd;padding:5px 8px;font-family:inherit;">
-      </div>
-    </div>
+
     <div class="form-row">
       <label>🕐 時間</label>
       <div style="display:flex;align-items:center;gap:6px;">
@@ -496,6 +488,10 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
     <div class="crop-ctrl"><label>ズーム</label><input type="range" id="cr-zoom" min="0.05" max="5" step="0.01" value="1"></div>
     <div class="crop-ctrl"><label>上下</label><input type="range" id="cr-y" min="-1000" max="1000" step="1" value="0"></div>
     <div class="crop-ctrl"><label>左右</label><input type="range" id="cr-x" min="-1000" max="1000" step="1" value="0"></div>
+    <div id="crop-yomi-wrap" style="margin-bottom:10px;display:none;">
+      <label style="font-size:12px;color:#555;font-weight:700;display:block;margin-bottom:4px;">📝 よみがな（五十音順用）</label>
+      <input type="text" id="crop-yomi" placeholder="例：あおきひろゆき（ひらがな）" style="width:100%;font-size:13px;border-radius:8px;border:1.5px solid #ddd;padding:8px 10px;font-family:inherit;box-sizing:border-box;">
+    </div>
     <div class="crop-btns">
       <button onclick="closeCrop()">キャンセル</button>
       <button class="primary" onclick="applyCrop()">✅ 確定</button>
@@ -817,9 +813,8 @@ function resetForm(){
 function closeEvModal(){document.getElementById('ev-modal').style.display='none';}
 function saveEvent(){
   var k1=document.getElementById('ev-koushi').value, k2=document.getElementById('ev-koushi2').value;
-  var y1=document.getElementById('ev-yomi1')?document.getElementById('ev-yomi1').value.trim():'';
-  var y2=document.getElementById('ev-yomi2')?document.getElementById('ev-yomi2').value.trim():'';
-  if(k1&&p1)addToLib(k1,p1,y1); if(k2&&p2)addToLib(k2,p2,y2);
+  if(k1&&p1)addToLib(k1,p1,libYomi(k1)!==k1?libYomi(k1):'');
+  if(k2&&p2)addToLib(k2,p2,libYomi(k2)!==k2?libYomi(k2):'');
   var ev={type:getEvType(),koushi:k1,koushi2:k2,time:document.getElementById('ev-time').value,venue:document.getElementById('ev-venue').value,address:document.getElementById('ev-address').value,region:document.getElementById('ev-region').value,shusai:document.getElementById('ev-shusai').value,note:document.getElementById('ev-note').value,focus:document.getElementById('ev-focus').checked,photo:p1,photo2:p2};
   if(!events[editDate])events[editDate]=[];
   if(editIdx!==null){events[editDate][editIdx]=ev;}else{events[editDate].push(ev);}
@@ -867,6 +862,11 @@ function applyCrop(){
   var dataUrl=canvas.toDataURL('image/jpeg',0.85);
   if(cropTarget===2){p2=dataUrl;document.getElementById('p2-prev').src=dataUrl;document.getElementById('p2-prev').style.display='block';document.getElementById('p2-label').textContent='📷 変更';}
   else{p1=dataUrl;document.getElementById('p1-prev').src=dataUrl;document.getElementById('p1-prev').style.display='block';document.getElementById('p1-label').textContent='📷 変更';}
+  // よみがなを即座にライブラリに登録
+  var yomiVal = (document.getElementById('crop-yomi')||{}).value||'';
+  var koushiId2 = cropTarget===2?'ev-koushi2':'ev-koushi';
+  var kname = (document.getElementById(koushiId2)||{}).value||'';
+  if(kname && yomiVal){ addToLib(kname, dataUrl, yomiVal); }
   document.getElementById('crop-overlay').style.display='none';
 }
 (function(){
