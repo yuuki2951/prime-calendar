@@ -451,6 +451,13 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
       </div>
     </div>
     <div class="form-row">
+      <label style="font-size:11px;color:#888;font-weight:700;">よみがな（五十音順用）</label>
+      <div style="display:flex;gap:6px;">
+        <input type="text" id="ev-yomi1" placeholder="例：あおきひろゆき" style="flex:1;font-size:12px;border-radius:6px;border:1.5px solid #ddd;padding:5px 8px;font-family:inherit;">
+        <input type="text" id="ev-yomi2" placeholder="講師2のよみがな" style="flex:1;font-size:12px;border-radius:6px;border:1.5px solid #ddd;padding:5px 8px;font-family:inherit;">
+      </div>
+    </div>
+    <div class="form-row">
       <label>🕐 時間</label>
       <div style="display:flex;align-items:center;gap:6px;">
         <select id="ev-ts" onchange="syncTime()" style="flex:1;font-size:13px;border-radius:8px;border:1.5px solid #ddd;padding:7px 6px;background:white;font-family:inherit;"></select>
