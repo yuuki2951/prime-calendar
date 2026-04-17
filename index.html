@@ -133,76 +133,89 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
 
 
 @media(max-width:640px){
-  /* PC版と同じ表示・横スクロール */
-  html,body{
-    overflow-x:auto;
-    overflow-y:auto;
-    -webkit-overflow-scrolling:touch;
-  }
-  .page{
-    min-width:900px;
-    padding:8px;
-  }
+  html,body{overflow-x:hidden;}
+  .page{padding:3px;}
 
-  /* ヘッダー：PC版そのまま */
-  .header{padding:10px 16px;gap:8px;}
-  .brand{font-size:16px;}
-  #edition-select{font-size:13px;padding:5px 10px;}
-  .month-display{font-size:20px;}
-  .month-nav button{padding:6px 14px;font-size:18px;touch-action:manipulation;}
+  /* ヘッダー */
+  .header{padding:8px 10px;gap:4px;flex-wrap:wrap;border-radius:10px;margin-bottom:3px;}
+  .brand{font-size:14px;font-weight:700;}
+  #edition-select{font-size:12px;padding:4px 7px;border-radius:8px;}
+
+  /* 月ナビ */
+  .month-nav{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:4px;}
+  .month-nav button{width:40px;height:40px;border-radius:10px;font-size:18px;display:flex;align-items:center;justify-content:center;touch-action:manipulation;background:#f5f4f0;border:1px solid #ddd;}
+  .month-display{font-size:17px;font-weight:700;text-align:center;flex:1;}
 
   /* ツールバー */
-  .toolbar{gap:6px;flex-wrap:wrap;}
-  .toolbar button{padding:8px 12px;font-size:12px;}
-  .toolbar button.primary{font-size:12px;padding:8px 16px;}
+  .toolbar{display:flex;flex-wrap:wrap;gap:3px;margin-bottom:3px;}
+  .toolbar button{flex:1 1 45%;padding:7px 4px;font-size:10px;border-radius:8px;min-width:0;}
+  .toolbar button.primary{flex:1 1 100%;padding:7px;font-size:10px;background:white!important;color:#cc0000!important;border:1.5px solid #cc0000!important;}
+  .info-bar{display:none;}
+  #view-toolbar{margin-bottom:3px;}
+  #view-toolbar button{padding:7px 14px!important;font-size:12px!important;width:auto!important;border-radius:9px!important;}
 
-  /* 閲覧モード印刷ボタン */
-  #view-toolbar button{padding:8px 18px!important;font-size:13px!important;width:auto!important;}
-
-  /* カレンダー：PC版と同じ */
-  .cal-header-cell{font-size:12px;padding:6px 2px;}
+  /* カレンダーヘッダー */
+  .cal-header-cell{font-size:10px;padding:4px 1px;font-weight:700;}
   .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);}
-  .cal-cell{height:80px!important;padding:2px 1px;overflow-y:scroll!important;overflow-x:hidden;-webkit-overflow-scrolling:touch;display:flex;flex-direction:column;position:relative;}
+
+  /* セル：デフォルトhidden（スケジュールなし） */
+  .cal-cell{
+    height:90px!important;
+    padding:2px 1px;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    position:relative;
+  }
+  /* スケジュールあり → scroll */
+  .cal-cell.has-events{
+    overflow-y:scroll!important;
+    -webkit-overflow-scrolling:touch!important;
+    overscroll-behavior-y:contain;
+  }
+  .cal-cell.today .date-num{background:#cc0000;color:white;border-radius:50%;}
+  .date-num{font-size:10px;width:16px;height:16px;margin-bottom:1px;flex-shrink:0;font-weight:700;display:flex;align-items:center;justify-content:center;position:sticky;top:0;z-index:2;background:white;}
+  .date-num.sun-num{color:#cc0000;}
+  .date-num.sat-num{color:#1565c0;}
+  .cal-cell.today .date-num{background:#cc0000!important;color:white!important;border-radius:50%;}
+
+  /* カード */
+  .event-card{padding:1px 2px;margin-bottom:1px;border-radius:3px;flex-shrink:0;overflow:hidden;}
   .has-multi .event-card{position:static!important;}
   .cal-cell .event-card{position:static!important;}
-  .date-num{font-size:12px;width:20px;height:20px;margin-bottom:2px;}
+  .ev-inner{display:flex;gap:2px;align-items:flex-start;}
+  .ev-text{flex:1;min-width:0;overflow:hidden;}
 
-  /* カード：PC版と同じ */
-  .event-card{padding:3px 4px;margin-bottom:2px;border-radius:5px;}
-  .ev-inner{display:flex;gap:4px;align-items:flex-start;}
-  .ev-text{flex:1;min-width:0;}
-  .ev-photo-wrap{display:flex!important;flex-direction:column;gap:2px;align-items:center;flex-shrink:0;}
-  .ev-photo-r,.ev-photo-rph{width:36px!important;height:36px!important;font-size:13px!important;}
-  .ev-photo-wrap.collab .ev-photo-r,.ev-photo-wrap.collab .ev-photo-rph{width:26px!important;height:26px!important;font-size:10px!important;}
-  .ev-name2-lbl{font-size:8px;text-align:center;line-height:1.2;max-width:40px;}
-  .ev-type-badge{font-size:9px;display:block;margin-bottom:1px;font-weight:700;}
-  .ev-name{font-size:10px;font-weight:700;line-height:1.3;}
-  .ev-time{font-size:9px;line-height:1.2;}
-  .ev-venue{font-size:9px;padding:0 1px;line-height:1.2;}
-  .ev-shusai{font-size:8px;line-height:1.2;}
+  /* 写真：非表示 */
+  .ev-photo-wrap{display:none!important;}
 
-  /* 1件のみ：PC版と同じ */
-  .event-card.single{position:absolute!important;top:22px;left:3px;right:3px;bottom:3px;padding:5px 7px;}
-  .event-card.single .ev-photo-r,.event-card.single .ev-photo-rph{width:44px!important;height:44px!important;font-size:15px!important;}
-  .event-card.single .ev-name{font-size:11px;}
-  .event-card.single .ev-time{font-size:10px;}
-  .event-card.single .ev-venue{font-size:10px;}
+  /* テキスト */
+  .ev-type-badge{font-size:6.5px;font-weight:700;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.3;margin-bottom:0;}
+  .ev-name{font-size:8px;font-weight:700;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .ev-time{font-size:6.5px;white-space:nowrap;overflow:hidden;line-height:1.2;}
+  .ev-venue{font-size:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:none;padding:0;line-height:1.2;}
+  .ev-shusai{display:none;}
 
-  /* 集中会場 */
-  .event-card.focus-venue .ev-inner{padding-top:14px;}
-
-  /* 追加ボタン */
-  .add-btn{font-size:10px;padding:2px 5px;}
+  /* 1件のみ：写真表示 */
+  .event-card.single{position:static!important;flex:1;padding:3px;}
+  .event-card.single .ev-inner{align-items:center;padding-top:10px;}
+  .event-card.single .ev-photo-wrap{display:flex!important;flex-direction:column;align-items:center;flex-shrink:0;gap:1px;}
+  .event-card.single .ev-photo-r,.event-card.single .ev-photo-rph{width:26px!important;height:26px!important;font-size:9px!important;}
+  .event-card.single .ev-name{font-size:9px;}
+  .event-card.single .ev-time{font-size:7px;}
+  .event-card.single .ev-venue{font-size:6.5px;}
+  .event-card.focus-venue .ev-inner{padding-top:11px;}
+  .add-btn{font-size:9px;padding:1px 2px;opacity:0.4;}
 
   /* モーダル */
-  .modal-overlay{align-items:center;}
-  .modal{width:420px!important;max-width:96vw!important;border-radius:14px;position:relative;margin:auto;max-height:90vh;padding:20px;overflow-y:auto;}
-  .crop-overlay,.lib-overlay,.paste-overlay{align-items:center;}
-  .crop-modal,.lib-modal,.paste-modal{width:440px!important;max-width:96vw!important;border-radius:14px;max-height:85vh;overflow-y:auto;}
-  .crop-con{width:380px;height:380px;}
-  .form-row input,.form-row select,.form-row textarea{font-size:16px;padding:8px 10px;}
+  .modal-overlay{align-items:flex-end;}
+  .modal{width:100%!important;max-width:100%!important;border-radius:16px 16px 0 0;position:fixed;bottom:0;left:0;right:0;top:auto;margin:0;max-height:90vh;padding:16px;overflow-y:auto;}
+  .crop-overlay,.lib-overlay,.paste-overlay{align-items:flex-end;}
+  .crop-modal,.lib-modal,.paste-modal{width:100%!important;border-radius:16px 16px 0 0;max-height:88vh;overflow-y:auto;}
+  .crop-con{width:100%;height:65vw;}
+  .form-row input,.form-row select,.form-row textarea{font-size:16px;padding:10px 12px;}
   .modal-btns{flex-wrap:wrap;gap:6px;}
-  .modal-btns button{padding:10px 14px;font-size:13px;}
+  .modal-btns button{flex:1 1 auto;padding:11px;font-size:13px;}
 }
 @media print{
   @page{size:A4 landscape;margin:3mm;}
@@ -480,6 +493,17 @@ var RC={kansai:'#c62828',kanto:'#1565c0',tokai:'#e65100',kyushu:'#1b5e20',other:
 var RB={kansai:'#ffebee',kanto:'#e3f2fd',tokai:'#fff3e0',kyushu:'#e8f5e9',other:'#f5f5f5',zoom:'#f3e5f5'};
 var RBR={kansai:'#e53935',kanto:'#1565c0',tokai:'#f57c00',kyushu:'#2e7d32',other:'#555',zoom:'#7b1fa2'};
 var TICON={PBS:'📋',BE:'💼',BT:'📈',BS:'💡','分科会':'🔖','コンベンション':'🎉','遊び':'🎊'};
+function getTypeColor(type){
+  if(!type) return {col:'#424242',bg:'#f5f5f5',bl:'#bbb'};
+  var t=type.replace('&','').replace('+','');
+  if(t.indexOf('PBS')>-1||t.indexOf('コンベンション')>-1||t.indexOf('分科会')>-1)
+    return {col:'#b71c1c',bg:'#ffebee',bl:'#e53935'};
+  if(t.indexOf('BE')>-1||t.indexOf('BT')>-1||t.indexOf('BS')>-1)
+    return {col:'#0d47a1',bg:'#e3f2fd',bl:'#1565c0'};
+  if(t.indexOf('遊び')>-1)
+    return {col:'#e65100',bg:'#fff3e0',bl:'#f57c00'};
+  return {col:'#424242',bg:'#f5f5f5',bl:'#bbb'};
+}
 var currentYear=new Date().getFullYear(), currentMonth=new Date().getMonth();
 var events={}, editDate=null, editIdx=null, p1=null, p2=null, photoLib={};
 
@@ -532,10 +556,11 @@ function openSeminarSite(){
 
 function makeCard(ev,d,idx,single){
   var f=!!ev.focus;
-  var col=f?'#333':(RC[ev.region]||'#424242');
-  var bg=f?'white':(RB[ev.region]||'#f5f5f5');
-  var bl=f?'none':'3px solid '+(RBR[ev.region]||'#999');
-  var phBg=f?'linear-gradient(135deg,#ff0000,#ff7700,#ffee00,#00cc44,#0088ff,#8800ff)':(RBR[ev.region]||'#555');
+  var tc=getTypeColor(ev.type);
+  var col=f?'#333':tc.col;
+  var bg=f?'white':tc.bg;
+  var bl=f?'none':'3px solid '+tc.bl;
+  var phBg=f?'linear-gradient(135deg,#ff0000,#ff7700,#ffee00,#00cc44,#0088ff,#8800ff)':tc.bl;
   var card=document.createElement('div');
   var isCollab=!!(ev.koushi2||ev.photo2);
   card.className='event-card'+(f?' focus-venue':'')+(single?' single':'')+(isCollab?' collab-card':'');
@@ -601,6 +626,8 @@ function render(){
     var dn=document.createElement('div');
     dn.className='date-num'+(dow===0?' sun-num':dow===6?' sat-num':'');
     dn.textContent=d; cell.appendChild(dn);
+    // スケジュールがある日はhas-eventsクラス追加（スクロール有効化）
+    if(displayList.length>0){ cell.classList.add('has-events'); }
     for(var ei=0;ei<fl.length;ei++){cell.appendChild(makeCard(fl[ei],d,de.indexOf(fl[ei]),single));}
     var ab=document.createElement('div');ab.className='add-btn';ab.textContent='＋';
     (function(day){ab.onclick=function(){openAdd(day);};})(d);
@@ -899,36 +926,7 @@ function clearMonth(){
   render();
 }
 initTimeSelects();
-
-// 全セルのタッチスクロール対応（iOS Safari）
-document.addEventListener('DOMContentLoaded', function(){
-  function setupCellScroll(){
-    document.querySelectorAll('.cal-cell').forEach(function(cell){
-      var startY, startTop;
-      cell.addEventListener('touchstart', function(e){
-        startY = e.touches[0].clientY;
-        startTop = cell.scrollTop;
-      }, {passive:true});
-      cell.addEventListener('touchmove', function(e){
-        var dy = startY - e.touches[0].clientY;
-        var newTop = startTop + dy;
-        // セルがスクロール可能な場合のみページスクロールを止める
-        if(cell.scrollHeight > cell.clientHeight){
-          if(newTop >= 0 && newTop <= cell.scrollHeight - cell.clientHeight){
-            e.stopPropagation();
-          }
-        }
-      }, {passive:true});
-    });
-  }
-  // render後に実行できるよう元のrenderをラップ
-  var _render = render;
-  render = function(){
-    _render.apply(this, arguments);
-    setTimeout(setupCellScroll, 50);
-  };
-  setTimeout(setupCellScroll, 300);
-});loadLib(function(){loadEvents(function(){render();startSync();});});
+loadLib(function(){loadEvents(function(){render();startSync();});});
 </script>
 </body>
 </html>
