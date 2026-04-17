@@ -318,8 +318,9 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
   <span id="ph-month" style="font-size:16px;font-weight:700;color:#1a1a1a;margin-left:10px;"></span>
 </div>
 
-<div id="view-toolbar" style="display:none;margin-bottom:10px;">
+<div id="view-toolbar" style="display:none;margin-bottom:10px;display:flex;gap:8px;flex-wrap:wrap;">
   <button onclick="doPrint()" style="padding:10px 20px;border-radius:10px;font-size:14px;font-family:inherit;cursor:pointer;border:none;background:#cc0000;color:white;font-weight:700;">🖨️ 印刷・PDF出力</button>
+  <button onclick="openHelp()" style="padding:10px 20px;border-radius:10px;font-size:14px;font-family:inherit;cursor:pointer;border:1.5px solid #1565c0;background:white;color:#1565c0;font-weight:700;">❓ ヘルプ</button>
 </div>
 
 <div id="saved-text-overlay" class="paste-overlay">
@@ -373,6 +374,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
     <button onclick="clearMonth()" style="color:#c62828;border-color:#ffaaaa;font-weight:700;">🗑️ この月を全削除</button>
     <button onclick="openSavedTextModal()" style="padding:6px 13px;border-radius:8px;font-size:12px;font-family:inherit;cursor:pointer;border:1px solid #2e7d32;background:white;color:#2e7d32;font-weight:700;">📖 テキスト管理</button>
     <button onclick="doPrint()" class="primary">🖨️ 印刷・PDF</button>
+    <button onclick="openHelp()" style="padding:6px 13px;border-radius:8px;font-size:12px;font-family:inherit;cursor:pointer;border:1px solid #1565c0;background:white;color:#1565c0;font-weight:700;">❓ ヘルプ</button>
   </div>
   <div class="info-bar">
     <div class="abbrev-list">
@@ -1442,6 +1444,96 @@ function copyExtractedText(){
 }
 initTimeSelects();
 
+var helpCurrentTab = 'editor';
+
+var helpContent = {
+  editor: '<div style="background:#fff8e1;border:1px solid #ffe082;border-radius:8px;padding:10px 14px;font-size:13px;color:#5d4037;margin-bottom:16px;"><strong>編集パスワード：miura2026</strong>（管理者のみ）</div>' +
+
+  '<div style="font-size:14px;font-weight:700;color:#cc0000;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #ffcccc;">システム更新後の必須手順</div>' +
+  '<div style="background:#fff8e1;border-left:3px solid #f57f17;border-radius:0 8px 8px 0;padding:10px 14px;font-size:13px;color:#5d4037;line-height:1.8;margin-bottom:16px;">' +
+  '<strong style="display:block;margin-bottom:6px;">Safariの場合</strong>' +
+  '① 設定 → Safari → 履歴とWebサイトデータを消去<br>② Safariを完全終了（スワイプして閉じる）<br>③ URLを再度開く<br><br>' +
+  '<strong style="display:block;margin-bottom:6px;">ホーム画面追加（アイコン）の場合</strong>' +
+  '① アイコンを長押し → 削除<br>② 設定 → Safari → 履歴とWebサイトデータを消去<br>③ SafariでURLを開く<br>④ 共有ボタン → ホーム画面に追加</div>' +
+
+  '<div style="font-size:14px;font-weight:700;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #eee;">スケジュール取り込み</div>' +
+  '<div style="font-size:13px;color:#555;line-height:2;margin-bottom:16px;">' +
+  '① セミナーサイトを全選択してコピー<br>' +
+  '② 「📋 テキストを貼り付けて取り込む」をタップ<br>' +
+  '③ 貼り付けて「解析する」→ 内容確認<br>' +
+  '④ 「カレンダーに取り込む」で完了<br>' +
+  '<span style="background:#e8f5e9;border-radius:4px;padding:2px 8px;font-size:12px;color:#2e7d32;">同日の既存予定は更新・テキストにない予定は削除・新規は追加</span></div>' +
+
+  '<div style="font-size:14px;font-weight:700;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #eee;">手動追加・編集</div>' +
+  '<div style="font-size:13px;color:#555;line-height:2;margin-bottom:16px;">セル内の「＋」→ 新規追加<br>既存カードをタップ → 編集モーダル（写真・集中会場設定も可能）</div>' +
+
+  '<div style="font-size:14px;font-weight:700;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #eee;">版の切り替え</div>' +
+  '<div style="font-size:13px;color:#555;line-height:2;margin-bottom:16px;">ヘッダーのドロップダウンで地域を選択<br>⭐ 重要版：集中会場設定したものを全国から自動収集</div>' +
+
+  '<div style="font-size:14px;font-weight:700;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #eee;">色分け</div>' +
+  '<div style="font-size:13px;color:#555;line-height:2;margin-bottom:16px;">' +
+  '<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#e53935;margin-right:6px;"></span>赤：PBS・コンベンション・分科会<br>' +
+  '<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#1565c0;margin-right:6px;"></span>青：BE・BT・BS<br>' +
+  '<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#ff7700;margin-right:6px;"></span>レインボー：集中会場</div>' +
+
+  '<div style="font-size:14px;font-weight:700;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #eee;">印刷・PDF</div>' +
+  '<div style="font-size:13px;color:#555;line-height:2;">「🖨️ 印刷・PDF」→ ブラウザ印刷ダイアログ<br>用紙：A4横　余白：最小推奨</div>',
+
+  viewer: '<div style="background:#fff8e1;border-left:3px solid #f57f17;border-radius:0 8px 8px 0;padding:10px 14px;font-size:13px;color:#5d4037;line-height:1.8;margin-bottom:16px;">' +
+  '<strong style="display:block;margin-bottom:6px;">画面が古い・変わらない場合</strong>' +
+  '<strong>Safariの場合：</strong><br>' +
+  '① 設定 → Safari → 履歴とWebサイトデータを消去<br>② Safariを完全終了して再起動<br><br>' +
+  '<strong>ホーム画面アイコンの場合：</strong><br>' +
+  '① アイコンを長押し → 削除<br>② 設定 → Safari → 履歴とWebサイトデータを消去<br>③ SafariでURLを開く<br>④ 共有ボタン → ホーム画面に追加<br><br>' +
+  '<span style="color:#e65100;font-weight:700;">削除せずに再追加しても古いキャッシュが残ります</span></div>' +
+
+  '<div style="font-size:14px;font-weight:700;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #eee;">ログイン</div>' +
+  '<div style="font-size:13px;color:#555;line-height:2;margin-bottom:16px;">パスワード不要。「👁️ 閲覧モードで開く」をタップするだけ。<br>ホーム画面追加：共有ボタン → ホーム画面に追加</div>' +
+
+  '<div style="font-size:14px;font-weight:700;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #eee;">基本操作</div>' +
+  '<div style="font-size:13px;color:#555;line-height:2;margin-bottom:16px;">' +
+  '◀▶ボタン：月の切り替え<br>' +
+  'ドロップダウン：地域版の切り替え<br>' +
+  '⭐ 重要版：全国の集中会場をまとめて確認<br>' +
+  'カードをタップ：詳細（写真・時間・会場・主催者）を表示</div>' +
+
+  '<div style="font-size:14px;font-weight:700;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #eee;">スマホ操作</div>' +
+  '<div style="font-size:13px;color:#555;line-height:2;margin-bottom:16px;">' +
+  'セルを上下スワイプ：セル内スクロール<br>' +
+  'カードをタップ：詳細表示<br>' +
+  '「🖨️ 印刷・PDF出力」ボタンで印刷</div>' +
+
+  '<div style="font-size:14px;font-weight:700;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #eee;">色の意味</div>' +
+  '<div style="font-size:13px;color:#555;line-height:2;">' +
+  '<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#e53935;margin-right:6px;"></span>赤：PBS・コンベンション・分科会<br>' +
+  '<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#1565c0;margin-right:6px;"></span>青：BE・BT・BS<br>' +
+  '<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#ff7700;margin-right:6px;"></span>レインボー：集中会場（重要）</div>'
+};
+
+function openHelp(){
+  var overlay = document.getElementById('help-overlay');
+  overlay.style.display = 'flex';
+  switchHelpTab(isEditMode ? 'editor' : 'viewer');
+}
+
+function closeHelp(){
+  document.getElementById('help-overlay').style.display = 'none';
+}
+
+function switchHelpTab(tab){
+  helpCurrentTab = tab;
+  document.getElementById('help-body').innerHTML = helpContent[tab];
+  var edBtn = document.getElementById('help-tab-editor');
+  var vwBtn = document.getElementById('help-tab-viewer');
+  if(tab === 'editor'){
+    edBtn.style.background = '#1565c0'; edBtn.style.color = 'white'; edBtn.style.borderColor = '#1565c0'; edBtn.style.fontWeight = '700';
+    vwBtn.style.background = 'white'; vwBtn.style.color = '#555'; vwBtn.style.borderColor = '#ddd'; vwBtn.style.fontWeight = '400';
+  } else {
+    vwBtn.style.background = '#1565c0'; vwBtn.style.color = 'white'; vwBtn.style.borderColor = '#1565c0'; vwBtn.style.fontWeight = '700';
+    edBtn.style.background = 'white'; edBtn.style.color = '#555'; edBtn.style.borderColor = '#ddd'; edBtn.style.fontWeight = '400';
+  }
+}
+
 function openDetail(ev){
   var tc = getTypeColor(ev.type);
   // バッジ
@@ -1533,6 +1625,23 @@ document.addEventListener('DOMContentLoaded', function(){
         <div id="detail-note" style="font-size:12px;color:#888;margin-top:6px;padding:6px 8px;background:#f5f5f5;border-radius:6px;display:none;"></div>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- ヘルプモーダル -->
+<div id="help-overlay" style="position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:none;align-items:flex-end;justify-content:center;z-index:600;" onclick="if(event.target===this)closeHelp()">
+  <div style="background:white;border-radius:18px 18px 0 0;width:100%;max-width:560px;max-height:88vh;display:flex;flex-direction:column;box-shadow:0 -4px 20px rgba(0,0,0,0.15);">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 18px 0;">
+      <div style="font-size:16px;font-weight:700;color:#1a1a1a;">❓ 使い方ガイド</div>
+      <button onclick="closeHelp()" style="background:none;border:none;font-size:22px;cursor:pointer;color:#888;line-height:1;">✕</button>
+    </div>
+    <!-- タブ -->
+    <div style="display:flex;gap:8px;padding:12px 18px;">
+      <button id="help-tab-editor" onclick="switchHelpTab('editor')" style="flex:1;padding:8px;border-radius:8px;border:1px solid #1565c0;background:#1565c0;color:white;font-size:13px;font-family:inherit;font-weight:700;cursor:pointer;">✏️ 編集者用</button>
+      <button id="help-tab-viewer" onclick="switchHelpTab('viewer')" style="flex:1;padding:8px;border-radius:8px;border:1px solid #ddd;background:white;color:#555;font-size:13px;font-family:inherit;cursor:pointer;">👁️ 閲覧者用</button>
+    </div>
+    <!-- コンテンツ -->
+    <div id="help-body" style="overflow-y:auto;padding:0 18px 20px;flex:1;-webkit-overflow-scrolling:touch;"></div>
   </div>
 </div>
 </body>
