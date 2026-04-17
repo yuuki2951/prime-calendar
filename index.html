@@ -162,8 +162,9 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
   /* カレンダー：PC版と同じ */
   .cal-header-cell{font-size:12px;padding:6px 2px;}
   .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);}
-  .cal-cell{height:140px!important;padding:3px;overflow:hidden;position:relative;}
+  .cal-cell{height:80px!important;padding:2px 1px;overflow-y:scroll!important;overflow-x:hidden;-webkit-overflow-scrolling:touch;display:flex;flex-direction:column;position:relative;}
   .has-multi .event-card{position:static!important;}
+  .cal-cell .event-card{position:static!important;}
   .date-num{font-size:12px;width:20px;height:20px;margin-bottom:2px;}
 
   /* カード：PC版と同じ */
@@ -897,7 +898,37 @@ function clearMonth(){
   if(fbOk()){db.ref(fbPath()).remove();}else{try{localStorage.removeItem(sk());}catch(e){}}
   render();
 }
-initTimeSelects();loadLib(function(){loadEvents(function(){render();startSync();});});
+initTimeSelects();
+
+// 全セルのタッチスクロール対応（iOS Safari）
+document.addEventListener('DOMContentLoaded', function(){
+  function setupCellScroll(){
+    document.querySelectorAll('.cal-cell').forEach(function(cell){
+      var startY, startTop;
+      cell.addEventListener('touchstart', function(e){
+        startY = e.touches[0].clientY;
+        startTop = cell.scrollTop;
+      }, {passive:true});
+      cell.addEventListener('touchmove', function(e){
+        var dy = startY - e.touches[0].clientY;
+        var newTop = startTop + dy;
+        // セルがスクロール可能な場合のみページスクロールを止める
+        if(cell.scrollHeight > cell.clientHeight){
+          if(newTop >= 0 && newTop <= cell.scrollHeight - cell.clientHeight){
+            e.stopPropagation();
+          }
+        }
+      }, {passive:true});
+    });
+  }
+  // render後に実行できるよう元のrenderをラップ
+  var _render = render;
+  render = function(){
+    _render.apply(this, arguments);
+    setTimeout(setupCellScroll, 50);
+  };
+  setTimeout(setupCellScroll, 300);
+});loadLib(function(){loadEvents(function(){render();startSync();});});
 </script>
 </body>
 </html>
