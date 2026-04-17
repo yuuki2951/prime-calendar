@@ -130,6 +130,8 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
 
 @media(max-width:640px){
   .page{padding:3px;}
+
+  /* ヘッダー */
   .header{padding:8px 10px;gap:4px;flex-wrap:wrap;border-radius:10px;margin-bottom:3px;}
   .brand{font-size:14px;font-weight:700;}
   #edition-select{font-size:12px;padding:4px 7px;border-radius:8px;}
@@ -142,25 +144,57 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
   .info-bar{display:none;}
   #view-toolbar{margin-bottom:3px;}
   #view-toolbar button{padding:7px 14px!important;font-size:12px!important;width:auto!important;border-radius:9px!important;}
+
+  /* カレンダー：overflowをvisibleに（セルスクロールのため必須） */
+  .calendar{overflow:visible!important;}
   .cal-header-cell{font-size:10px;padding:4px 1px;font-weight:700;}
-  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);}
-  .cal-cell{height:90px!important;padding:2px 1px;overflow:hidden;display:flex;flex-direction:column;position:relative;}
-  .cal-cell.has-events{overflow-y:scroll!important;-webkit-overflow-scrolling:touch!important;overscroll-behavior-y:contain;}
+  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);overflow:visible;}
+
+  /* セル：スケジュールなし→hidden、あり→scroll */
+  .cal-cell{
+    height:90px!important;
+    padding:2px 1px;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    position:relative;
+    box-sizing:border-box;
+  }
+  .cal-cell.has-events{
+    overflow-y:scroll!important;
+    -webkit-overflow-scrolling:touch!important;
+    overscroll-behavior-y:contain;
+  }
   .cal-cell.today .date-num{background:#cc0000!important;color:white!important;border-radius:50%;}
-  .date-num{font-size:10px;width:16px;height:16px;margin-bottom:1px;flex-shrink:0;font-weight:700;display:flex;align-items:center;justify-content:center;position:sticky;top:0;z-index:2;background:white;}
+  /* 日付番号：stickyで常時表示 */
+  .date-num{
+    font-size:10px;width:16px;height:16px;
+    margin-bottom:1px;flex-shrink:0;font-weight:700;
+    display:flex;align-items:center;justify-content:center;
+    position:sticky;top:0;z-index:2;
+    background:white;
+  }
   .date-num.sun-num{color:#cc0000;}
   .date-num.sat-num{color:#1565c0;}
-  .event-card{padding:1px 2px;margin-bottom:1px;border-radius:3px;flex-shrink:0;overflow:hidden;}
+
+  /* カード */
+  .event-card{padding:2px 3px;margin-bottom:1px;border-radius:3px;flex-shrink:0;overflow:hidden;}
   .has-multi .event-card{position:static!important;}
   .cal-cell .event-card{position:static!important;}
   .ev-inner{display:flex;gap:2px;align-items:flex-start;}
   .ev-text{flex:1;min-width:0;overflow:hidden;}
+
+  /* 写真：非表示（スペース確保） */
   .ev-photo-wrap{display:none!important;}
+
+  /* テキスト：nowrapで切れず・ellipsisで省略 */
   .ev-type-badge{font-size:6.5px;font-weight:700;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.3;margin-bottom:0;}
   .ev-name{font-size:8px;font-weight:700;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
   .ev-time{font-size:6.5px;white-space:nowrap;overflow:hidden;line-height:1.2;}
   .ev-venue{font-size:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:none;padding:0;line-height:1.2;}
   .ev-shusai{display:none;}
+
+  /* 1件のみ：写真表示・大きく */
   .event-card.single{position:static!important;flex:1;padding:3px;}
   .event-card.single .ev-inner{align-items:center;padding-top:10px;}
   .event-card.single .ev-photo-wrap{display:flex!important;flex-direction:column;align-items:center;flex-shrink:0;gap:1px;}
@@ -170,6 +204,8 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
   .event-card.single .ev-venue{font-size:6.5px;}
   .event-card.focus-venue .ev-inner{padding-top:11px;}
   .add-btn{font-size:9px;padding:1px 2px;opacity:0.5;}
+
+  /* モーダル */
   .modal-overlay{align-items:flex-end;}
   .modal{width:100%!important;max-width:100%!important;border-radius:16px 16px 0 0;position:fixed;bottom:0;left:0;right:0;top:auto;margin:0;max-height:90vh;padding:16px;overflow-y:auto;}
   .crop-overlay,.lib-overlay,.paste-overlay{align-items:flex-end;}
