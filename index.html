@@ -631,7 +631,7 @@ function makeCard(ev,d,idx,single){
     if(ev.photo){var ri=document.createElement('img');ri.className='ev-photo-r';ri.src=ev.photo;wrap.appendChild(ri);}
     else if(ev.koushi){var rph=document.createElement('div');rph.className='ev-photo-rph';rph.style.background=phBg;rph.textContent=getInit(ev.koushi);wrap.appendChild(rph);}
   }
-  if(!single){wrap.classList.add('mobile-hide-photo');}
+  if(!single){wrap.style.display='none';}
   inner.appendChild(wrap);
   card.appendChild(inner);
   return card;
