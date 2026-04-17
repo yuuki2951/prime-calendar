@@ -129,7 +129,6 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
 .paste-hint{background:#e3f2fd;border-radius:8px;padding:12px;margin-bottom:14px;font-size:12px;color:#1565c0;line-height:1.8;}
 
 @media(max-width:640px){
-  html,body{overflow-x:hidden;}
   .page{padding:3px;}
   .header{padding:8px 10px;gap:4px;flex-wrap:wrap;border-radius:10px;margin-bottom:3px;}
   .brand{font-size:14px;font-weight:700;}
@@ -1175,17 +1174,22 @@ function applyMode(){
       '.toolbar{display:none!important;}'+
       '.add-btn{display:none!important;}'+
       '#view-toolbar{display:block!important;}'+
+      '.event-card{pointer-events:none!important;cursor:default!important;}'+
       '@media(max-width:640px){'+
-        'body{overflow-x:auto;}'+
-        '.page{padding:2px;min-width:920px;}'+
-        '.ev-photo-wrap{display:flex!important;}'+
-        '.ev-inner{display:flex!important;}'+
-        '.ev-text{flex:1;min-width:0;}'+
-        '.cal-cell{height:120px;}'+
-        '.ev-photo-r,.ev-photo-rph{width:30px;height:30px;font-size:11px;}'+
-        '.event-card.single .ev-photo-r,.event-card.single .ev-photo-rph{width:44px;height:44px;font-size:15px;}'+
-        '.event-card.single .ev-name{font-size:11px;}'+
-        '@media print{body{overflow-x:hidden!important;}.page{min-width:0!important;width:294mm!important;padding:0!important;}}'+
+        'html,body{overflow-x:auto!important;overflow-y:auto!important;}'+
+        '.page{padding:2px!important;min-width:960px!important;}'+
+        '.cal-cell{height:120px!important;overflow:hidden!important;position:relative!important;}'+
+        '.cal-cell.has-events{overflow-y:auto!important;}'+
+        '.ev-photo-wrap{display:flex!important;flex-direction:column!important;}'+
+        '.ev-photo-r,.ev-photo-rph{width:28px!important;height:28px!important;font-size:10px!important;}'+
+        '.ev-photo-wrap.collab .ev-photo-r,.ev-photo-wrap.collab .ev-photo-rph{width:20px!important;height:20px!important;font-size:7px!important;}'+
+        '.event-card.single .ev-photo-r,.event-card.single .ev-photo-rph{width:40px!important;height:40px!important;font-size:14px!important;}'+
+        '.ev-name{font-size:9px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;}'+
+        '.ev-type-badge{font-size:8px!important;}'+
+        '.ev-time{font-size:8px!important;}'+
+        '.ev-venue{font-size:7px!important;}'+
+        '.month-nav button{display:flex!important;}'+
+        '@media print{html,body{overflow-x:hidden!important;}.page{min-width:0!important;width:294mm!important;padding:0!important;}}'+
       '}';
   }
   loadLib(function(){loadEvents(function(){render();startSync();});});
