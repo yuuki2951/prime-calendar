@@ -2,6 +2,9 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache,no-store,must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="PRIME日程表">
@@ -13,7 +16,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js" onerror="window._fbLoadError=true"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js" onerror="window._fbLoadError=true"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>三浦グループ プライム日程表</title>
+<title>三浦グループ プライム日程表 v0417_044140</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap');
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -130,207 +133,85 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
 
 
 @media(max-width:640px){
-  /* === ページ === */
+  /* ページ */
   html,body{overflow-x:hidden;}
-  .page{padding:4px;}
+  .page{padding:3px;}
 
-  /* === ヘッダー === */
-  .header{
-    background:white;border-radius:12px;
-    padding:10px 12px;margin-bottom:4px;
-    display:flex;flex-direction:column;gap:6px;
-    box-shadow:0 1px 4px rgba(0,0,0,0.08);
-  }
-  .brand{font-size:15px;font-weight:700;}
-  .sub{font-size:11px;color:#888;}
-
-  /* 版選択 */
-  #edition-select{
-    font-size:13px;padding:5px 8px;
-    border-radius:8px;max-width:150px;
-    font-weight:700;
-  }
+  /* ヘッダー */
+  .header{padding:8px 10px;gap:4px;flex-wrap:wrap;border-radius:10px;margin-bottom:3px;}
+  .brand{font-size:14px;font-weight:700;}
+  #edition-select{font-size:12px;padding:4px 7px;border-radius:8px;}
 
   /* 月ナビ */
-  .month-nav{
-    display:flex;align-items:center;justify-content:center;
-    gap:12px;padding:4px 0;
-  }
-  .month-nav button{
-    width:44px;height:44px;
-    border-radius:10px;font-size:18px;
-    background:#f5f4f0;border:1px solid #ddd;
-    display:flex;align-items:center;justify-content:center;
-    touch-action:manipulation;-webkit-tap-highlight-color:transparent;
-  }
-  .month-display{font-size:18px;font-weight:700;text-align:center;flex:1;}
+  .month-nav{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:4px;}
+  .month-nav button{width:42px;height:42px;border-radius:10px;font-size:18px;display:flex;align-items:center;justify-content:center;touch-action:manipulation;background:#f5f4f0;border:1px solid #ddd;}
+  .month-display{font-size:17px;font-weight:700;text-align:center;flex:1;}
 
-  /* ツールバー */
-  .toolbar{
-    display:flex;flex-wrap:wrap;gap:4px;
-    padding:2px;margin-bottom:4px;
-  }
-  .toolbar button{
-    flex:1 1 45%;padding:8px 4px;
-    font-size:10px;border-radius:8px;
-    min-width:0;
-  }
+  /* ツールバー：コンパクトに */
+  .toolbar{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:4px;}
+  .toolbar button{flex:1 1 45%;padding:8px 4px;font-size:10px;border-radius:8px;min-width:0;}
+  /* 印刷ボタンを小さく */
+  .toolbar button.primary{flex:1 1 100%;padding:8px;font-size:11px;}
   .info-bar{display:none;}
 
-  /* 印刷ボタン（閲覧モード） */
+  /* 閲覧モード印刷ボタン */
   #view-toolbar{margin-bottom:4px;}
-  #view-toolbar button{
-    padding:8px 16px!important;
-    font-size:13px!important;
-    width:auto!important;
-    border-radius:10px!important;
-  }
+  #view-toolbar button{padding:7px 14px!important;font-size:12px!important;width:auto!important;border-radius:9px!important;}
 
-  /* === カレンダー === */
-  .cal-header-cell{
-    font-size:10px;padding:4px 1px;
-    font-weight:700;text-align:center;
-  }
+  /* カレンダーヘッダー */
+  .cal-header-cell{font-size:10px;padding:4px 1px;font-weight:700;}
   .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);}
 
-  /* セル：固定高さ・overflow hidden */
-  .cal-cell{
-    height:100px!important;
-    padding:2px 1px;
-    overflow:hidden;
-    display:flex;
-    flex-direction:column;
-    position:relative;
-    border-right:1px solid #ece9e2;
-    border-bottom:1px solid #ece9e2;
-  }
-  .cal-cell.empty{background:#faf9f6;}
-
-  /* 日付番号 */
-  .date-num{
-    font-size:11px;font-weight:700;
-    width:18px;height:18px;
-    margin-bottom:2px;
-    display:flex;align-items:center;justify-content:center;
-    flex-shrink:0;
-  }
+  /* セル */
+  .cal-cell{height:90px!important;padding:2px 1px;overflow:hidden;display:flex;flex-direction:column;position:relative;}
+  .cal-cell.today .date-num{background:#cc0000;color:white;border-radius:50%;}
+  .date-num{font-size:11px;width:17px;height:17px;margin-bottom:2px;flex-shrink:0;font-weight:700;display:flex;align-items:center;justify-content:center;}
   .date-num.sun-num{color:#cc0000;}
   .date-num.sat-num{color:#1565c0;}
-  .cal-cell.today .date-num{background:#cc0000;color:white;border-radius:50%;}
 
   /* カード */
-  .event-card{
-    padding:2px 2px;
-    margin-bottom:1px;
-    border-radius:4px;
-    flex-shrink:0;
-    overflow:hidden;
-    border-left-width:2px;
-  }
+  .event-card{padding:2px 3px;margin-bottom:2px;border-radius:4px;flex-shrink:0;overflow:hidden;}
   .has-multi .event-card{position:static!important;}
 
-  /* カード内レイアウト */
+  /* カード内 */
   .ev-inner{display:flex;gap:2px;align-items:flex-start;}
   .ev-text{flex:1;min-width:0;overflow:hidden;}
 
-  /* 写真 */
-  .ev-photo-wrap{
-    display:flex!important;flex-direction:column;
-    gap:1px;align-items:center;flex-shrink:0;
-  }
-  .ev-photo-r,.ev-photo-rph{
-    width:18px!important;height:18px!important;
-    font-size:6px!important;
-  }
-  .ev-photo-wrap.collab .ev-photo-r,
-  .ev-photo-wrap.collab .ev-photo-rph{
-    width:14px!important;height:14px!important;
-    font-size:5px!important;
-  }
-  .ev-name2-lbl{display:none;}
+  /* 写真：非表示（テキスト優先） */
+  .ev-photo-wrap{display:none!important;}
 
   /* テキスト */
-  .ev-type-badge{
-    font-size:6px;font-weight:700;display:block;
-    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-    line-height:1.3;margin-bottom:0;
-  }
-  .ev-name{
-    font-size:7.5px;font-weight:700;line-height:1.3;
-    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-  }
-  .ev-time{
-    font-size:6.5px;white-space:nowrap;
-    overflow:hidden;line-height:1.2;
-  }
-  .ev-venue{
-    font-size:6px;white-space:nowrap;overflow:hidden;
-    text-overflow:ellipsis;background:none;padding:0;line-height:1.2;
-  }
-  .ev-shusai{
-    font-size:6px;white-space:nowrap;
-    overflow:hidden;text-overflow:ellipsis;
-  }
+  .ev-type-badge{font-size:7px;font-weight:700;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.3;margin-bottom:1px;}
+  .ev-name{font-size:8px;font-weight:700;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .ev-time{font-size:7px;white-space:nowrap;overflow:hidden;line-height:1.2;}
+  .ev-venue{font-size:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:none;padding:0;line-height:1.2;}
+  .ev-shusai{font-size:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 
-  /* 1件のみ（集中会場含む） */
-  .event-card.single{
-    position:static!important;
-    flex:1;
-    padding:4px;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-  }
-  .event-card.single .ev-inner{
-    align-items:center;
-    padding-top:10px;
-  }
-  .event-card.single .ev-photo-r,
-  .event-card.single .ev-photo-rph{
-    width:28px!important;height:28px!important;
-    font-size:10px!important;
-  }
+  /* 1件のみ：写真表示 */
+  .event-card.single{position:static!important;flex:1;padding:4px;}
+  .event-card.single .ev-inner{align-items:center;padding-top:10px;}
+  .event-card.single .ev-photo-wrap{display:flex!important;flex-direction:column;align-items:center;flex-shrink:0;gap:1px;}
+  .event-card.single .ev-photo-r,.event-card.single .ev-photo-rph{width:28px!important;height:28px!important;font-size:10px!important;}
+  .event-card.single .ev-text{flex:1;min-width:0;overflow:hidden;}
   .event-card.single .ev-name{font-size:9px;}
   .event-card.single .ev-time{font-size:8px;}
   .event-card.single .ev-venue{font-size:7px;}
 
-  /* 集中会場バッジ */
-  .event-card.focus-venue .ev-inner{padding-top:12px;}
+  /* 集中会場 */
+  .event-card.focus-venue .ev-inner{padding-top:11px;}
 
-  /* 追加ボタン */
-  .add-btn{
-    font-size:10px;padding:2px 4px;
-    position:absolute;bottom:2px;right:2px;
-    background:rgba(255,255,255,0.9);
-    border-radius:4px;z-index:1;
-  }
+  /* 追加ボタン：非常に小さく */
+  .add-btn{font-size:9px;padding:1px 3px;opacity:0.5;}
 
-  /* === モーダル（下からスライド） === */
+  /* モーダル */
   .modal-overlay{align-items:flex-end;}
-  .modal{
-    width:100%!important;max-width:100%!important;
-    border-radius:18px 18px 0 0;
-    position:fixed;bottom:0;left:0;right:0;
-    top:auto;margin:0;
-    max-height:90vh;padding:16px;
-    overflow-y:auto;
-  }
+  .modal{width:100%!important;max-width:100%!important;border-radius:16px 16px 0 0;position:fixed;bottom:0;left:0;right:0;top:auto;margin:0;max-height:90vh;padding:16px;overflow-y:auto;}
   .crop-overlay,.lib-overlay,.paste-overlay{align-items:flex-end;}
-  .crop-modal,.lib-modal,.paste-modal{
-    width:100%!important;
-    border-radius:18px 18px 0 0;
-    max-height:88vh;overflow-y:auto;
-  }
+  .crop-modal,.lib-modal,.paste-modal{width:100%!important;border-radius:16px 16px 0 0;max-height:88vh;overflow-y:auto;}
   .crop-con{width:100%;height:65vw;}
-  .form-row label{font-size:12px;}
-  .form-row input,.form-row select,.form-row textarea{
-    font-size:16px;padding:10px 12px;border-radius:10px;
-  }
-  .modal-btns{flex-wrap:wrap;gap:8px;margin-top:14px;}
-  .modal-btns button{
-    flex:1 1 auto;padding:12px;
-    font-size:14px;border-radius:10px;
-  }
+  .form-row input,.form-row select,.form-row textarea{font-size:16px;padding:10px 12px;}
+  .modal-btns{flex-wrap:wrap;gap:6px;}
+  .modal-btns button{flex:1 1 auto;padding:11px;font-size:13px;}
 }
 @media print{
   @page{size:A4 landscape;margin:3mm;}
