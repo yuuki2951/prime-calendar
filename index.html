@@ -934,11 +934,18 @@ function parsePaste(){
     // 時間行
     var tm=l.match(/^(\d{1,2}:\d{2})\s*-\s*(\d{1,2}:\d{2})$/);
     if(tm){
-      parsedItems.push({day:curDay,time:tm[1]+'〜'+tm[2],type:'PBS',koushi:'',koushi2:'',venue:'',region:'other',shusai:'',expectShusai:false});
+      var newTime=tm[1]+'〜'+tm[2];
+      if(parsedItems.length&&parsedItems[parsedItems.length-1].koushi===''){
+        // 既存アイテムに時間を追加（複数時間対応）
+        var prev=parsedItems[parsedItems.length-1];
+        prev.time=prev.time?(prev.time+' / '+newTime):newTime;
+      } else {
+        parsedItems.push({day:curDay,time:newTime,type:'PBS',koushi:'',koushi2:'',venue:'',region:'other',shusai:'',expectShusai:false});
+      }
       continue;
     }
     // 種別（単独行）
-    if(/^(PBS|BE|BT|BS|コンベンション|分科会)$/.test(l)&&parsedItems.length){
+    if(/^(PBS|BE|BT|BS|BE&BT|BT&BE|BE&BE|BT&BT|BS&BE|コンベンション|分科会|遊び)$/.test(l)&&parsedItems.length){
       parsedItems[parsedItems.length-1].type=l;continue;
     }
     // 料金行: "¥500\t講師1" or "¥500\t講師1\t会場名"
@@ -948,12 +955,25 @@ function parsePaste(){
       if(parsedItems.length&&k1){
         parsedItems[parsedItems.length-1].koushi=k1;
         parsedItems[parsedItems.length-1].venue=venue1;
-        // 会場名がない → 次行にコラボ講師+会場名の可能性
         parsedItems[parsedItems.length-1].needVenue=!venue1;
       } else if(parsedItems.length){
         parsedItems.pop();
       }
       continue;
+    }
+    // 講師+会場行（extractScheduleText形式）: "講師名\t会場名"
+    if(parsedItems.length&&parsedItems[parsedItems.length-1].koushi===''&&parts.length>=1){
+      var isType=/^(PBS|BE|BT|BS|BE&BT|BT&BE|コンベンション|分科会|遊び)$/.test(l);
+      var isTime=/^\d{1,2}:\d{2}/.test(l);
+      var isPref=/^(北海道|東京都|大阪府|京都府|.{2,3}県)$/.test(l);
+      var isNum=/^\d/.test(l);
+      var isAddr=/[市区町村丁目番地号]/.test(l);
+      if(!isType&&!isTime&&!isPref&&!isNum&&!isAddr&&l.length>=2){
+        parsedItems[parsedItems.length-1].koushi=l.replace(/[ \u3000]/g,'');
+        parsedItems[parsedItems.length-1].venue=parts[1]||'';
+        parsedItems[parsedItems.length-1].needVenue=!(parts[1]||'');
+        continue;
+      }
     }
     // コラボ2人目: "講師2\t会場名" (前エントリがneedVenue=true)
     if(parsedItems.length&&parsedItems[parsedItems.length-1].needVenue){
@@ -983,7 +1003,7 @@ function parsePaste(){
     if(parsedItems.length&&/^\d{4}-\d{2}-\d{2}/.test(l)){continue;} // 受付期限行スキップ
     // 主催者行：expectShusai=trueの後の名前
     if(parsedItems.length&&parsedItems[parsedItems.length-1].expectShusai){
-      if(l.length>=2&&!/^\d/.test(l)&&!/^¥/.test(l)&&!/[県都道府]$/.test(l)&&!/^\d{1,2}:\d{2}/.test(l)&&!/^(PBS|BE|BT|BS|コンベンション|分科会)$/.test(l)){
+      if(l.length>=2&&!/^\d/.test(l)&&!/^¥/.test(l)&&!/[県都道府]$/.test(l)&&!/^\d{1,2}:\d{2}/.test(l)&&!/^(PBS|BE|BT|BS|BE&BT|BT&BE|BE&BE|BT&BT|コンベンション|分科会)$/.test(l)){
         parsedItems[parsedItems.length-1].shusai=l.replace(/　/g,' ').trim();
         parsedItems[parsedItems.length-1].expectShusai=false;
       }
