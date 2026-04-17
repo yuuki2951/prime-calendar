@@ -171,7 +171,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
 
   /* カード：テキスト優先・写真非表示 */
   .event-card{padding:2px 3px;margin-bottom:1px;border-radius:3px;flex-shrink:0;overflow:hidden;}
-  .ev-inner{display:block;width:100%;}
+  .ev-inner{display:flex;gap:2px;align-items:flex-start;width:100%;}
   .ev-photo-wrap{display:none!important;}
   .ev-text{width:100%;overflow:hidden;}
 
@@ -631,6 +631,7 @@ function makeCard(ev,d,idx,single){
     if(ev.photo){var ri=document.createElement('img');ri.className='ev-photo-r';ri.src=ev.photo;wrap.appendChild(ri);}
     else if(ev.koushi){var rph=document.createElement('div');rph.className='ev-photo-rph';rph.style.background=phBg;rph.textContent=getInit(ev.koushi);wrap.appendChild(rph);}
   }
+  if(!single){wrap.classList.add('mobile-hide-photo');}
   inner.appendChild(wrap);
   card.appendChild(inner);
   return card;
