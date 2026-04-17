@@ -23,9 +23,8 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap');
 *{box-sizing:border-box;margin:0;padding:0;}
-html{height:100%;overflow-y:auto;-webkit-overflow-scrolling:touch;}
-body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;
-  min-height:100%;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+html{overflow-y:auto;-webkit-overflow-scrolling:touch;}
+body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
 .page{max-width:1400px;margin:0 auto;padding:16px;overflow-y:visible;}
 .header{background:white;border-radius:12px;padding:14px 20px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;box-shadow:0 1px 4px rgba(0,0,0,0.08);}
 .brand{font-size:18px;font-weight:700;color:#cc0000;}
@@ -47,7 +46,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;
 .legend{display:flex;flex-wrap:wrap;gap:8px;margin-left:auto;}
 .legend-item{display:flex;align-items:center;gap:4px;font-size:10px;color:#555;}
 .legend-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
-.calendar{background:white;border-radius:12px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.08);}
+.calendar{background:white;border-radius:12px;overflow:visible;box-shadow:0 1px 4px rgba(0,0,0,0.08);}
 .cal-header{display:grid;grid-template-columns:repeat(7,1fr);}
 .cal-header-cell{padding:7px 4px;text-align:center;font-size:12px;font-weight:700;background:#f8f7f3;border-bottom:1px solid #e8e6e0;}
 .cal-header-cell.sun{color:#cc0000;}.cal-header-cell.sat{color:#1565c0;}
