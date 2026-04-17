@@ -859,6 +859,10 @@ function openLibrary(num){
   libTarget=num;loadLib();
   var grid=document.getElementById('lib-grid'),empty=document.getElementById('lib-empty');
   var keys=Object.keys(photoLib);
+  // 五十音順でソート
+  keys.sort(function(a,b){
+    return a.localeCompare(b,'ja',{sensitivity:'base'});
+  });
   grid.innerHTML='';
   if(!keys.length){empty.style.display='block';grid.style.display='none';}
   else{empty.style.display='none';grid.style.display='grid';
