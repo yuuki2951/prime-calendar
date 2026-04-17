@@ -517,10 +517,61 @@ var events={}, editDate=null, editIdx=null, p1=null, p2=null, photoLib={};
 
 function sk(){return 'prime_v11_'+currentYear+'_'+currentMonth;}
 function reiwa(y){return y-2018;}
-function loadEvents(){try{var r=localStorage.getItem(sk());events=r?JSON.parse(r):{};}catch(e){events={};}}
-function saveEvents(){try{localStorage.setItem(sk(),JSON.stringify(events));}catch(e){}}
-function loadLib(){try{var r=localStorage.getItem('prime_lib');if(r)photoLib=JSON.parse(r);}catch(e){}}
-function saveLib(){try{localStorage.setItem('prime_lib',JSON.stringify(photoLib));}catch(e){}}
+function loadEvents(cb){
+  if(currentEdition==='important'){
+    if(!fbOk()){
+      var merged={};
+      ALL_EDITION_KEYS.forEach(function(ed){
+        try{var r=localStorage.getItem('prime_v11_'+ed+'_'+currentYear+'_'+currentMonth);
+          var d=r?JSON.parse(r):{};
+          Object.keys(d).forEach(function(day){
+            if(!merged[day])merged[day]=[];
+            d[day].forEach(function(ev){if(ev.focus)merged[day].push(ev);});
+          });
+        }catch(e){}
+      });
+      events=merged;if(cb)cb();return;
+    }
+    db.ref('schedule').once('value').then(function(s){
+      events=mergeImportant(s.val()||{});if(cb)cb();
+    }).catch(function(){events={};if(cb)cb();});
+    return;
+  }
+  if(!fbOk()){
+    try{var r=localStorage.getItem(sk());events=r?JSON.parse(r):{};}catch(e){events={};}
+    if(cb)cb();return;
+  }
+  db.ref(fbPath()).once('value').then(function(s){
+    events=s.val()||{};if(cb)cb();
+  }).catch(function(){
+    try{var r=localStorage.getItem(sk());events=r?JSON.parse(r):{};}catch(e){events={};}
+    if(cb)cb();
+  });
+}
+function saveEvents(){
+  if(!fbOk()){try{localStorage.setItem(sk(),JSON.stringify(events));}catch(e){}return;}
+  db.ref(fbPath()).set(events).catch(function(){
+    try{localStorage.setItem(sk(),JSON.stringify(events));}catch(e){}
+  });
+}
+function loadLib(cb){
+  if(!fbOk()){
+    try{var r=localStorage.getItem('prime_lib');if(r)photoLib=JSON.parse(r);}catch(e){}
+    if(cb)cb();return;
+  }
+  db.ref('library').once('value').then(function(s){
+    photoLib=s.val()||{};if(cb)cb();
+  }).catch(function(){
+    try{var r=localStorage.getItem('prime_lib');if(r)photoLib=JSON.parse(r);}catch(e){}
+    if(cb)cb();
+  });
+}
+function saveLib(){
+  if(!fbOk()){try{localStorage.setItem('prime_lib',JSON.stringify(photoLib));}catch(e){}return;}
+  db.ref('library').set(photoLib).catch(function(){
+    try{localStorage.setItem('prime_lib',JSON.stringify(photoLib));}catch(e){}
+  });
+}
 function addToLib(name,photo){if(name&&photo){photoLib[name]=photo;saveLib();}}
 
 // prefToRegion -> see above
