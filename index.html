@@ -184,43 +184,27 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
     overflow:hidden!important;
   }
   .event-card.single{position:static!important;flex:none!important;}
-  /* 集中会場：Safari対応レインボー */
+  /* 集中会場スマホ：JSで制御 */
   .event-card.focus-venue{
     position:static!important;
     flex-shrink:0!important;
-    border-radius:4px!important;
     overflow:hidden!important;
-    margin-bottom:3px!important;
-    padding:2px!important;
-    background:linear-gradient(270deg,#ff0000,#ff7700,#ffee00,#00cc44,#0088ff,#8800ff,#ff0000)!important;
-    background-size:400% 400%!important;
-    -webkit-animation:rbspin 3s linear infinite!important;
-    animation:rbspin 3s linear infinite!important;
+    margin-bottom:4px!important;
     border-left:none!important;
   }
   .event-card.focus-venue .ev-inner{
-    background:white!important;
-    border-radius:3px!important;
-    padding:8px 3px 2px 3px!important;
-    position:relative!important;
-    display:flex!important;
+    padding-top:10px!important;
   }
   .event-card.focus-venue::before{display:none!important;}
   .event-card.focus-venue::after{
-    content:'🌈 集中会場'!important;
+    content:'🌈'!important;
     position:absolute!important;
-    top:2px!important;
-    left:50%!important;
-    transform:translateX(-50%)!important;
-    font-size:6px!important;
-    font-weight:700!important;
-    color:#333!important;
+    top:1px!important;left:2px!important;
+    transform:none!important;
+    font-size:8px!important;
     background:none!important;
     padding:0!important;
-    border-radius:0!important;
     z-index:2!important;
-    pointer-events:none!important;
-    white-space:nowrap!important;
   }
 
   .add-btn{font-size:9px!important;padding:1px 2px!important;opacity:0.5!important;}
@@ -726,19 +710,23 @@ function makeCard(ev,d,idx,single){
   var card=document.createElement('div');
   var isCollab=!!(ev.koushi2||ev.photo2);
   card.className='event-card'+(f?' focus-venue':'')+(single?' single':'')+(isCollab?' collab-card':'');
-  // スマホではfocusカードのインラインスタイルをCSSに任せる
-  if(!(f && window.innerWidth<=640)){
-    card.style.background=bg;
-    card.style.borderLeft=bl;
-  }
+  card.style.background=bg;
+  card.style.borderLeft=bl;
   card.onclick=function(){
     if(isEditMode){ openEdit(d,idx); }
     else{ openDetail(ev); }
   };
   var inner=document.createElement('div');inner.className='ev-inner';
+  // スマホの集中会場：JSでレインボーを直接設定
   if(f && window.innerWidth<=640){
+    card.style.background='white';
+    card.style.borderLeft='none';
+    card.style.padding='2px';
+    card.style.borderRadius='4px';
+    card.style.position='static';
+    // レインボー枠をbox-shadowで表現（Safariでも確実に動く）
+    card.style.boxShadow='0 0 0 2px #ff0000, 0 0 0 3px #ff7700, 0 0 0 4px #ffee00, 0 0 0 5px #00cc44, 0 0 0 6px #0088ff, 0 0 0 7px #8800ff';
     inner.style.background='white';
-    inner.style.borderRadius='3px';
   }
   var text=document.createElement('div');text.className='ev-text';
   var tb=document.createElement('div');tb.className='ev-type-badge';tb.style.color=col;tb.textContent=(TICON[ev.type]||'')+' '+ev.type;text.appendChild(tb);
