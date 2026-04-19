@@ -145,17 +145,17 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
   #view-toolbar{margin-bottom:3px;}
   #view-toolbar button{padding:7px 14px!important;font-size:12px!important;width:auto!important;border-radius:9px!important;}
 
-  /* カレンダー全体：overflowをvisibleに */
+  /* カレンダー */
   .calendar{overflow:visible!important;}
   .cal-header-cell{font-size:10px;padding:4px 1px;font-weight:700;}
   .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);}
 
-  /* 全セル：縦スクロール強制 */
+  /* セル：縦スクロール */
   .cal-cell{
     height:90px!important;
     padding:2px 1px!important;
-    overflow:hidden!important;
     overflow-y:scroll!important;
+    overflow-x:hidden!important;
     -webkit-overflow-scrolling:touch!important;
     overscroll-behavior-y:contain!important;
     display:flex!important;
@@ -173,7 +173,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
   .date-num.sat-num{color:#1565c0!important;}
   .cal-cell.today .date-num{background:#cc0000!important;color:white!important;border-radius:50%!important;}
 
-  /* カード：全て同じ・staticで積み上げ */
+  /* 通常カード */
   .event-card{
     padding:2px 2px!important;
     margin-bottom:2px!important;
@@ -183,12 +183,19 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
     overflow:hidden!important;
   }
   .event-card.single{position:static!important;flex:none!important;}
-  /* 集中会場：PC版と同じ */
-  .cal-cell{overflow-y:scroll!important;overflow-x:hidden!important;}
-  .event-card.focus-venue{position:relative!important;overflow:visible!important;margin:2px 0!important;}
-  .event-card.focus-venue .ev-inner{padding-top:14px!important;}
-  .event-card.focus-venue::before{animation:-webkit-rbspin 3s linear infinite!important;-webkit-animation:rbspin 3s linear infinite!important;}
-  .has-multi .event-card.focus-venue{position:relative!important;overflow:visible!important;}
+
+  /* 集中会場カード：PC版と同じ（overflow:visible必須） */
+  .event-card.focus-venue{
+    position:relative!important;
+    overflow:visible!important;
+    margin:4px 0!important;
+    flex-shrink:0!important;
+    z-index:1!important;
+  }
+  .has-multi .event-card.focus-venue{
+    position:relative!important;
+    overflow:visible!important;
+  }
 
   .add-btn{font-size:9px!important;padding:1px 2px!important;opacity:0.5!important;}
 
@@ -726,15 +733,18 @@ function makeCard(ev,d,idx,single){
   }
   inner.appendChild(wrap);
   card.appendChild(inner);
-  // スマホではfocus以外をstatic強制
-  if(window.innerWidth <= 640 && !f){
-    card.style.setProperty('position','static','important');
-    card.style.setProperty('top','','important');
-    card.style.setProperty('left','','important');
-    card.style.setProperty('right','','important');
-    card.style.setProperty('bottom','','important');
-    card.style.setProperty('margin','0 0 3px 0','important');
-    card.style.setProperty('flex','none','important');
+  // スマホではsingle以外のposition調整
+  if(window.innerWidth <= 640){
+    if(!f){
+      // 通常カード：static
+      card.style.setProperty('position','static','important');
+      card.style.setProperty('top','','important');
+      card.style.setProperty('left','','important');
+      card.style.setProperty('right','','important');
+      card.style.setProperty('bottom','','important');
+      card.style.setProperty('flex','none','important');
+    }
+    // 集中会場：CSSのposition:relativeに任せる（インラインスタイル不要）
   }
   return card;
 }
@@ -762,14 +772,10 @@ function render(){
     var dow=(firstDay+d-1)%7;
     var de=events[d]||[];
     var focusList=de.filter(function(ev){return ev.focus;});
-    var nonFocusList=de.filter(function(ev){return !ev.focus;}).filter(editionFilter);
     var displayList;
-    if(currentEdition==='important'){
-      // 重要版：集中会場のみ表示
+    if(focusList.length>0){
+      // 集中会場がある日：集中会場のみ全件表示
       displayList=focusList;
-    } else if(focusList.length>0){
-      // 通常版：集中会場を先頭に、その後通常日程
-      displayList=focusList.concat(nonFocusList);
     } else {
       displayList=de.filter(editionFilter);
     }
