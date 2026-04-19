@@ -504,12 +504,45 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
 <!-- 写真ライブラリ -->
 <div id="lib-overlay" class="lib-overlay">
   <div class="lib-modal">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
       <h3 style="font-size:14px;font-weight:700;">📚 登録済み写真から選ぶ</h3>
-      <button onclick="closeLibrary()" style="background:none;border:none;font-size:20px;cursor:pointer;color:#888;">✕</button>
+      <div style="display:flex;gap:6px;align-items:center;">
+        <button id="lib-edit-btn" onclick="toggleLibEdit()" style="font-size:11px;padding:4px 10px;border-radius:6px;border:1px solid #1565c0;background:white;color:#1565c0;font-family:inherit;cursor:pointer;font-weight:700;">✏️ 編集</button>
+        <button onclick="closeLibrary()" style="background:none;border:none;font-size:20px;cursor:pointer;color:#888;line-height:1;">✕</button>
+      </div>
     </div>
+    <div id="lib-edit-hint" style="display:none;background:#fff8e1;border-radius:6px;padding:6px 10px;font-size:11px;color:#5d4037;margin-bottom:8px;">写真をタップして編集・削除できます</div>
     <div id="lib-grid" class="lib-grid"></div>
     <div id="lib-empty" style="text-align:center;color:#aaa;font-size:12px;padding:20px;display:none;">まだ登録されていません。<br>写真を追加して保存するとここに表示されます。</div>
+  </div>
+</div>
+
+<!-- ライブラリ編集モーダル -->
+<div id="lib-edit-overlay" style="position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);display:none;align-items:center;justify-content:center;z-index:500;">
+  <div style="background:white;border-radius:14px;padding:20px;width:320px;max-width:94vw;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+      <div style="font-size:14px;font-weight:700;">📷 写真を編集</div>
+      <button onclick="closeLibEdit()" style="background:none;border:none;font-size:20px;cursor:pointer;color:#888;line-height:1;">✕</button>
+    </div>
+    <div style="text-align:center;margin-bottom:12px;">
+      <img id="lib-edit-preview" style="width:80px;height:80px;border-radius:50%;object-fit:cover;border:2px solid #ddd;">
+    </div>
+    <div style="margin-bottom:10px;">
+      <label style="font-size:11px;font-weight:700;color:#444;display:block;margin-bottom:4px;">講師名</label>
+      <div id="lib-edit-name" style="font-size:14px;font-weight:700;color:#1a1a1a;padding:6px 0;"></div>
+    </div>
+    <div style="margin-bottom:14px;">
+      <label style="font-size:11px;font-weight:700;color:#444;display:block;margin-bottom:4px;">よみがな</label>
+      <input type="text" id="lib-edit-yomi" placeholder="例：あおきひろゆき" style="width:100%;font-size:13px;border-radius:8px;border:1.5px solid #ddd;padding:8px 10px;font-family:inherit;box-sizing:border-box;">
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <button onclick="libEditSaveYomi()" style="padding:10px;border-radius:8px;border:none;background:#1565c0;color:white;font-size:13px;font-family:inherit;font-weight:700;cursor:pointer;">✅ よみがなを保存</button>
+      <label style="padding:10px;border-radius:8px;border:1.5px solid #1565c0;background:white;color:#1565c0;font-size:13px;font-family:inherit;font-weight:700;cursor:pointer;text-align:center;">
+        📷 写真を差し替え
+        <input type="file" accept="image/*" style="display:none;" onchange="libEditReplacePhoto(event)">
+      </label>
+      <button onclick="libEditDelete()" style="padding:10px;border-radius:8px;border:1.5px solid #e53935;background:white;color:#e53935;font-size:13px;font-family:inherit;font-weight:700;cursor:pointer;">🗑️ この写真を削除</button>
+    </div>
   </div>
 </div>
 
@@ -902,22 +935,113 @@ function openLibrary(num){
   keys.sort(function(a,b){
     return libYomi(a).localeCompare(libYomi(b),'ja',{sensitivity:'base'});
   });
-  grid.innerHTML='';
-  if(!keys.length){empty.style.display='block';grid.style.display='none';}
-  else{empty.style.display='none';grid.style.display='grid';
-    keys.forEach(function(name){
-      var item=document.createElement('div');item.className='lib-item';
-      var ph=libPhoto(name);
-      if(ph){var img=document.createElement('img');img.src=ph;item.appendChild(img);}
-      else{var div=document.createElement('div');div.className='lib-item-ph';div.style.background='linear-gradient(135deg,#e53935,#ff8a65)';div.textContent=getInit(name);item.appendChild(div);}
-      var lbl=document.createElement('div');lbl.className='lib-item-name';lbl.textContent=name;item.appendChild(lbl);
-      item.onclick=function(){selectLib(name,ph);};
-      grid.appendChild(item);
-    });
-  }
+  libEditMode=false;
+  renderLibGrid();
   document.getElementById('lib-overlay').style.display='flex';
+  var btn=document.getElementById('lib-edit-btn');
+  var hint=document.getElementById('lib-edit-hint');
+  if(btn){btn.textContent='✏️ 編集';btn.style.background='white';btn.style.color='#1565c0';}
+  if(hint)hint.style.display='none';
 }
-function closeLibrary(){document.getElementById('lib-overlay').style.display='none';}
+function closeLibrary(){document.getElementById('lib-overlay').style.display='none';libEditMode=false;renderLibGrid();}
+
+var libEditMode=false;
+var libEditTarget='';
+
+function toggleLibEdit(){
+  libEditMode=!libEditMode;
+  var btn=document.getElementById('lib-edit-btn');
+  var hint=document.getElementById('lib-edit-hint');
+  btn.textContent=libEditMode?'✏️ 完了':'✏️ 編集';
+  btn.style.background=libEditMode?'#1565c0':'white';
+  btn.style.color=libEditMode?'white':'#1565c0';
+  hint.style.display=libEditMode?'block':'none';
+  renderLibGrid();
+}
+
+function renderLibGrid(){
+  var grid=document.getElementById('lib-grid');
+  var empty=document.getElementById('lib-empty');
+  var keys=Object.keys(photoLib);
+  keys.sort(function(a,b){
+    return libYomi(a).localeCompare(libYomi(b),'ja',{sensitivity:'base'});
+  });
+  grid.innerHTML='';
+  if(!keys.length){empty.style.display='block';grid.style.display='none';return;}
+  empty.style.display='none';grid.style.display='grid';
+  keys.forEach(function(name){
+    var item=document.createElement('div');item.className='lib-item';
+    var ph=libPhoto(name);
+    if(ph){var img=document.createElement('img');img.src=ph;item.appendChild(img);}
+    else{var div=document.createElement('div');div.className='lib-item-ph';div.style.background='linear-gradient(135deg,#e53935,#ff8a65)';div.textContent=getInit(name);item.appendChild(div);}
+    // よみがな表示
+    var yomi=libYomi(name);
+    if(yomi!==name){var ylbl=document.createElement('div');ylbl.style.cssText='font-size:8px;color:#aaa;text-align:center;line-height:1.2;';ylbl.textContent=yomi;item.appendChild(ylbl);}
+    var lbl=document.createElement('div');lbl.className='lib-item-name';lbl.textContent=name;item.appendChild(lbl);
+    // 編集モード時はバッジを表示
+    if(libEditMode){
+      var badge=document.createElement('div');
+      badge.style.cssText='position:absolute;top:2px;right:2px;background:#1565c0;color:white;border-radius:50%;width:16px;height:16px;font-size:9px;display:flex;align-items:center;justify-content:center;';
+      badge.textContent='✏';item.style.position='relative';item.appendChild(badge);
+      item.onclick=function(){openLibEditModal(name);};
+    } else {
+      item.onclick=function(){selectLib(name,ph);};
+    }
+    grid.appendChild(item);
+  });
+}
+
+function openLibEditModal(name){
+  libEditTarget=name;
+  var ph=libPhoto(name);
+  document.getElementById('lib-edit-preview').src=ph||'';
+  document.getElementById('lib-edit-name').textContent=name;
+  document.getElementById('lib-edit-yomi').value=libYomi(name)!==name?libYomi(name):'';
+  document.getElementById('lib-edit-overlay').style.display='flex';
+}
+
+function closeLibEdit(){
+  document.getElementById('lib-edit-overlay').style.display='none';
+}
+
+function libEditSaveYomi(){
+  var yomi=document.getElementById('lib-edit-yomi').value.trim();
+  if(!libEditTarget)return;
+  var ph=libPhoto(libEditTarget);
+  addToLib(libEditTarget,ph,yomi);
+  closeLibEdit();
+  renderLibGrid();
+  alert('✅ よみがなを保存しました！');
+}
+
+function libEditReplacePhoto(e){
+  var file=e.target.files[0];
+  if(!file)return;
+  var reader=new FileReader();
+  reader.onload=function(ev){
+    var src=ev.target.result;
+    // cropモーダルを開く（差し替え）
+    closeLibEdit();
+    // 一時的に講師名をev-koushiにセット
+    var tmp=document.getElementById('ev-koushi');
+    var prev=tmp?tmp.value:'';
+    if(tmp)tmp.value=libEditTarget;
+    openCrop(src,1);
+    // cropが終わったら元に戻す（タイミング上の問題を避けるためsetTimeoutで）
+    setTimeout(function(){if(tmp&&tmp.value===libEditTarget)tmp.value=prev;},100);
+  };
+  reader.readAsDataURL(file);
+}
+
+function libEditDelete(){
+  if(!libEditTarget)return;
+  if(!confirm('「'+libEditTarget+'」の写真を削除しますか？'))return;
+  delete photoLib[libEditTarget];
+  saveLib();
+  closeLibEdit();
+  renderLibGrid();
+  alert('✅ 削除しました。');
+}
 function selectLib(name,photo){
   if(libTarget===2){p2=photo;document.getElementById('p2-prev').src=photo;document.getElementById('p2-prev').style.display='block';document.getElementById('p2-label').textContent='📷 '+name;if(!document.getElementById('ev-koushi2').value)document.getElementById('ev-koushi2').value=name;}
   else{p1=photo;document.getElementById('p1-prev').src=photo;document.getElementById('p1-prev').style.display='block';document.getElementById('p1-label').textContent='📷 '+name;if(!document.getElementById('ev-koushi').value)document.getElementById('ev-koushi').value=name;}
