@@ -147,7 +147,6 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
 
   /* カレンダー全体：overflowをvisibleに */
   .calendar{overflow:visible!important;}
-  .cal-cell{overflow-y:scroll!important;overflow-x:hidden!important;}
   .cal-header-cell{font-size:10px;padding:4px 1px;font-weight:700;}
   .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);}
 
@@ -184,28 +183,12 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
     overflow:hidden!important;
   }
   .event-card.single{position:static!important;flex:none!important;}
-  /* 集中会場スマホ：JSで制御 */
-  .event-card.focus-venue{
-    position:static!important;
-    flex-shrink:0!important;
-    overflow:hidden!important;
-    margin-bottom:4px!important;
-    border-left:none!important;
-  }
-  .event-card.focus-venue .ev-inner{
-    padding-top:10px!important;
-  }
-  .event-card.focus-venue::before{display:none!important;}
-  .event-card.focus-venue::after{
-    content:'🌈'!important;
-    position:absolute!important;
-    top:1px!important;left:2px!important;
-    transform:none!important;
-    font-size:8px!important;
-    background:none!important;
-    padding:0!important;
-    z-index:2!important;
-  }
+  /* 集中会場：PC版と同じ */
+  .cal-cell{overflow-y:scroll!important;overflow-x:hidden!important;}
+  .event-card.focus-venue{position:relative!important;overflow:visible!important;margin:2px 0!important;}
+  .event-card.focus-venue .ev-inner{padding-top:14px!important;}
+  .event-card.focus-venue::before{animation:-webkit-rbspin 3s linear infinite!important;-webkit-animation:rbspin 3s linear infinite!important;}
+  .has-multi .event-card.focus-venue{position:relative!important;overflow:visible!important;}
 
   .add-btn{font-size:9px!important;padding:1px 2px!important;opacity:0.5!important;}
 
@@ -717,17 +700,6 @@ function makeCard(ev,d,idx,single){
     else{ openDetail(ev); }
   };
   var inner=document.createElement('div');inner.className='ev-inner';
-  // スマホの集中会場：JSでレインボーを直接設定
-  if(f && window.innerWidth<=640){
-    card.style.background='white';
-    card.style.borderLeft='none';
-    card.style.padding='2px';
-    card.style.borderRadius='4px';
-    card.style.position='static';
-    // レインボー枠をbox-shadowで表現（Safariでも確実に動く）
-    card.style.boxShadow='0 0 0 2px #ff0000, 0 0 0 3px #ff7700, 0 0 0 4px #ffee00, 0 0 0 5px #00cc44, 0 0 0 6px #0088ff, 0 0 0 7px #8800ff';
-    inner.style.background='white';
-  }
   var text=document.createElement('div');text.className='ev-text';
   var tb=document.createElement('div');tb.className='ev-type-badge';tb.style.color=col;tb.textContent=(TICON[ev.type]||'')+' '+ev.type;text.appendChild(tb);
   var hasP2c=ev.koushi2||ev.photo2;
@@ -754,8 +726,8 @@ function makeCard(ev,d,idx,single){
   }
   inner.appendChild(wrap);
   card.appendChild(inner);
-  // スマホではposition:staticを強制
-  if(window.innerWidth <= 640){
+  // スマホではfocus以外をstatic強制
+  if(window.innerWidth <= 640 && !f){
     card.style.setProperty('position','static','important');
     card.style.setProperty('top','','important');
     card.style.setProperty('left','','important');
