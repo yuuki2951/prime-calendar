@@ -54,6 +54,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
 .event-card{border-radius:5px;padding:4px 5px;margin-bottom:3px;cursor:pointer;border-left:3px solid transparent;}
 .event-card:hover{opacity:0.82;}
 .has-multi .event-card{position:static !important;margin-bottom:4px;}
+.has-multi .event-card.focus-venue{position:relative !important;margin-bottom:6px;overflow:visible !important;}
 .ev-inner{display:flex;gap:5px;align-items:flex-start;height:100%;}
 .ev-text{flex:1;min-width:0;}
 .ev-type-badge{font-size:10px;font-weight:700;padding:0 3px;border-radius:3px;background:rgba(255,255,255,0.55);display:inline-block;margin-bottom:2px;}
@@ -75,7 +76,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
 .event-card.single .ev-time{font-size:11px;}
 .event-card.single .ev-venue{font-size:11px;}
 .event-card.focus-venue .ev-inner{padding-top:14px;}
-.event-card.focus-venue{border-left:none;border-radius:6px;margin-top:0;position:relative;background:white !important;isolation:isolate;}
+.event-card.focus-venue{border-left:none;border-radius:6px;margin-top:2px;position:relative;background:white !important;isolation:isolate;outline:2px solid transparent;box-shadow:0 0 0 2px #ff0000,0 0 0 3px #ff7700,0 0 0 4px #ffee00;}
 .event-card.single.focus-venue{top:23px;}
 .event-card.focus-venue::before{content:'';position:absolute;inset:-2px;border-radius:8px;background:linear-gradient(135deg,#ff0000,#ff7700,#ffee00,#00cc44,#0088ff,#8800ff);background-size:300% 300%;animation:rbspin 2.5s linear infinite;z-index:-1;}
 .event-card.focus-venue::after{content:'🌈 集中会場';position:absolute;top:2px;left:50%;transform:translateX(-50%);font-size:7px;font-weight:700;padding:1px 6px;border-radius:4px;white-space:nowrap;color:white;background:linear-gradient(90deg,#ff0000,#ff7700,#ffee00,#00cc44,#0088ff,#8800ff);z-index:1;pointer-events:none;}
@@ -182,7 +183,17 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
     overflow:hidden!important;
   }
   .event-card.single{position:static!important;flex:none!important;}
-  .event-card.focus-venue .ev-inner{padding-top:11px!important;}
+  .event-card.focus-venue{
+    position:relative!important;
+    margin-top:4px!important;
+    flex-shrink:0!important;
+    box-shadow:0 0 0 2px #ff0000,0 0 0 3.5px #ff7700,0 0 0 5px #ffee00!important;
+    border-radius:4px!important;
+    overflow:visible!important;
+  }
+  .event-card.focus-venue .ev-inner{padding-top:12px!important;position:relative;z-index:1;}
+  .event-card.focus-venue::before{content:'';position:absolute;inset:-2px;border-radius:6px;background:linear-gradient(135deg,#ff0000,#ff7700,#ffee00,#00cc44,#0088ff,#8800ff);z-index:0!important;}
+  .event-card.focus-venue::after{content:'🌈 集中会場';position:absolute;top:1px;left:50%;transform:translateX(-50%);font-size:6px;font-weight:700;padding:1px 4px;border-radius:3px;white-space:nowrap;color:white;background:linear-gradient(90deg,#ff0000,#ff7700,#ffee00,#00cc44,#0088ff,#8800ff);z-index:2!important;pointer-events:none;}
 
   /* カード内：テキスト左・写真右 */
   .ev-inner{
@@ -756,13 +767,15 @@ function makeCard(ev,d,idx,single){
   }
   inner.appendChild(wrap);
   card.appendChild(inner);
-  // スマホではposition:staticを強制（singleのabsoluteを上書き）
+  // スマホではposition調整
   if(window.innerWidth <= 640){
-    card.style.setProperty('position','static','important');
-    card.style.setProperty('top','','important');
-    card.style.setProperty('left','','important');
-    card.style.setProperty('right','','important');
-    card.style.setProperty('bottom','','important');
+    if(!f){
+      card.style.setProperty('position','static','important');
+      card.style.setProperty('top','','important');
+      card.style.setProperty('left','','important');
+      card.style.setProperty('right','','important');
+      card.style.setProperty('bottom','','important');
+    }
     card.style.setProperty('margin','0','important');
     card.style.setProperty('flex','none','important');
   }
@@ -791,8 +804,18 @@ function render(){
   for(var d=1;d<=dim;d++){
     var dow=(firstDay+d-1)%7;
     var de=events[d]||[];
-    var focusEv=null;for(var fi=0;fi<de.length;fi++){if(de[fi].focus){focusEv=de[fi];break;}}
-    var displayList=focusEv?[focusEv]:de.filter(editionFilter);
+    var focusList=de.filter(function(ev){return ev.focus;});
+    var nonFocusList=de.filter(function(ev){return !ev.focus;}).filter(editionFilter);
+    var displayList;
+    if(currentEdition==='important'){
+      // 重要版：集中会場のみ表示
+      displayList=focusList;
+    } else if(focusList.length>0){
+      // 通常版：集中会場を先頭に、その後通常日程
+      displayList=focusList.concat(nonFocusList);
+    } else {
+      displayList=de.filter(editionFilter);
+    }
     var single=displayList.length===1;
     var pCls=displayList.length>=4?' print-4':displayList.length===3?' print-3':'';
     var cell=document.createElement('div');
