@@ -726,12 +726,20 @@ function makeCard(ev,d,idx,single){
   var card=document.createElement('div');
   var isCollab=!!(ev.koushi2||ev.photo2);
   card.className='event-card'+(f?' focus-venue':'')+(single?' single':'')+(isCollab?' collab-card':'');
-  card.style.background=bg; card.style.borderLeft=bl;
+  // スマホではfocusカードのインラインスタイルをCSSに任せる
+  if(!(f && window.innerWidth<=640)){
+    card.style.background=bg;
+    card.style.borderLeft=bl;
+  }
   card.onclick=function(){
     if(isEditMode){ openEdit(d,idx); }
     else{ openDetail(ev); }
   };
   var inner=document.createElement('div');inner.className='ev-inner';
+  if(f && window.innerWidth<=640){
+    inner.style.background='white';
+    inner.style.borderRadius='3px';
+  }
   var text=document.createElement('div');text.className='ev-text';
   var tb=document.createElement('div');tb.className='ev-type-badge';tb.style.color=col;tb.textContent=(TICON[ev.type]||'')+' '+ev.type;text.appendChild(tb);
   var hasP2c=ev.koushi2||ev.photo2;
