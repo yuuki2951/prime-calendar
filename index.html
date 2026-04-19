@@ -234,17 +234,23 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
   .modal-btns button{flex:1 1 auto!important;padding:11px!important;font-size:13px!important;}
 }
 @media print{
-  @page{size:A4 landscape;margin:3mm;}
+  @page{size:A4 landscape;margin:1.5mm;}
   *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;box-sizing:border-box;}
-  html,body{margin:0;padding:0;background:white;width:291mm;overflow:hidden;}
-  .page{padding:0;margin:0;width:291mm;}
+  html,body{margin:0;padding:0;background:white;width:294mm;overflow:hidden;}
+  .page{padding:0;margin:0;width:294mm;overflow:hidden;}
+
+  *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:white;width:287mm;}
+  .page{padding:0;margin:0;width:287mm;}
   #view-toolbar{display:none!important;}
   #pw-overlay{display:none!important;}
   #print-header{display:flex!important;align-items:baseline;gap:8px;padding:0.3mm 2mm;border-bottom:1px solid #ddd;margin-bottom:0.3mm;}
   .header{display:none!important;}
-  .toolbar,.info-bar,.modal-overlay,.crop-overlay,.lib-overlay,.paste-overlay{display:none!important;}
-  .month-nav button,.add-btn{display:none!important;}
-  .calendar{box-shadow:none;border-radius:0;border:0.5px solid #999;width:291mm;}
+  .toolbar,.info-bar,.modal-overlay,.crop-overlay,.lib-overlay,.paste-overlay{display:none !important;}
+  .month-nav button,.add-btn{display:none !important;}
+  .header{box-shadow:none;border:none;border-bottom:1px solid #ddd;padding:1mm 3mm;margin-bottom:1mm;border-radius:0;height:7mm;min-height:0;align-items:center;}
+  .brand{font-size:10px;}.sub{font-size:6px;}.month-display{font-size:11px;}
+  .calendar{box-shadow:none;border-radius:0;border:0.5px solid #999;width:287mm;}
   .cal-header-cell{padding:1px;font-size:7px;height:5mm;line-height:5mm;}
   .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);}
   .cal-cell{border-right:0.5px solid #ccc;border-bottom:0.5px solid #ccc;padding:2px;overflow:hidden;background:white;position:relative;display:flex;flex-direction:column;}
@@ -255,7 +261,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
   .date-num.sun-num{color:#cc0000;}.date-num.sat-num{color:#1565c0;}
   .event-card{flex:1;min-height:0;padding:1px 2px;margin:0 0 1px 0;border-left-width:2px;border-radius:2px;overflow:hidden;display:flex;flex-direction:column;justify-content:center;}
   .event-card:last-child{margin-bottom:0;}
-  .has-multi .event-card{position:static!important;}
+  .has-multi .event-card{position:static !important;}
   .ev-inner{display:flex;gap:2px;align-items:center;height:100%;}
   .ev-text{flex:1;min-width:0;}
   .ev-photo-r{width:24px;height:24px;border-radius:50%;object-fit:cover;flex-shrink:0;}
@@ -268,18 +274,15 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
   .ev-venue{font-size:6px;padding:0 1px;font-weight:700;margin-bottom:0;line-height:1.2;background:none;}
   .ev-shusai{font-size:5.5px;line-height:1.2;margin-bottom:0;}
   .ev-note-tag{display:none;}
-  .event-card.single{position:static!important;flex:1;}
+  .event-card.single{position:static !important;flex:1;}
   .event-card.single .ev-photo-r{width:36px;height:36px;}
   .event-card.single .ev-photo-rph{width:36px;height:36px;font-size:13px;}
   .event-card.single .ev-type-badge{font-size:8px;margin-bottom:1px;}
   .event-card.single .ev-name{font-size:9px;}
   .event-card.single .ev-time{font-size:8px;}
   .event-card.single .ev-venue{font-size:8px;background:rgba(255,255,255,0.6);padding:1px 2px;}
-  /* 集中会場：印刷時もレインボー枠を表示 */
-  .event-card.focus-venue{overflow:visible!important;margin-top:2px!important;}
-  .event-card.focus-venue::before{content:'';position:absolute;inset:-2px;border-radius:4px;background:linear-gradient(135deg,#ff0000,#ff7700,#ffee00,#00cc44,#0088ff,#8800ff);z-index:0;animation:none!important;}
-  .event-card.focus-venue::after{content:'🌈 集中会場';position:absolute;top:1px;left:50%;transform:translateX(-50%);font-size:5px;font-weight:700;padding:0 3px;border-radius:3px;white-space:nowrap;color:white;background:linear-gradient(90deg,#ff0000,#ff7700,#ffee00,#00cc44,#0088ff,#8800ff);z-index:2;}
-  .event-card.focus-venue .ev-inner{position:relative;z-index:1;padding-top:10px;}
+  .event-card.focus-venue::before{animation:none;}
+  .event-card.focus-venue::after{font-size:5px;top:1px;right:2px;padding:0 3px;border-radius:3px;}
   .cal-cell.print-3 .ev-photo-r{width:18px;height:18px;}
   .cal-cell.print-3 .ev-photo-rph{width:18px;height:18px;font-size:7px;}
   .cal-cell.print-3 .ev-type-badge{font-size:5px;}
@@ -292,7 +295,6 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
   .cal-cell.print-4 .ev-time{font-size:4.5px;}
   .cal-cell.print-4 .ev-venue{font-size:4.5px;}
 }
-
 </style>
 </head>
 <body>
@@ -316,8 +318,9 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
   <span id="ph-month" style="font-size:16px;font-weight:700;color:#1a1a1a;margin-left:10px;"></span>
 </div>
 
-<div id="view-toolbar" style="display:none;margin-bottom:10px;display:flex;gap:8px;flex-wrap:wrap;">
+<div id="view-toolbar" style="display:none;margin-bottom:10px;">
   <button onclick="doPrint()" style="padding:10px 20px;border-radius:10px;font-size:14px;font-family:inherit;cursor:pointer;border:none;background:#cc0000;color:white;font-weight:700;">🖨️ 印刷・PDF出力</button>
+
   <button onclick="openHelp()" style="padding:10px 20px;border-radius:10px;font-size:14px;font-family:inherit;cursor:pointer;border:1.5px solid #1565c0;background:white;color:#1565c0;font-weight:700;">💬 使い方</button>
 </div>
 
@@ -448,7 +451,6 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
         <input type="text" id="ev-koushi2" placeholder="講師名（任意）" style="width:100%;font-size:12px;border-radius:6px;border:1.5px solid #ddd;padding:5px 8px;font-family:inherit;">
       </div>
     </div>
-
     <div class="form-row">
       <label>🕐 時間</label>
       <div style="display:flex;align-items:center;gap:6px;">
@@ -489,7 +491,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
     <div class="crop-ctrl"><label>上下</label><input type="range" id="cr-y" min="-1000" max="1000" step="1" value="0"></div>
     <div class="crop-ctrl"><label>左右</label><input type="range" id="cr-x" min="-1000" max="1000" step="1" value="0"></div>
     <div id="crop-yomi-wrap" style="margin-bottom:10px;display:none;">
-      <label style="font-size:12px;color:#555;font-weight:700;display:block;margin-bottom:4px;">📝 よみがな（五十音順用）</label>
+      <label style="font-size:12px;color:#555;font-weight:700;display:block;margin-bottom:4px;" id="crop-yomi-label">📝 よみがな（五十音順用）</label>
       <input type="text" id="crop-yomi" placeholder="例：あおきひろゆき（ひらがな）" style="width:100%;font-size:13px;border-radius:8px;border:1.5px solid #ddd;padding:8px 10px;font-family:inherit;box-sizing:border-box;">
     </div>
     <div class="crop-btns">
@@ -630,11 +632,9 @@ function saveLib(){
 }
 function addToLib(name,photo,yomi){
   if(name&&photo){
-    if(typeof photoLib[name]==='object'&&photoLib[name]!==null){
-      photoLib[name]={photo:photo,yomi:yomi||photoLib[name].yomi||''};
-    } else {
-      photoLib[name]={photo:photo,yomi:yomi||''};
-    }
+    var existing=photoLib[name];
+    var existYomi=(existing&&typeof existing==='object')?existing.yomi:'';
+    photoLib[name]={photo:photo,yomi:yomi||existYomi||''};
     saveLib();
   }
 }
@@ -645,8 +645,8 @@ function libPhoto(name){
 }
 function libYomi(name){
   var v=photoLib[name];
-  if(!v)return name;
-  return typeof v==='object'&&v.yomi?v.yomi:name;
+  if(!v||typeof v!=='object'||!v.yomi)return name;
+  return v.yomi;
 }
 
 // prefToRegion -> see above
@@ -813,8 +813,7 @@ function resetForm(){
 function closeEvModal(){document.getElementById('ev-modal').style.display='none';}
 function saveEvent(){
   var k1=document.getElementById('ev-koushi').value, k2=document.getElementById('ev-koushi2').value;
-  if(k1&&p1)addToLib(k1,p1,libYomi(k1)!==k1?libYomi(k1):'');
-  if(k2&&p2)addToLib(k2,p2,libYomi(k2)!==k2?libYomi(k2):'');
+  if(k1&&p1)addToLib(k1,p1,libYomi(k1)!==k1?libYomi(k1):''); if(k2&&p2)addToLib(k2,p2,libYomi(k2)!==k2?libYomi(k2):'');
   var ev={type:getEvType(),koushi:k1,koushi2:k2,time:document.getElementById('ev-time').value,venue:document.getElementById('ev-venue').value,address:document.getElementById('ev-address').value,region:document.getElementById('ev-region').value,shusai:document.getElementById('ev-shusai').value,note:document.getElementById('ev-note').value,focus:document.getElementById('ev-focus').checked,photo:p1,photo2:p2};
   if(!events[editDate])events[editDate]=[];
   if(editIdx!==null){events[editDate][editIdx]=ev;}else{events[editDate].push(ev);}
@@ -862,11 +861,11 @@ function applyCrop(){
   var dataUrl=canvas.toDataURL('image/jpeg',0.85);
   if(cropTarget===2){p2=dataUrl;document.getElementById('p2-prev').src=dataUrl;document.getElementById('p2-prev').style.display='block';document.getElementById('p2-label').textContent='📷 変更';}
   else{p1=dataUrl;document.getElementById('p1-prev').src=dataUrl;document.getElementById('p1-prev').style.display='block';document.getElementById('p1-label').textContent='📷 変更';}
-  // よみがなを即座にライブラリに登録
-  var yomiVal = (document.getElementById('crop-yomi')||{}).value||'';
-  var koushiId2 = cropTarget===2?'ev-koushi2':'ev-koushi';
-  var kname = (document.getElementById(koushiId2)||{}).value||'';
-  if(kname && yomiVal){ addToLib(kname, dataUrl, yomiVal); }
+  // よみがなをライブラリに即保存
+  var yv=(document.getElementById('crop-yomi')||{}).value||'';
+  var kid2=cropTarget===2?'ev-koushi2':'ev-koushi';
+  var kn=(document.getElementById(kid2)||{}).value||'';
+  if(kn&&yv)addToLib(kn,dataUrl,yv);
   document.getElementById('crop-overlay').style.display='none';
 }
 (function(){
@@ -887,10 +886,8 @@ function openLibrary(num){
   libTarget=num;loadLib();
   var grid=document.getElementById('lib-grid'),empty=document.getElementById('lib-empty');
   var keys=Object.keys(photoLib);
-  // よみがな順でソート（よみがながない場合は名前順）
   keys.sort(function(a,b){
-    var ya=libYomi(a), yb=libYomi(b);
-    return ya.localeCompare(yb,'ja',{sensitivity:'base'});
+    return libYomi(a).localeCompare(libYomi(b),'ja',{sensitivity:'base'});
   });
   grid.innerHTML='';
   if(!keys.length){empty.style.display='block';grid.style.display='none';}
@@ -900,11 +897,6 @@ function openLibrary(num){
       var ph=libPhoto(name);
       if(ph){var img=document.createElement('img');img.src=ph;item.appendChild(img);}
       else{var div=document.createElement('div');div.className='lib-item-ph';div.style.background='linear-gradient(135deg,#e53935,#ff8a65)';div.textContent=getInit(name);item.appendChild(div);}
-      // よみがな表示
-      var yomi=libYomi(name);
-      if(yomi!==name){
-        var ylbl=document.createElement('div');ylbl.style.cssText='font-size:9px;color:#aaa;text-align:center;line-height:1.2;';ylbl.textContent=yomi;item.appendChild(ylbl);
-      }
       var lbl=document.createElement('div');lbl.className='lib-item-name';lbl.textContent=name;item.appendChild(lbl);
       item.onclick=function(){selectLib(name,ph);};
       grid.appendChild(item);
@@ -1482,102 +1474,48 @@ function copyExtractedText(){
 }
 initTimeSelects();
 
-var helpCurrentTab = 'editor';
-
-var helpContent = {
-  editor: '<div style="background:#fff8e1;border:1px solid #ffe082;border-radius:8px;padding:10px 14px;font-size:13px;color:#5d4037;margin-bottom:16px;"><strong>編集パスワード：miura2026</strong>（管理者のみ）</div>' +
-
-  '<div style="font-size:14px;font-weight:700;color:#cc0000;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #ffcccc;">システム更新後の必須手順</div>' +
-  '<div style="background:#fff8e1;border-left:3px solid #f57f17;border-radius:0 8px 8px 0;padding:10px 14px;font-size:13px;color:#5d4037;line-height:1.8;margin-bottom:16px;">' +
-  '<strong style="display:block;margin-bottom:6px;">Safariの場合</strong>' +
-  '① 設定 → Safari → 履歴とWebサイトデータを消去<br>② Safariを完全終了（スワイプして閉じる）<br>③ URLを再度開く<br><br>' +
-  '<strong style="display:block;margin-bottom:6px;">ホーム画面追加（アイコン）の場合</strong>' +
-  '① アイコンを長押し → 削除<br>② 設定 → Safari → 履歴とWebサイトデータを消去<br>③ SafariでURLを開く<br>④ 共有ボタン → ホーム画面に追加</div>' +
-
-  '<div style="font-size:14px;font-weight:700;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #eee;">スケジュール取り込み</div>' +
-  '<div style="font-size:13px;color:#555;line-height:2;margin-bottom:16px;">' +
-  '① セミナーサイトを全選択してコピー<br>' +
-  '② 「📋 テキストを貼り付けて取り込む」をタップ<br>' +
-  '③ 貼り付けて「解析する」→ 内容確認<br>' +
-  '④ 「カレンダーに取り込む」で完了<br>' +
-  '<span style="background:#e8f5e9;border-radius:4px;padding:2px 8px;font-size:12px;color:#2e7d32;">同日の既存予定は更新・テキストにない予定は削除・新規は追加</span></div>' +
-
-  '<div style="font-size:14px;font-weight:700;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #eee;">手動追加・編集</div>' +
-  '<div style="font-size:13px;color:#555;line-height:2;margin-bottom:16px;">セル内の「＋」→ 新規追加<br>既存カードをタップ → 編集モーダル（写真・集中会場設定も可能）</div>' +
-
-  '<div style="font-size:14px;font-weight:700;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #eee;">版の切り替え</div>' +
-  '<div style="font-size:13px;color:#555;line-height:2;margin-bottom:16px;">ヘッダーのドロップダウンで地域を選択<br>⭐ 重要版：集中会場設定したものを全国から自動収集</div>' +
-
-  '<div style="font-size:14px;font-weight:700;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #eee;">色分け</div>' +
-  '<div style="font-size:13px;color:#555;line-height:2;margin-bottom:16px;">' +
-  '<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#e53935;margin-right:6px;"></span>赤：PBS・コンベンション・分科会<br>' +
-  '<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#1565c0;margin-right:6px;"></span>青：BE・BT・BS<br>' +
-  '<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#ff7700;margin-right:6px;"></span>レインボー：集中会場</div>' +
-
-  '<div style="font-size:14px;font-weight:700;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #eee;">印刷・PDF</div>' +
-  '<div style="font-size:13px;color:#555;line-height:2;">「🖨️ 印刷・PDF」→ ブラウザ印刷ダイアログ<br>用紙：A4横　余白：最小推奨</div>',
-
-  viewer: '<div style="background:#fff8e1;border-left:3px solid #f57f17;border-radius:0 8px 8px 0;padding:10px 14px;font-size:13px;color:#5d4037;line-height:1.8;margin-bottom:16px;">' +
-  '<strong style="display:block;margin-bottom:6px;">画面が古い・変わらない場合</strong>' +
-  '<strong>Safariの場合：</strong><br>' +
-  '① 設定 → Safari → 履歴とWebサイトデータを消去<br>② Safariを完全終了して再起動<br><br>' +
-  '<strong>ホーム画面アイコンの場合：</strong><br>' +
-  '① アイコンを長押し → 削除<br>② 設定 → Safari → 履歴とWebサイトデータを消去<br>③ SafariでURLを開く<br>④ 共有ボタン → ホーム画面に追加<br><br>' +
-  '<span style="color:#e65100;font-weight:700;">削除せずに再追加しても古いキャッシュが残ります</span></div>' +
-
-  '<div style="font-size:14px;font-weight:700;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #eee;">ログイン</div>' +
-  '<div style="font-size:13px;color:#555;line-height:2;margin-bottom:16px;">パスワード不要。「👁️ 閲覧モードで開く」をタップするだけ。<br>ホーム画面追加：共有ボタン → ホーム画面に追加</div>' +
-
-  '<div style="font-size:14px;font-weight:700;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #eee;">基本操作</div>' +
-  '<div style="font-size:13px;color:#555;line-height:2;margin-bottom:16px;">' +
-  '◀▶ボタン：月の切り替え<br>' +
-  'ドロップダウン：地域版の切り替え<br>' +
-  '⭐ 重要版：全国の集中会場をまとめて確認<br>' +
-  'カードをタップ：詳細（写真・時間・会場・主催者）を表示</div>' +
-
-  '<div style="font-size:14px;font-weight:700;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #eee;">スマホ操作</div>' +
-  '<div style="font-size:13px;color:#555;line-height:2;margin-bottom:16px;">' +
-  'セルを上下スワイプ：セル内スクロール<br>' +
-  'カードをタップ：詳細表示<br>' +
-  '「🖨️ 印刷・PDF出力」ボタンで印刷</div>' +
-
-  '<div style="font-size:14px;font-weight:700;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #eee;">色の意味</div>' +
-  '<div style="font-size:13px;color:#555;line-height:2;">' +
-  '<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#e53935;margin-right:6px;"></span>赤：PBS・コンベンション・分科会<br>' +
-  '<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#1565c0;margin-right:6px;"></span>青：BE・BT・BS<br>' +
-  '<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#ff7700;margin-right:6px;"></span>レインボー：集中会場（重要）</div>'
+var helpCurrentTab='editor';
+var helpContent={
+  editor:'<div style="background:#fff8e1;border:1px solid #ffe082;border-radius:8px;padding:10px 14px;font-size:13px;color:#5d4037;margin-bottom:16px;"><strong>編集パスワード：miura2026</strong>（管理者のみ）</div>'+
+  '<div style="font-size:14px;font-weight:700;color:#cc0000;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #ffcccc;">システム更新後の必須手順</div>'+
+  '<div style="background:#fff8e1;border-left:3px solid #f57f17;border-radius:0 8px 8px 0;padding:10px 14px;font-size:13px;color:#5d4037;line-height:1.8;margin-bottom:16px;">'+
+  '<strong style="display:block;margin-bottom:6px;">Safariの場合</strong>① 設定→Safari→履歴とWebサイトデータを消去<br>② Safariを完全終了→再起動<br><br>'+
+  '<strong style="display:block;margin-bottom:6px;">ホーム画面アイコンの場合</strong>① アイコンを長押し→削除<br>② 設定→Safari→履歴とWebサイトデータを消去<br>③ SafariでURLを開く<br>④ 共有ボタン→ホーム画面に追加<br>'+
+  '<span style="color:#e65100;font-weight:700;">削除せずに再追加しても古いキャッシュが残ります</span></div>'+
+  '<div style="font-size:14px;font-weight:700;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #eee;">スケジュール取り込み</div>'+
+  '<div style="font-size:13px;color:#555;line-height:2;margin-bottom:16px;">① セミナーサイトを全選択してコピー<br>② 「📋 テキストを貼り付けて取り込む」<br>③ 貼り付け→解析する→内容確認<br>④「カレンダーに取り込む」で完了<br><span style="background:#e8f5e9;border-radius:4px;padding:2px 8px;font-size:12px;color:#2e7d32;">同日の既存予定は更新・テキストにない予定は削除・新規は追加</span></div>'+
+  '<div style="font-size:14px;font-weight:700;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #eee;">手動追加・編集</div>'+
+  '<div style="font-size:13px;color:#555;line-height:2;margin-bottom:16px;">セル内の「＋」→新規追加<br>既存カードをタップ→編集モーダル</div>'+
+  '<div style="font-size:14px;font-weight:700;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #eee;">色分け</div>'+
+  '<div style="font-size:13px;color:#555;line-height:2;">🔴 PBS・コンベンション・分科会<br>🔵 BE・BT・BS<br>🌈 集中会場</div>',
+  viewer:'<div style="background:#fff8e1;border-left:3px solid #f57f17;border-radius:0 8px 8px 0;padding:10px 14px;font-size:13px;color:#5d4037;line-height:1.8;margin-bottom:16px;">'+
+  '<strong style="display:block;margin-bottom:6px;">画面が古い・変わらない場合</strong>'+
+  '<strong>Safariの場合：</strong><br>① 設定→Safari→履歴とWebサイトデータを消去<br>② Safariを完全終了して再起動<br><br>'+
+  '<strong>ホーム画面アイコンの場合：</strong><br>① アイコンを長押し→削除<br>② 設定→Safari→キャッシュ消去<br>③ URLを開く<br>④ 共有ボタン→ホーム画面に追加<br>'+
+  '<span style="color:#e65100;font-weight:700;">削除せずに再追加しても古いキャッシュが残ります</span></div>'+
+  '<div style="font-size:14px;font-weight:700;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #eee;">基本操作</div>'+
+  '<div style="font-size:13px;color:#555;line-height:2;margin-bottom:16px;">◀▶ボタン：月の切り替え<br>ドロップダウン：地域版の切り替え<br>⭐重要版：全国の集中会場をまとめて確認<br>カードをタップ：詳細表示</div>'+
+  '<div style="font-size:14px;font-weight:700;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #eee;">色の意味</div>'+
+  '<div style="font-size:13px;color:#555;line-height:2;">🔴 PBS・コンベンション・分科会<br>🔵 BE・BT・BS<br>🌈 集中会場（重要）</div>'
 };
-
 function openHelp(){
-  var overlay = document.getElementById('help-overlay');
-  overlay.style.display = 'flex';
-  var edBtn = document.getElementById('help-tab-editor');
-  if(!isEditMode){
-    // 閲覧モード：編集者タブを非表示、閲覧者タブのみ表示
-    edBtn.style.display = 'none';
-    switchHelpTab('viewer');
-  } else {
-    // 編集モード：両タブ表示、編集者タブを選択
-    edBtn.style.display = '';
-    switchHelpTab('editor');
-  }
+  document.getElementById('help-overlay').style.display='flex';
+  var edBtn=document.getElementById('help-tab-editor');
+  if(!isEditMode){edBtn.style.display='none';switchHelpTab('viewer');}
+  else{edBtn.style.display='';switchHelpTab('editor');}
 }
-
-function closeHelp(){
-  document.getElementById('help-overlay').style.display = 'none';
-}
-
+function closeHelp(){document.getElementById('help-overlay').style.display='none';}
 function switchHelpTab(tab){
-  helpCurrentTab = tab;
-  document.getElementById('help-body').innerHTML = helpContent[tab];
-  var edBtn = document.getElementById('help-tab-editor');
-  var vwBtn = document.getElementById('help-tab-viewer');
-  if(tab === 'editor'){
-    edBtn.style.background = '#1565c0'; edBtn.style.color = 'white'; edBtn.style.borderColor = '#1565c0'; edBtn.style.fontWeight = '700';
-    vwBtn.style.background = 'white'; vwBtn.style.color = '#555'; vwBtn.style.borderColor = '#ddd'; vwBtn.style.fontWeight = '400';
-  } else {
-    vwBtn.style.background = '#1565c0'; vwBtn.style.color = 'white'; vwBtn.style.borderColor = '#1565c0'; vwBtn.style.fontWeight = '700';
-    edBtn.style.background = 'white'; edBtn.style.color = '#555'; edBtn.style.borderColor = '#ddd'; edBtn.style.fontWeight = '400';
+  helpCurrentTab=tab;
+  document.getElementById('help-body').innerHTML=helpContent[tab];
+  var edBtn=document.getElementById('help-tab-editor');
+  var vwBtn=document.getElementById('help-tab-viewer');
+  if(tab==='editor'){
+    edBtn.style.cssText='flex:1;padding:8px;border-radius:8px;border:1px solid #1565c0;background:#1565c0;color:white;font-size:13px;font-family:inherit;font-weight:700;cursor:pointer;';
+    vwBtn.style.cssText='flex:1;padding:8px;border-radius:8px;border:1px solid #ddd;background:white;color:#555;font-size:13px;font-family:inherit;cursor:pointer;';
+  }else{
+    vwBtn.style.cssText='flex:1;padding:8px;border-radius:8px;border:1px solid #1565c0;background:#1565c0;color:white;font-size:13px;font-family:inherit;font-weight:700;cursor:pointer;';
+    edBtn.style.cssText='flex:1;padding:8px;border-radius:8px;border:1px solid #ddd;background:white;color:#555;font-size:13px;font-family:inherit;cursor:pointer;';
   }
 }
 
@@ -1675,19 +1613,16 @@ document.addEventListener('DOMContentLoaded', function(){
   </div>
 </div>
 
-<!-- ヘルプモーダル -->
 <div id="help-overlay" style="position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:none;align-items:flex-end;justify-content:center;z-index:600;" onclick="if(event.target===this)closeHelp()">
   <div style="background:white;border-radius:18px 18px 0 0;width:100%;max-width:560px;max-height:88vh;display:flex;flex-direction:column;box-shadow:0 -4px 20px rgba(0,0,0,0.15);">
     <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 18px 0;">
-      <div style="font-size:16px;font-weight:700;color:#1a1a1a;">❓ 使い方ガイド</div>
+      <div style="font-size:16px;font-weight:700;color:#1a1a1a;">💬 使い方ガイド</div>
       <button onclick="closeHelp()" style="background:none;border:none;font-size:22px;cursor:pointer;color:#888;line-height:1;">✕</button>
     </div>
-    <!-- タブ -->
     <div style="display:flex;gap:8px;padding:12px 18px;">
       <button id="help-tab-editor" onclick="switchHelpTab('editor')" style="flex:1;padding:8px;border-radius:8px;border:1px solid #1565c0;background:#1565c0;color:white;font-size:13px;font-family:inherit;font-weight:700;cursor:pointer;">✏️ 編集者用</button>
       <button id="help-tab-viewer" onclick="switchHelpTab('viewer')" style="flex:1;padding:8px;border-radius:8px;border:1px solid #ddd;background:white;color:#555;font-size:13px;font-family:inherit;cursor:pointer;">👁️ 閲覧者用</button>
     </div>
-    <!-- コンテンツ -->
     <div id="help-body" style="overflow-y:auto;padding:0 18px 20px;flex:1;-webkit-overflow-scrolling:touch;"></div>
   </div>
 </div>
