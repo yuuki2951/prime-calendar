@@ -835,6 +835,19 @@ function openCrop(src,num){
     document.getElementById('cr-x').value=0;document.getElementById('cr-y').value=0;
     updateCrop();document.getElementById('crop-overlay').style.display='flex';
   };
+  // よみがな入力欄を表示
+  var kId=num===2?'ev-koushi2':'ev-koushi';
+  var kname=(document.getElementById(kId)||{}).value||'';
+  var wrap=document.getElementById('crop-yomi-wrap');
+  var inp=document.getElementById('crop-yomi');
+  if(kname&&wrap&&inp){
+    var ey=libYomi(kname);
+    inp.value=(ey!==kname)?ey:'';
+    document.getElementById('crop-yomi-label').textContent='📝 '+kname+' のよみがな（ひらがな）';
+    wrap.style.display='block';
+  } else if(wrap){
+    wrap.style.display='none';
+  }
 }
 function updateCrop(){
   var z=parseFloat(document.getElementById('cr-zoom').value);
