@@ -89,74 +89,70 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
   .cal-header-cell{font-size:10px;padding:4px 1px;font-weight:700;}
   .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);}
 
-  /* セル：縦スクロール・PC版と同じ表示 */
+  /* セル */
   .cal-cell{
-    height:90px!important;
+    height:80px!important;
     padding:2px 1px!important;
-    overflow-y:scroll!important;
-    overflow-x:hidden!important;
-    -webkit-overflow-scrolling:touch!important;
-    overscroll-behavior-y:contain!important;
+    overflow:hidden!important;
+    position:relative!important;
     display:flex!important;
     flex-direction:column!important;
-    position:relative!important;
     box-sizing:border-box!important;
-    scrollbar-width:thin!important;
-    scrollbar-color:#ddd transparent!important;
   }
-  .cal-cell::-webkit-scrollbar{width:2px;}
-  .cal-cell::-webkit-scrollbar-thumb{background:#ddd;border-radius:2px;}
   .date-num{
     font-size:10px!important;width:16px!important;height:16px!important;
     margin-bottom:1px!important;flex-shrink:0!important;font-weight:700!important;
     display:flex!important;align-items:center!important;justify-content:center!important;
-    position:sticky!important;top:0!important;z-index:3!important;background:white!important;
+    position:relative!important;z-index:3!important;background:white!important;
   }
   .date-num.sun-num{color:#cc0000!important;}
   .date-num.sat-num{color:#1565c0!important;}
   .cal-cell.today .date-num{background:#cc0000!important;color:white!important;border-radius:50%!important;}
 
-  /* カード：PC版と完全同一 */
+  /* カード */
   .event-card{
-    border-radius:5px!important;
-    padding:4px 5px!important;
-    margin-bottom:3px!important;
-    cursor:pointer!important;
-    border-left:3px solid transparent!important;
+    padding:2px 3px!important;
+    margin-bottom:2px!important;
+    border-radius:3px!important;
     flex-shrink:0!important;
     position:static!important;
     overflow:hidden!important;
+    cursor:pointer!important;
   }
   .event-card.single{
-    position:static!important;
-    width:auto!important;height:auto!important;
-    margin:0!important;padding:4px 5px!important;
-    flex:none!important;
+    position:absolute!important;
+    top:18px!important;left:1px!important;right:1px!important;bottom:1px!important;
+    margin:0!important;padding:3px 4px!important;flex:none!important;
   }
 
-  /* テキスト：PC版と同一サイズ */
-  .ev-inner{display:flex!important;gap:5px!important;align-items:flex-start!important;height:auto!important;}
-  .ev-text{flex:1!important;min-width:0!important;}
-  .ev-type-badge{font-size:10px!important;font-weight:700!important;padding:0 3px!important;border-radius:3px!important;background:rgba(255,255,255,0.55)!important;display:inline-block!important;margin-bottom:2px!important;}
-  .ev-name{font-size:10px!important;font-weight:700!important;line-height:1.3!important;margin-bottom:1px!important;}
-  .ev-time{font-size:10px!important;margin-bottom:1px!important;}
-  .ev-venue{font-size:10px!important;font-weight:700!important;background:rgba(255,255,255,0.65)!important;border-radius:3px!important;padding:1px 4px!important;margin-bottom:1px!important;}
-  .ev-shusai{font-size:9px!important;opacity:0.9!important;font-weight:500!important;}
+  /* テキスト */
+  .ev-inner{display:flex!important;gap:3px!important;align-items:flex-start!important;height:auto!important;}
+  .ev-text{flex:1!important;min-width:0!important;overflow:hidden!important;}
+  .ev-type-badge{font-size:7px!important;font-weight:700!important;display:block!important;line-height:1.3!important;white-space:nowrap!important;overflow:hidden!important;}
+  .ev-name{font-size:8px!important;font-weight:700!important;line-height:1.3!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;}
+  .ev-time{font-size:7px!important;line-height:1.2!important;white-space:nowrap!important;overflow:hidden!important;}
+  .ev-venue{font-size:6.5px!important;line-height:1.2!important;background:none!important;padding:0!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;}
+  .ev-shusai{font-size:6px!important;line-height:1.2!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;}
 
-  /* 写真：PC版と同一サイズ */
-  .ev-photo-wrap{display:flex!important;flex-direction:column!important;gap:2px!important;align-items:center!important;flex-shrink:0!important;overflow:hidden!important;}
-  .ev-photo-r{width:44px!important;height:44px!important;border-radius:50%!important;object-fit:cover!important;flex-shrink:0!important;}
-  .ev-photo-rph{width:44px!important;height:44px!important;border-radius:50%!important;display:flex!important;align-items:center!important;justify-content:center!important;font-size:16px!important;font-weight:700!important;color:white!important;flex-shrink:0!important;}
-  .ev-photo-wrap.collab .ev-photo-r,.ev-photo-wrap.collab .ev-photo-rph{width:26px!important;height:26px!important;font-size:10px!important;}
-  .ev-name2-lbl{font-size:8px!important;font-weight:700!important;text-align:center!important;line-height:1.2!important;max-width:48px!important;}
+  /* 写真：コンパクト */
+  .ev-photo-wrap{display:flex!important;flex-direction:column!important;gap:1px!important;align-items:center!important;flex-shrink:0!important;overflow:hidden!important;}
+  .ev-photo-r{width:26px!important;height:26px!important;border-radius:50%!important;object-fit:cover!important;flex-shrink:0!important;}
+  .ev-photo-rph{width:26px!important;height:26px!important;border-radius:50%!important;display:flex!important;align-items:center!important;justify-content:center!important;font-size:9px!important;font-weight:700!important;color:white!important;flex-shrink:0!important;}
+  .ev-photo-wrap.collab .ev-photo-r,.ev-photo-wrap.collab .ev-photo-rph{width:20px!important;height:20px!important;font-size:7px!important;}
+  .ev-name2-lbl{display:none!important;}
+
+  /* single時は写真大きく */
+  .event-card.single .ev-photo-r{width:44px!important;height:44px!important;}
+  .event-card.single .ev-photo-rph{width:44px!important;height:44px!important;font-size:15px!important;}
+  .event-card.single .ev-name{font-size:11px!important;white-space:normal!important;}
+  .event-card.single .ev-time{font-size:9px!important;}
+  .event-card.single .ev-venue{font-size:8px!important;}
+  .event-card.single .ev-shusai{font-size:8px!important;}
 
   /* 集中会場 */
   .event-card.focus-venue{
-    position:relative!important;
-    overflow:visible!important;
-    margin:4px 0!important;
-    flex-shrink:0!important;
-    z-index:1!important;
+    position:relative!important;overflow:visible!important;
+    margin:4px 0!important;flex-shrink:0!important;z-index:1!important;
   }
   .has-multi .event-card.focus-venue{position:relative!important;overflow:visible!important;}
   .print-more-badge{display:none!important;}
@@ -922,14 +918,13 @@ function makeCard(ev,d,idx,single){
   }
   inner.appendChild(wrap);
   card.appendChild(inner);
-  // スマホ：focus以外は全てstaticに
-  if(window.innerWidth <= 640 && !f){
+  // スマホ：focus以外かつsingle以外をstaticに
+  if(window.innerWidth <= 640 && !f && !single){
     card.style.setProperty('position','static','important');
-    card.style.setProperty('top','auto','important');
-    card.style.setProperty('left','auto','important');
-    card.style.setProperty('right','auto','important');
-    card.style.setProperty('bottom','auto','important');
-    card.style.setProperty('flex','none','important');
+    card.style.setProperty('top','','important');
+    card.style.setProperty('left','','important');
+    card.style.setProperty('right','','important');
+    card.style.setProperty('bottom','','important');
   }
   return card;
 }
