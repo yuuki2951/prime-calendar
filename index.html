@@ -481,7 +481,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
         <span style="color:#666;">〜</span>
         <select id="ev-te" onchange="syncTime()" style="flex:1;font-size:13px;border-radius:8px;border:1.5px solid #ddd;padding:7px 6px;background:white;font-family:inherit;"></select>
       </div>
-      <input type="hidden" id="ev-time">
+      <input type="text" id="ev-time" placeholder="例：14:00〜16:00（直接入力可）" oninput="syncTimeFromText()" style="margin-top:5px;width:100%;font-size:12px;border-radius:6px;border:1.5px solid #ddd;padding:5px 8px;font-family:inherit;box-sizing:border-box;">
     </div>
     <div class="form-row" id="time2-row" style="display:none;">
       <label>🕐 時間2（2回目 / BE&BT用）</label>
@@ -490,7 +490,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
         <span style="color:#666;">〜</span>
         <select id="ev-te2" onchange="syncTime2()" style="flex:1;font-size:13px;border-radius:8px;border:1.5px solid #ddd;padding:7px 6px;background:white;font-family:inherit;"></select>
       </div>
-      <input type="hidden" id="ev-time2">
+      <input type="text" id="ev-time2" placeholder="例：18:30〜20:30（直接入力可）" oninput="syncTime2FromText()" style="margin-top:5px;width:100%;font-size:12px;border-radius:6px;border:1.5px solid #ddd;padding:5px 8px;font-family:inherit;box-sizing:border-box;">
     </div>
     <div class="form-row"><label>📍 会場名</label><input type="text" id="ev-venue" placeholder="例：東淀川区民ホール"></div>
     <div class="form-row"><label>🏠 住所（任意）</label><input type="text" id="ev-address" placeholder="例：大阪市東淀川区豊新2-1-4"></div>
@@ -738,12 +738,21 @@ function initTimeSelects(){
 }
 function syncTime(){
   var s=document.getElementById('ev-ts').value, e=document.getElementById('ev-te').value;
-  document.getElementById('ev-time').value=(s&&e)?s+'〜'+e:(s||e||'');
+  if(s||e) document.getElementById('ev-time').value=(s&&e)?s+'〜'+e:(s||e||'');
 }
 function syncTime2(){
   var s=document.getElementById('ev-ts2').value;
   var e=document.getElementById('ev-te2').value;
-  if(s&&e) document.getElementById('ev-time2').value=s+'〜'+e;
+  if(s||e) document.getElementById('ev-time2').value=(s&&e)?s+'〜'+e:(s||e||'');
+}
+function syncTimeFromText(){
+  // テキスト直接入力時はセレクトをリセット
+  document.getElementById('ev-ts').value='';
+  document.getElementById('ev-te').value='';
+}
+function syncTime2FromText(){
+  document.getElementById('ev-ts2').value='';
+  document.getElementById('ev-te2').value='';
 }
 function changeMonth(d){
   currentMonth+=d;
@@ -1251,7 +1260,15 @@ function parsePaste(){
       continue;
     }
     // 状態行（種別より前に来る場合もスキップ・expectShusaiはL99で設定）
-    if(parsedItems.length&&/^(開催済|受付終了|先着受付|予約終了|受付中|受付前|中止|満席|空席あり|抽選中|抽選|キャンセル待ち|締切|受付締切|開催中止)$/.test(l)){parsedItems[parsedItems.length-1].expectShusai=true;continue;}
+    if(parsedItems.length&&/^(開催済|受付終了|先着受付|予約終了|受付中|受付前|中止|満席|空席あり|抽選中|抽選|キャンセル待ち|締切|受付締切|開催中止)$/.test(l)){
+      // 中止・開催中止の場合はその日程を削除
+      if(/^(中止|開催中止)$/.test(l)){
+        parsedItems.pop();
+      } else {
+        parsedItems[parsedItems.length-1].expectShusai=true;
+      }
+      continue;
+    }
     if(!parsedItems.length&&/^(開催済|受付終了|先着受付|予約終了|受付中|受付前|中止|満席|空席あり|抽選中|抽選|キャンセル待ち|締切|受付締切|開催中止)$/.test(l)){continue;}
     // 料金行: "¥500\t講師1" or "¥500\t講師1\t会場名"
     if(l.charAt(0)==='¥'&&parts.length>=2){
