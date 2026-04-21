@@ -137,8 +137,10 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
 
   /* 印刷時はmin-widthリセット */
   @media print{
-    html,body{overflow-x:hidden!important;}
+    html,body{overflow-x:hidden!important;min-width:0!important;width:291mm!important;}
     .page{min-width:0!important;width:291mm!important;padding:0!important;}
+    .cal-grid{width:291mm!important;}
+    .calendar{width:291mm!important;}
   }
 }
 .event-card.single:not(.collab-card) .ev-photo-r,.event-card.single:not(.collab-card) .ev-photo-rph{width:60px;height:60px;font-size:20px;}
@@ -1725,6 +1727,8 @@ function doPrint(){
   var ps=document.getElementById('dynamic-print-style');
   if(!ps){ps=document.createElement('style');ps.id='dynamic-print-style';document.head.appendChild(ps);}
   ps.textContent='@media print{'+
+    'html,body{overflow-x:hidden!important;min-width:0!important;}'+
+    '.page{min-width:0!important;width:291mm!important;padding:0!important;}'+
     '.cal-cell{height:'+cellH+'mm!important;}'+
     '.cal-header-cell{height:'+headerH+'mm!important;line-height:'+headerH+'mm!important;}'+
   '}';
