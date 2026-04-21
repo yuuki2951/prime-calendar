@@ -1722,8 +1722,10 @@ function doPrint(){
   document.title='三浦Gプライム日程表_'+ed+'_'+currentYear+'年'+mns[currentMonth];
   // セル高さを動的計算（行数に応じて自動調整）
   var totalRows=Math.ceil((new Date(currentYear,currentMonth,1).getDay()+new Date(currentYear,currentMonth+1,0).getDate())/7);
-  var headerH=7; // ヘッダー行の高さ(mm)
-  var availH=191-headerH; // A4横の有効高さ
+  // A4横：210mm高さ - 余白3mm×2 = 204mm有効高さ
+  // 印刷ヘッダー8mm + カレンダーヘッダー行5mm + 余裕2mm = 15mm
+  var headerH=5;
+  var availH=204-8-headerH-2;
   var cellH=Math.floor((availH/totalRows)*10)/10;
   var ps=document.getElementById('dynamic-print-style');
   if(!ps){ps=document.createElement('style');ps.id='dynamic-print-style';document.head.appendChild(ps);}
