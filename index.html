@@ -1716,33 +1716,128 @@ initTimeSelects();
 
 var helpCurrentTab='editor';
 var helpContent={
-  editor:'<div style="background:#fff8e1;border:1px solid #ffe082;border-radius:8px;padding:10px 14px;font-size:13px;color:#5d4037;margin-bottom:16px;"><strong>編集パスワード：miura2026</strong>（管理者のみ）</div>'+
-  '<div style="font-size:14px;font-weight:700;color:#cc0000;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #ffcccc;">システム更新後の必須手順</div>'+
-  '<div style="background:#fff8e1;border-left:3px solid #f57f17;border-radius:0 8px 8px 0;padding:10px 14px;font-size:13px;color:#5d4037;line-height:1.8;margin-bottom:16px;">'+
-  '<strong style="display:block;margin-bottom:6px;">Safariの場合</strong>① 設定→Safari→履歴とWebサイトデータを消去<br>② Safariを完全終了→再起動<br><br>'+
-  '<strong style="display:block;margin-bottom:6px;">ホーム画面アイコンの場合</strong>① アイコンを長押し→削除<br>② 設定→Safari→履歴とWebサイトデータを消去<br>③ SafariでURLを開く<br>④ 共有ボタン→ホーム画面に追加<br>'+
-  '<span style="color:#e65100;font-weight:700;">削除せずに再追加しても古いキャッシュが残ります</span></div>'+
-  '<div style="font-size:14px;font-weight:700;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #eee;">スケジュール取り込み</div>'+
-  '<div style="font-size:13px;color:#555;line-height:2;margin-bottom:16px;">① セミナーサイトを全選択してコピー<br>② 「📋 テキストを貼り付けて取り込む」<br>③ 貼り付け→解析する→内容確認<br>④「カレンダーに取り込む」で完了<br><span style="background:#e8f5e9;border-radius:4px;padding:2px 8px;font-size:12px;color:#2e7d32;">同日の既存予定は更新・テキストにない予定は削除・新規は追加</span></div>'+
-  '<div style="font-size:14px;font-weight:700;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #eee;">手動追加・編集</div>'+
-  '<div style="font-size:13px;color:#555;line-height:2;margin-bottom:16px;">セル内の「＋」→新規追加<br>既存カードをタップ→編集モーダル</div>'+
-  '<div style="font-size:14px;font-weight:700;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #eee;">色分け</div>'+
-  '<div style="font-size:13px;color:#555;line-height:2;">🔴 PBS・コンベンション・分科会<br>🔵 BE・BT・BS<br>🌈 集中会場</div>',
-  viewer:'<div style="background:#fff8e1;border-left:3px solid #f57f17;border-radius:0 8px 8px 0;padding:10px 14px;font-size:13px;color:#5d4037;line-height:1.8;margin-bottom:16px;">'+
-  '<strong style="display:block;margin-bottom:6px;">画面が古い・変わらない場合</strong>'+
-  '<strong>Safariの場合：</strong><br>① 設定→Safari→履歴とWebサイトデータを消去<br>② Safariを完全終了して再起動<br><br>'+
-  '<strong>ホーム画面アイコンの場合：</strong><br>① アイコンを長押し→削除<br>② 設定→Safari→キャッシュ消去<br>③ URLを開く<br>④ 共有ボタン→ホーム画面に追加<br>'+
-  '<span style="color:#e65100;font-weight:700;">削除せずに再追加しても古いキャッシュが残ります</span></div>'+
-  '<div style="font-size:14px;font-weight:700;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #eee;">基本操作</div>'+
-  '<div style="font-size:13px;color:#555;line-height:2;margin-bottom:16px;">◀▶ボタン：月の切り替え<br>ドロップダウン：地域版の切り替え<br>⭐重要版：全国の集中会場をまとめて確認<br>カードをタップ：詳細表示</div>'+
-  '<div style="font-size:14px;font-weight:700;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #eee;">色の意味</div>'+
-  '<div style="font-size:13px;color:#555;line-height:2;">🔴 PBS・コンベンション・分科会<br>🔵 BE・BT・BS<br>🌈 集中会場（重要）</div>'
+  viewer:
+    '<div style="font-size:14px;font-weight:700;color:#cc0000;margin-bottom:12px;padding-bottom:6px;border-bottom:2px solid #ffcccc;">👁️ 閲覧者向け 使い方ガイド</div>'+
+
+    '<div style="font-size:13px;font-weight:700;color:#1565c0;margin:10px 0 6px;">📅 カレンダーの見方</div>'+
+    '<div style="font-size:12px;color:#444;line-height:1.8;margin-bottom:10px;">'+
+    '・カードの色：<span style="color:#cc0000;font-weight:700;">赤＝PBS/コンベンション</span>　<span style="color:#1565c0;font-weight:700;">青＝BE/BT/BS</span><br>'+
+    '・🌈レインボー枠＝集中会場<br>'+
+    '・種別バッジに都道府県名が表示されます<br>'+
+    '・上部の版選択で地域別に絞り込めます（全国版・関東版・関西版 等）'+
+    '</div>'+
+
+    '<div style="font-size:13px;font-weight:700;color:#1565c0;margin:10px 0 6px;">✋ 参加表明のやり方</div>'+
+    '<div style="font-size:12px;color:#444;line-height:1.8;margin-bottom:10px;">'+
+    '① カードをタップ → 参加表明モーダルが開く<br>'+
+    '② 同日に複数の日程がある場合は上部のボタンで切り替え<br>'+
+    '③ グループ名（直上ONE）を入力<br>'+
+    '④ 参加者名を半角スペース区切りで入力<br>'+
+    '　　例：<code style="background:#f5f5f5;padding:1px 4px;border-radius:3px;">田中 鈴木◎ 山田○ 佐藤★</code><br>'+
+    '⑤「参加表明する」ボタンをタップ'+
+    '</div>'+
+
+    '<div style="background:#e8f5e9;border-left:3px solid #2e7d32;border-radius:0 8px 8px 0;padding:10px 14px;font-size:12px;color:#1b5e20;margin-bottom:10px;">'+
+    '<strong>記号の意味</strong><br>'+
+    '◎ → 新規（未登録）<br>'+
+    '○ → 登録済み新規<br>'+
+    '★ → ZOOM参加<br>'+
+    '記号なし → 通常参加<br>'+
+    '※名前の後ろに記号をつけると自動で種別判定されます'+
+    '</div>'+
+
+    '<div style="font-size:13px;font-weight:700;color:#1565c0;margin:10px 0 6px;">✏️ 参加表明の編集・削除</div>'+
+    '<div style="font-size:12px;color:#444;line-height:1.8;margin-bottom:10px;">'+
+    '・自分が入力した参加表明には「編集」「削除」ボタンが表示されます<br>'+
+    '・「編集」→ 内容を修正して再登録<br>'+
+    '・「削除」→ 確認後に削除'+
+    '</div>'+
+
+    '<div style="font-size:13px;font-weight:700;color:#1565c0;margin:10px 0 6px;">👥 参加人数の集計</div>'+
+    '<div style="font-size:12px;color:#444;line-height:1.8;margin-bottom:10px;">'+
+    '・参加一覧の上部に「計〇名（新規〇名）」が自動表示されます<br>'+
+    '・グループ（直上ONE）単位で色分けして表示されます<br>'+
+    '・新規カウント：名前の後ろに◎または○がついている人数'+
+    '</div>'+
+
+    '<div style="font-size:13px;font-weight:700;color:#1565c0;margin:10px 0 6px;">📋 LINEへのコピー</div>'+
+    '<div style="font-size:12px;color:#444;line-height:1.8;margin-bottom:10px;">'+
+    '・「LINEグループ用にコピー」ボタンをタップ<br>'+
+    '・参加者一覧がテキスト形式でコピーされます<br>'+
+    '・LINEグループに貼り付けてご利用ください'+
+    '</div>'+
+
+    '<div style="font-size:13px;font-weight:700;color:#1565c0;margin:10px 0 6px;">🖨️ 印刷・PDF出力</div>'+
+    '<div style="font-size:12px;color:#444;line-height:1.8;">'+
+    '・「印刷・PDF出力」ボタンをタップ<br>'+
+    '・iPhoneはSafariの共有→「PDFとして保存」<br>'+
+    '・PCはブラウザの印刷→「PDFとして保存」<br>'+
+    '・A4横向きで1ページに収まるよう自動調整されます'+
+    '</div>',
+
+  editor:
+    '<div style="background:#fff8e1;border:1px solid #ffe082;border-radius:8px;padding:10px 14px;font-size:13px;color:#5d4037;margin-bottom:16px;"><strong>編集パスワード：miura2026</strong>（管理者のみ）</div>'+
+
+    '<div style="font-size:14px;font-weight:700;color:#cc0000;margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid #ffcccc;">✏️ 編集者向け 使い方ガイド</div>'+
+
+    '<div style="font-size:13px;font-weight:700;color:#1565c0;margin:10px 0 6px;">🔑 編集モードに入る</div>'+
+    '<div style="font-size:12px;color:#444;line-height:1.8;margin-bottom:10px;">'+
+    '「編集モードに切替」ボタン → パスワード入力（miura2026）'+
+    '</div>'+
+
+    '<div style="font-size:13px;font-weight:700;color:#1565c0;margin:10px 0 6px;">➕ 日程を追加する</div>'+
+    '<div style="font-size:12px;color:#444;line-height:1.8;margin-bottom:10px;">'+
+    '・日付セルの「＋」ボタンをタップ<br>'+
+    '・種別・講師名・時間・会場・主催者を入力<br>'+
+    '・時間はドロップダウンまたは直接入力が可能<br>'+
+    '・写真ライブラリから講師写真を選択<br>'+
+    '・「保存」で完了'+
+    '</div>'+
+
+    '<div style="font-size:13px;font-weight:700;color:#1565c0;margin:10px 0 6px;">✏️ 日程を編集・削除する</div>'+
+    '<div style="font-size:12px;color:#444;line-height:1.8;margin-bottom:10px;">'+
+    '・カードをタップ → 編集モーダルが開く<br>'+
+    '・内容を修正して「保存」<br>'+
+    '・「削除」ボタンで削除'+
+    '</div>'+
+
+    '<div style="font-size:13px;font-weight:700;color:#1565c0;margin:10px 0 6px;">📥 テキスト一括取り込み</div>'+
+    '<div style="font-size:12px;color:#444;line-height:1.8;margin-bottom:10px;">'+
+    '・「テキスト取り込み」ボタン<br>'+
+    '・セミナー情報のテキストを貼り付け<br>'+
+    '・自動で日程を解析して取り込み<br>'+
+    '・中止・開催中止は自動でスキップ'+
+    '</div>'+
+
+    '<div style="font-size:13px;font-weight:700;color:#1565c0;margin:10px 0 6px;">📸 写真ライブラリ管理</div>'+
+    '<div style="font-size:12px;color:#444;line-height:1.8;margin-bottom:10px;">'+
+    '・「写真ライブラリ」ボタンで管理画面を開く<br>'+
+    '・講師写真の登録・編集・削除が可能<br>'+
+    '・よみがなで五十音順に並び替え<br>'+
+    '・写真はFirebaseに保存されます'+
+    '</div>'+
+
+    '<div style="font-size:13px;font-weight:700;color:#1565c0;margin:10px 0 6px;">⭐ 集中会場の設定</div>'+
+    '<div style="font-size:12px;color:#444;line-height:1.8;margin-bottom:10px;">'+
+    '・日程編集で「集中会場」にチェック<br>'+
+    '・集中会場がある日はその日程のみ優先表示<br>'+
+    '・🌈レインボー枠で目立つように表示されます'+
+    '</div>'+
+
+    '<div style="font-size:13px;font-weight:700;color:#1565c0;margin:10px 0 6px;">🗾 版の管理</div>'+
+    '<div style="font-size:12px;color:#444;line-height:1.8;">'+
+    '・全国版・関東版・関西版・中部版・九州版 等から選択<br>'+
+    '・⭐重要版：集中会場のみを全国から自動収集して表示<br>'+
+    '・版は日程ごとに地域設定で自動振り分け'+
+    '</div>'
 };
 function openHelp(){
+  // タブエリア自体を閲覧モードでは非表示
+  var tabs=document.getElementById('help-tabs');
+  if(tabs) tabs.style.display=isEditMode?'flex':'none';
+  switchHelpTab('viewer'); // 常にviewerから開始
+  if(isEditMode) switchHelpTab('editor'); // 編集モードなら編集者用
   document.getElementById('help-overlay').style.display='flex';
-  var edBtn=document.getElementById('help-tab-editor');
-  if(!isEditMode){edBtn.style.display='none';switchHelpTab('viewer');}
-  else{edBtn.style.display='';switchHelpTab('editor');}
 }
 function closeHelp(){document.getElementById('help-overlay').style.display='none';}
 function switchHelpTab(tab){
@@ -1938,8 +2033,8 @@ function renderAttendList(data){
       html+='<span style="font-size:10px;padding:2px 6px;border-radius:10px;background:'+tb+';color:'+tc+';font-weight:700;white-space:nowrap;">'+( e.type||'通常')+'</span>';
       html+='<span style="font-size:12px;flex:1;">'+( e.name||'')+'</span>';
       if(isMe){
-        html+='<button data-key="'+e._key+'" onclick="editAttend(this)" style="font-size:10px;padding:2px 6px;border-radius:4px;border:1px solid #1565c0;background:white;color:#1565c0;cursor:pointer;">編集</button>';
-        html+='<button data-key="'+e._key+'" onclick="deleteAttend(this)" style="font-size:10px;padding:2px 6px;border-radius:4px;border:1px solid #e53935;background:white;color:#e53935;cursor:pointer;">削除</button>';
+        html+='<button data-key="'+e._key+'" data-path="attendance/'+currentAttendKey+'/'+e._key+'" onclick="editAttend(this)" style="font-size:10px;padding:2px 6px;border-radius:4px;border:1px solid #1565c0;background:white;color:#1565c0;cursor:pointer;">編集</button>';
+        html+='<button data-key="'+e._key+'" data-path="attendance/'+currentAttendKey+'/'+e._key+'" onclick="deleteAttend(this)" style="font-size:10px;padding:2px 6px;border-radius:4px;border:1px solid #e53935;background:white;color:#e53935;cursor:pointer;">削除</button>';
       }
       html+='</div>';
     });
@@ -1958,17 +2053,20 @@ function renderAttendList(data){
 }
 function editAttend(btn){
   var key=btn.getAttribute('data-key');
+  var path=btn.getAttribute('data-path');
   var entry=_attendData[key];
   if(!entry) return;
   document.getElementById('attend-group').value=entry.group||'';
   document.getElementById('attend-name').value=entry.name||'';
-
   // 削除してから再登録（編集として扱う）
-  db.ref('attendance/'+currentAttendKey+'/'+key).remove();
+  if(path){ db.ref(path).remove(); }
+  else { db.ref('attendance/'+currentAttendKey+'/'+key).remove(); }
   document.getElementById('attend-name').focus();
 }
 function deleteAttend(btn){
   if(!confirm('この参加表明を削除しますか？')) return;
+  var path=btn.getAttribute('data-path');
+  if(path){ db.ref(path).remove(); return; }
   var key=btn.getAttribute('data-key');
   db.ref('attendance/'+currentAttendKey+'/'+key).remove();
 }
@@ -2060,7 +2158,7 @@ document.addEventListener('DOMContentLoaded', function(){
       <div style="font-size:16px;font-weight:700;color:#1a1a1a;">💬 使い方ガイド</div>
       <button onclick="closeHelp()" style="background:none;border:none;font-size:22px;cursor:pointer;color:#888;line-height:1;">✕</button>
     </div>
-    <div style="display:flex;gap:8px;padding:12px 18px;">
+    <div id="help-tabs" style="display:flex;gap:8px;padding:12px 18px;">
       <button id="help-tab-editor" onclick="switchHelpTab('editor')" style="flex:1;padding:8px;border-radius:8px;border:1px solid #1565c0;background:#1565c0;color:white;font-size:13px;font-family:inherit;font-weight:700;cursor:pointer;">✏️ 編集者用</button>
       <button id="help-tab-viewer" onclick="switchHelpTab('viewer')" style="flex:1;padding:8px;border-radius:8px;border:1px solid #ddd;background:white;color:#555;font-size:13px;font-family:inherit;cursor:pointer;">👁️ 閲覧者用</button>
     </div>
