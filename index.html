@@ -1976,11 +1976,22 @@ function showDetailFromAttend(){
   if(window._currentDetailEv) openDetail(window._currentDetailEv);
 }
 function detectType(name){
-  // 名前に◎→新規◎、○→登録済○が含まれる場合は自動判別
+  // 名前全体に記号があれば判別（複数名でも対応）
   if(name.indexOf('◎')>-1) return '新規◎';
-  if(name.indexOf('○')>-1) return '登録済○';
+  if(name.indexOf('○')>-1||name.indexOf('◯')>-1) return '登録済○';
   if(name.indexOf('★')>-1) return 'ZOOM★';
-  return null;
+  return '通常';
+}
+function detectTypeForDisplay(name){
+  // 表示用：名前後ろの記号で判別（新規・登録済・ZOOM・通常）
+  var hasShinkiCircle=name.indexOf('◎')>-1;
+  var hasTorokuzumi=name.indexOf('○')>-1||name.indexOf('◯')>-1;
+  var hasZoom=name.indexOf('★')>-1;
+  if(hasShinkiCircle&&hasTorokuzumi) return '新規◎・登録済○';
+  if(hasShinkiCircle) return '新規◎';
+  if(hasTorokuzumi) return '登録済○';
+  if(hasZoom) return 'ZOOM★';
+  return '通常';
 }
 function submitAttend(){
   var group=(document.getElementById('attend-group').value||'').trim();
@@ -1997,8 +2008,9 @@ function submitAttend(){
   });
 }
 function getAttendUid(){
-  var v=localStorage.getItem('prime_uid');
-  if(!v){v=Date.now().toString(36)+Math.random().toString(36).slice(2,6);localStorage.setItem('prime_uid',v);}
+  var k='prime_uid_v2';
+  var v=localStorage.getItem(k);
+  if(!v){v='u'+Date.now().toString(36)+Math.random().toString(36).slice(2,8);localStorage.setItem(k,v);}
   return v;
 }
 function copyAttendLine(){
