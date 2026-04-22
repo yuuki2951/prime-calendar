@@ -1947,6 +1947,14 @@ function renderAttendList(data){
   });
   total.textContent='計'+allCount+'名（新規'+shinkiCount+'名）';
   list.innerHTML=html;
+  // 編集・削除ボタンにイベントを登録
+  list.querySelectorAll('button[data-key]').forEach(function(btn){
+    if(btn.textContent==='編集'){
+      btn.addEventListener('click', function(){ editAttend(this); });
+    } else if(btn.textContent==='削除'){
+      btn.addEventListener('click', function(){ deleteAttend(this); });
+    }
+  });
 }
 function editAttend(btn){
   var key=btn.getAttribute('data-key');
