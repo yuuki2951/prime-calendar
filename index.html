@@ -44,7 +44,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
 .cal-header-cell{padding:7px 4px;text-align:center;font-size:12px;font-weight:700;background:#f8f7f3;border-bottom:1px solid #e8e6e0;}
 .cal-header-cell.sun{color:#cc0000;}.cal-header-cell.sat{color:#1565c0;}
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);}
-.cal-cell{height:140px;border-right:1px solid #ece9e2;border-bottom:1px solid #ece9e2;padding:3px;background:white;position:relative;overflow:hidden;}
+.cal-cell{height:140px;border-right:1px solid #ece9e2;border-bottom:1px solid #ece9e2;padding:3px;background:white;position:relative;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scrollbar-color:#ddd transparent;}
 .cal-cell.has-multi{overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scrollbar-color:#ddd transparent;}
 .cal-cell:nth-child(7n){border-right:none;}
 .cal-cell.empty{background:#faf9f6;}
@@ -55,10 +55,10 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
 .event-card:hover{opacity:0.82;}
 .has-multi .event-card{position:static !important;margin-bottom:4px;}
 .has-multi .event-card.focus-venue{position:relative !important;margin-bottom:6px;overflow:visible !important;}
-.ev-inner{display:flex;gap:5px;align-items:flex-start;height:100%;}
+.ev-inner{display:flex;gap:5px;align-items:flex-start;height:auto;}
 .ev-text{flex:1;min-width:0;}
 .ev-type-badge{font-size:10px;font-weight:700;padding:0 3px;border-radius:3px;background:rgba(255,255,255,0.55);display:inline-block;margin-bottom:2px;}
-.ev-name{font-size:10px;font-weight:700;line-height:1.3;margin-bottom:1px;white-space:normal;overflow:visible;word-break:break-all;}
+.ev-name{font-size:10px;font-weight:700;line-height:1.3;margin-bottom:1px;}
 .ev-time{font-size:10px;margin-bottom:1px;}
 .ev-venue{font-size:10px;font-weight:700;background:rgba(255,255,255,0.65);border-radius:3px;padding:1px 4px;margin-bottom:1px;}
 .ev-shusai{font-size:9px;opacity:0.9;font-weight:500;}
@@ -67,9 +67,111 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
 .ev-photo-r{width:44px;height:44px;border-radius:50%;object-fit:cover;flex-shrink:0;}
 .ev-photo-rph{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:white;flex-shrink:0;}
 .ev-photo-wrap.collab .ev-photo-r,.ev-photo-wrap.collab .ev-photo-rph{width:26px;height:26px;font-size:10px;}
-.collab-card .ev-name{font-size:9px;white-space:normal;overflow:visible;word-break:break-all;line-height:1.2;}
 .ev-name2-lbl{font-size:8px;font-weight:700;text-align:center;line-height:1.2;max-width:48px;word-break:break-all;}
-.event-card.single{position:absolute;top:22px;left:3px;right:3px;bottom:3px;margin:0;padding:6px 7px;}
+.event-card.single{position:static;width:auto;height:auto;margin:0;padding:4px 5px;}
+@media(max-width:640px){
+  .page{padding:3px;}
+  .header{padding:8px 10px;gap:4px;flex-wrap:wrap;border-radius:10px;margin-bottom:3px;}
+  .brand{font-size:14px;font-weight:700;}
+  #edition-select{font-size:12px;padding:4px 7px;border-radius:8px;}
+  .month-nav{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:4px;}
+  .month-nav button{width:40px;height:40px;border-radius:10px;font-size:18px;display:flex;align-items:center;justify-content:center;touch-action:manipulation;background:#f5f4f0;border:1px solid #ddd;}
+  .month-display{font-size:17px;font-weight:700;text-align:center;flex:1;}
+  .toolbar{display:flex;flex-wrap:wrap;gap:3px;margin-bottom:3px;}
+  .toolbar button{flex:1 1 45%;padding:7px 4px;font-size:10px;border-radius:8px;min-width:0;}
+  .toolbar button.primary{flex:1 1 100%;padding:7px;font-size:10px;background:white!important;color:#cc0000!important;border:1.5px solid #cc0000!important;}
+  .info-bar{display:none;}
+  #view-toolbar{margin-bottom:3px;}
+  #view-toolbar button{padding:7px 14px!important;font-size:12px!important;width:auto!important;border-radius:9px!important;}
+
+  /* カレンダー */
+  .calendar{overflow:visible!important;}
+  .cal-header-cell{font-size:10px;padding:4px 1px;font-weight:700;}
+  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);}
+
+  /* セル：縦スクロール・PC版と同じ表示 */
+  .cal-cell{
+    height:90px!important;
+    padding:2px 1px!important;
+    overflow-y:scroll!important;
+    overflow-x:hidden!important;
+    -webkit-overflow-scrolling:touch!important;
+    overscroll-behavior-y:contain!important;
+    display:flex!important;
+    flex-direction:column!important;
+    position:relative!important;
+    box-sizing:border-box!important;
+    scrollbar-width:thin!important;
+    scrollbar-color:#ddd transparent!important;
+  }
+  .cal-cell::-webkit-scrollbar{width:2px;}
+  .cal-cell::-webkit-scrollbar-thumb{background:#ddd;border-radius:2px;}
+  .date-num{
+    font-size:10px!important;width:16px!important;height:16px!important;
+    margin-bottom:1px!important;flex-shrink:0!important;font-weight:700!important;
+    display:flex!important;align-items:center!important;justify-content:center!important;
+    position:sticky!important;top:0!important;z-index:3!important;background:white!important;
+  }
+  .date-num.sun-num{color:#cc0000!important;}
+  .date-num.sat-num{color:#1565c0!important;}
+  .cal-cell.today .date-num{background:#cc0000!important;color:white!important;border-radius:50%!important;}
+
+  /* カード：PC版と完全同一 */
+  .event-card{
+    border-radius:5px!important;
+    padding:4px 5px!important;
+    margin-bottom:3px!important;
+    cursor:pointer!important;
+    border-left:3px solid transparent!important;
+    flex-shrink:0!important;
+    position:static!important;
+    overflow:hidden!important;
+  }
+  .event-card.single{
+    position:static!important;
+    width:auto!important;height:auto!important;
+    margin:0!important;padding:4px 5px!important;
+    flex:none!important;
+  }
+
+  /* テキスト：PC版と同一サイズ */
+  .ev-inner{display:flex!important;gap:5px!important;align-items:flex-start!important;height:auto!important;}
+  .ev-text{flex:1!important;min-width:0!important;}
+  .ev-type-badge{font-size:10px!important;font-weight:700!important;padding:0 3px!important;border-radius:3px!important;background:rgba(255,255,255,0.55)!important;display:inline-block!important;margin-bottom:2px!important;}
+  .ev-name{font-size:10px!important;font-weight:700!important;line-height:1.3!important;margin-bottom:1px!important;}
+  .ev-time{font-size:10px!important;margin-bottom:1px!important;}
+  .ev-venue{font-size:10px!important;font-weight:700!important;background:rgba(255,255,255,0.65)!important;border-radius:3px!important;padding:1px 4px!important;margin-bottom:1px!important;}
+  .ev-shusai{font-size:9px!important;opacity:0.9!important;font-weight:500!important;}
+
+  /* 写真：PC版と同一サイズ */
+  .ev-photo-wrap{display:flex!important;flex-direction:column!important;gap:2px!important;align-items:center!important;flex-shrink:0!important;overflow:hidden!important;}
+  .ev-photo-r{width:44px!important;height:44px!important;border-radius:50%!important;object-fit:cover!important;flex-shrink:0!important;}
+  .ev-photo-rph{width:44px!important;height:44px!important;border-radius:50%!important;display:flex!important;align-items:center!important;justify-content:center!important;font-size:16px!important;font-weight:700!important;color:white!important;flex-shrink:0!important;}
+  .ev-photo-wrap.collab .ev-photo-r,.ev-photo-wrap.collab .ev-photo-rph{width:26px!important;height:26px!important;font-size:10px!important;}
+  .ev-name2-lbl{font-size:8px!important;font-weight:700!important;text-align:center!important;line-height:1.2!important;max-width:48px!important;}
+
+  /* 集中会場 */
+  .event-card.focus-venue{
+    position:relative!important;
+    overflow:visible!important;
+    margin:4px 0!important;
+    flex-shrink:0!important;
+    z-index:1!important;
+  }
+  .has-multi .event-card.focus-venue{position:relative!important;overflow:visible!important;}
+  .print-more-badge{display:none!important;}
+  .add-btn{font-size:9px!important;padding:1px 2px!important;opacity:0.5!important;}
+
+  /* モーダル */
+  .modal-overlay{align-items:flex-end!important;}
+  .modal{width:100%!important;max-width:100%!important;border-radius:16px 16px 0 0!important;position:fixed!important;bottom:0!important;left:0!important;right:0!important;top:auto!important;margin:0!important;max-height:90vh!important;padding:16px!important;overflow-y:auto!important;}
+  .crop-overlay,.lib-overlay,.paste-overlay{align-items:flex-end!important;}
+  .crop-modal,.lib-modal,.paste-modal{width:100%!important;border-radius:16px 16px 0 0!important;max-height:88vh!important;overflow-y:auto!important;}
+  .crop-con{width:100%!important;height:65vw!important;}
+  .form-row input,.form-row select,.form-row textarea{font-size:16px!important;padding:10px 12px!important;}
+  .modal-btns{flex-wrap:wrap!important;gap:6px!important;}
+  .modal-btns button{flex:1 1 auto!important;padding:11px!important;font-size:13px!important;}
+}
 .event-card.single:not(.collab-card) .ev-photo-r,.event-card.single:not(.collab-card) .ev-photo-rph{width:60px;height:60px;font-size:20px;}
 .event-card.single .ev-photo-wrap.collab .ev-photo-r,.event-card.single .ev-photo-wrap.collab .ev-photo-rph{width:36px;height:36px;font-size:13px;}
 .event-card.single .ev-type-badge{font-size:11px;margin-bottom:4px;}
@@ -132,7 +234,6 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
 .paste-hint{background:#e3f2fd;border-radius:8px;padding:12px;margin-bottom:14px;font-size:12px;color:#1565c0;line-height:1.8;}
 
 @media(max-width:640px){
-  /* 閲覧モード：縦スクロール（デフォルト） */
   .page{padding:3px;}
   .header{padding:8px 10px;gap:4px;flex-wrap:wrap;border-radius:10px;margin-bottom:3px;}
   .brand{font-size:14px;font-weight:700;}
@@ -147,10 +248,12 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
   #view-toolbar{margin-bottom:3px;}
   #view-toolbar button{padding:7px 14px!important;font-size:12px!important;width:auto!important;border-radius:9px!important;}
 
+  /* カレンダー */
   .calendar{overflow:visible!important;}
   .cal-header-cell{font-size:10px;padding:4px 1px;font-weight:700;}
   .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);}
 
+  /* セル：縦スクロール */
   .cal-cell{
     height:90px!important;
     padding:2px 1px!important;
@@ -173,6 +276,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
   .date-num.sat-num{color:#1565c0!important;}
   .cal-cell.today .date-num{background:#cc0000!important;color:white!important;border-radius:50%!important;}
 
+  /* 通常カード */
   .event-card{
     padding:2px 2px!important;
     margin-bottom:2px!important;
@@ -181,7 +285,27 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
     position:static!important;
     overflow:hidden!important;
   }
-  .event-card.single{position:static!important;flex:none!important;}
+  .event-card.single{
+    position:static!important;
+    top:auto!important;
+    left:auto!important;
+    right:auto!important;
+    bottom:auto!important;
+    flex:none!important;
+    width:auto!important;
+    height:auto!important;
+    margin:0 0 2px 0!important;
+    padding:2px 2px!important;
+  }
+
+  /* カード内テキスト */
+  .ev-type-badge{font-size:7px!important;font-weight:700!important;display:block!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;line-height:1.3!important;}
+  .ev-name{font-size:8px!important;font-weight:700!important;line-height:1.3!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;}
+  .ev-time{font-size:7px!important;white-space:nowrap!important;overflow:hidden!important;line-height:1.2!important;}
+  .ev-venue{font-size:6px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;background:none!important;padding:0!important;line-height:1.2!important;}
+  .ev-shusai{font-size:6px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;line-height:1.2!important;}
+
+  /* 集中会場カード：overflow:visible必須 */
   .event-card.focus-venue{
     position:relative!important;
     overflow:visible!important;
@@ -189,9 +313,17 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
     flex-shrink:0!important;
     z-index:1!important;
   }
-  .has-multi .event-card.focus-venue{position:relative!important;overflow:visible!important;}
+  .has-multi .event-card.focus-venue{
+    position:relative!important;
+    overflow:visible!important;
+  }
+
+  /* 他N件バッジ：画面では非表示 */
+  .print-more-badge{display:none!important;}
+
   .add-btn{font-size:9px!important;padding:1px 2px!important;opacity:0.5!important;}
 
+  /* モーダル */
   .modal-overlay{align-items:flex-end!important;}
   .modal{width:100%!important;max-width:100%!important;border-radius:16px 16px 0 0!important;position:fixed!important;bottom:0!important;left:0!important;right:0!important;top:auto!important;margin:0!important;max-height:90vh!important;padding:16px!important;overflow-y:auto!important;}
   .crop-overlay,.lib-overlay,.paste-overlay{align-items:flex-end!important;}
@@ -200,53 +332,68 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
   .form-row input,.form-row select,.form-row textarea{font-size:16px!important;padding:10px 12px!important;}
   .modal-btns{flex-wrap:wrap!important;gap:6px!important;}
   .modal-btns button{flex:1 1 auto!important;padding:11px!important;font-size:13px!important;}
-
-  @media print{
-    html,body{overflow-x:hidden!important;min-width:0!important;width:291mm!important;}
-    .page{min-width:0!important;max-width:291mm!important;width:291mm!important;padding:0!important;}
-    .cal-grid{width:100%!important;min-width:0!important;}
-    .calendar{width:291mm!important;min-width:0!important;}
-  }
-}
-
-/* 編集モード：スマホでもPC版と同じ横スクロール表示 */
-@media(max-width:640px){
-  body.edit-mode-mobile{overflow-x:auto!important;}
-  body.edit-mode-mobile .page{min-width:700px!important;padding:2px!important;}
-  body.edit-mode-mobile .cal-cell{height:140px!important;overflow-y:auto!important;overflow-x:hidden!important;display:block!important;flex-direction:unset!important;}
-  body.edit-mode-mobile .date-num{position:static!important;}
-  body.edit-mode-mobile .add-btn{opacity:1!important;font-size:10px!important;}
 }
 @media print{
-  @page{size:A4 landscape;margin:1.5mm;}
+  @page{size:A4 landscape;margin:3mm;}
   *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;box-sizing:border-box;}
-  html,body{margin:0;padding:0;background:white;width:294mm;overflow:hidden;}
-  .page{padding:0;margin:0;width:294mm;overflow:hidden;}
-
-  *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;box-sizing:border-box;}
-  html,body{margin:0;padding:0;background:white;width:287mm;}
-  .page{padding:0;margin:0;width:287mm;}
+  html,body{margin:0;padding:0;background:white;width:291mm;overflow:hidden;}
+  .page{padding:0;margin:0;width:291mm;}
   #view-toolbar{display:none!important;}
   #pw-overlay{display:none!important;}
   #print-header{display:flex!important;align-items:baseline;gap:8px;padding:0.3mm 2mm;border-bottom:1px solid #ddd;margin-bottom:0.3mm;}
   .header{display:none!important;}
-  .toolbar,.info-bar,.modal-overlay,.crop-overlay,.lib-overlay,.paste-overlay{display:none !important;}
-  .month-nav button,.add-btn{display:none !important;}
-  .header{box-shadow:none;border:none;border-bottom:1px solid #ddd;padding:1mm 3mm;margin-bottom:1mm;border-radius:0;height:7mm;min-height:0;align-items:center;}
-  .brand{font-size:10px;}.sub{font-size:6px;}.month-display{font-size:11px;}
-  .calendar{box-shadow:none;border-radius:0;border:0.5px solid #999;width:287mm;}
+  .toolbar,.info-bar,.modal-overlay,.crop-overlay,.lib-overlay,.paste-overlay{display:none!important;}
+  .month-nav button,.add-btn,.print-more-badge{display:none!important;}
+  .calendar{box-shadow:none;border-radius:0;border:0.5px solid #999;width:291mm;}
   .cal-header-cell{padding:1px;font-size:7px;height:5mm;line-height:5mm;}
   .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);}
-  .cal-cell{border-right:0.5px solid #ccc;border-bottom:0.5px solid #ccc;padding:2px;overflow:hidden;background:white;position:relative;display:flex;flex-direction:column;}
+  /* セル：overflow:visibleで集中会場のレインボー枠を表示 */
+  .cal-cell{
+    border-right:0.5px solid #ccc;border-bottom:0.5px solid #ccc;
+    padding:2px;overflow:visible;background:white;
+    position:relative;display:flex;flex-direction:column;
+  }
   .cal-cell:nth-child(7n){border-right:none;}
   .cal-cell.empty{background:#faf9f6;}
   .cal-cell.today .date-num{background:#cc0000;color:white;border-radius:50%;}
-  .date-num{font-size:7px;width:12px;height:12px;margin-bottom:1px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:700;}
+  .date-num{
+    font-size:7px;width:12px;height:12px;margin-bottom:1px;
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;font-weight:700;position:relative;z-index:3;
+  }
   .date-num.sun-num{color:#cc0000;}.date-num.sat-num{color:#1565c0;}
-  .event-card{flex:1;min-height:0;padding:1px 2px;margin:0 0 1px 0;border-left-width:2px;border-radius:2px;overflow:hidden;display:flex;flex-direction:column;justify-content:center;}
+  .event-card{
+    flex:1;min-height:0;padding:1px 2px;margin:0 0 1px 0;
+    border-left-width:2px;border-radius:2px;overflow:hidden;
+    display:flex;flex-direction:column;justify-content:center;
+    position:static!important;
+  }
   .event-card:last-child{margin-bottom:0;}
-  .has-multi .event-card{position:static !important;}
-  .ev-inner{display:flex;gap:2px;align-items:center;height:100%;}
+  /* 4件目以降非表示 */
+  .event-card:nth-child(n+5){display:none!important;}
+  /* 集中会場：印刷時もレインボー表示 */
+  .event-card.focus-venue{
+    overflow:visible!important;
+    margin:2px 0!important;
+    position:relative!important;
+  }
+  .event-card.focus-venue::before{
+    content:''!important;position:absolute!important;inset:-2px!important;
+    border-radius:4px!important;
+    background:linear-gradient(135deg,#ff0000,#ff7700,#ffee00,#00cc44,#0088ff,#8800ff)!important;
+    z-index:-1!important;animation:none!important;
+  }
+  .event-card.focus-venue::after{
+    content:'🌈 集中会場'!important;position:absolute!important;
+    top:1px!important;left:50%!important;transform:translateX(-50%)!important;
+    font-size:5px!important;font-weight:700!important;padding:0 3px!important;
+    border-radius:3px!important;white-space:nowrap!important;
+    color:white!important;z-index:2!important;
+    background:linear-gradient(90deg,#ff0000,#ff7700,#ffee00,#00cc44,#0088ff,#8800ff)!important;
+  }
+  .event-card.focus-venue .ev-inner{position:relative!important;z-index:1!important;padding-top:10px!important;}
+  .has-multi .event-card{position:static!important;}
+  .ev-inner{display:flex;gap:2px;align-items:flex-start;height:auto;}
   .ev-text{flex:1;min-width:0;}
   .ev-photo-r{width:24px;height:24px;border-radius:50%;object-fit:cover;flex-shrink:0;}
   .ev-photo-rph{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:white;flex-shrink:0;}
@@ -258,26 +405,16 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
   .ev-venue{font-size:6px;padding:0 1px;font-weight:700;margin-bottom:0;line-height:1.2;background:none;}
   .ev-shusai{font-size:5.5px;line-height:1.2;margin-bottom:0;}
   .ev-note-tag{display:none;}
-  .event-card.single{position:static !important;flex:1;}
-  .event-card.single .ev-photo-r{width:36px;height:36px;}
-  .event-card.single .ev-photo-rph{width:36px;height:36px;font-size:13px;}
+  .event-card.single{position:static!important;flex:1;}
+  .event-card.single .ev-photo-r,.event-card.single .ev-photo-rph{width:36px;height:36px;}
   .event-card.single .ev-type-badge{font-size:8px;margin-bottom:1px;}
   .event-card.single .ev-name{font-size:9px;}
   .event-card.single .ev-time{font-size:8px;}
-  .event-card.single .ev-venue{font-size:8px;background:rgba(255,255,255,0.6);padding:1px 2px;}
-  .event-card.focus-venue::before{animation:none;}
-  .event-card.focus-venue::after{font-size:5px;top:1px;right:2px;padding:0 3px;border-radius:3px;}
-  .cal-cell.print-3 .ev-photo-r{width:18px;height:18px;}
-  .cal-cell.print-3 .ev-photo-rph{width:18px;height:18px;font-size:7px;}
-  .cal-cell.print-3 .ev-type-badge{font-size:5px;}
-  .cal-cell.print-3 .ev-name{font-size:5px;}
-  .cal-cell.print-3 .ev-time{font-size:5px;}
-  .cal-cell.print-3 .ev-venue{font-size:5px;}
+  .event-card.single .ev-venue{font-size:8px;}
+  .cal-cell.print-3 .ev-photo-r,.cal-cell.print-3 .ev-photo-rph{width:18px;height:18px;font-size:7px;}
+  .cal-cell.print-3 .ev-type-badge,.cal-cell.print-3 .ev-name,.cal-cell.print-3 .ev-time,.cal-cell.print-3 .ev-venue{font-size:5px;}
   .cal-cell.print-4 .ev-photo-wrap{display:none;}
-  .cal-cell.print-4 .ev-type-badge{font-size:4.5px;}
-  .cal-cell.print-4 .ev-name{font-size:4.5px;}
-  .cal-cell.print-4 .ev-time{font-size:4.5px;}
-  .cal-cell.print-4 .ev-venue{font-size:4.5px;}
+  .cal-cell.print-4 .ev-type-badge,.cal-cell.print-4 .ev-name,.cal-cell.print-4 .ev-time,.cal-cell.print-4 .ev-venue{font-size:4.5px;}
 }
 </style>
 </head>
@@ -368,7 +505,14 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
       <span>分科会／コンベンション／遊び</span>
       <span>🌈 <span class="rainbow-legend">集中会場</span></span>
     </div>
-    
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot" style="background:#e53935"></div>関西</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#1565c0"></div>関東</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#f57c00"></div>東海</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#2e7d32"></div>九州</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#555"></div>その他</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#7b1fa2"></div>zoom</div>
+    </div>
   </div>
   <div class="calendar">
     <div class="cal-header">
@@ -390,8 +534,10 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
       <div style="display:flex;gap:6px;align-items:center;">
         <select id="ev-type" onchange="toggleCustomType()" style="flex:1;font-size:13px;border-radius:8px;border:1.5px solid #ddd;padding:7px 10px;background:white;color:#1a1a1a;font-family:inherit;">
           <option value="PBS">📋 PBS</option>
-          <option value="BE">💼 BE</option>
-          <option value="BT">📈 BT</option>
+          <option value="BE">💼 BE（単独）</option>
+          <option value="BT">📈 BT（単独）</option>
+          <option value="BE&BT">💼📈 BE&BT（同日2回・時間別）</option>
+          <option value="BT&BE">📈💼 BT&BE（同日2回・時間別）</option>
           <option value="BS">💡 BS</option>
           <option value="分科会">🔖 分科会</option>
           <option value="コンベンション">🎉 コンベンション</option>
@@ -429,13 +575,22 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
       </div>
     </div>
     <div class="form-row">
-      <label>🕐 時間</label>
+      <label>🕐 時間1（1回目）</label>
       <div style="display:flex;align-items:center;gap:6px;">
         <select id="ev-ts" onchange="syncTime()" style="flex:1;font-size:13px;border-radius:8px;border:1.5px solid #ddd;padding:7px 6px;background:white;font-family:inherit;"></select>
         <span style="color:#666;">〜</span>
         <select id="ev-te" onchange="syncTime()" style="flex:1;font-size:13px;border-radius:8px;border:1.5px solid #ddd;padding:7px 6px;background:white;font-family:inherit;"></select>
       </div>
-      <input type="hidden" id="ev-time">
+      <input type="text" id="ev-time" placeholder="例：14:00〜16:00（直接入力可）" oninput="syncTimeFromText()" style="margin-top:5px;width:100%;font-size:12px;border-radius:6px;border:1.5px solid #ddd;padding:5px 8px;font-family:inherit;box-sizing:border-box;">
+    </div>
+    <div class="form-row" id="time2-row" style="display:none;">
+      <label>🕐 時間2（2回目 / BE&BT用）</label>
+      <div style="display:flex;align-items:center;gap:6px;">
+        <select id="ev-ts2" onchange="syncTime2()" style="flex:1;font-size:13px;border-radius:8px;border:1.5px solid #ddd;padding:7px 6px;background:white;font-family:inherit;"></select>
+        <span style="color:#666;">〜</span>
+        <select id="ev-te2" onchange="syncTime2()" style="flex:1;font-size:13px;border-radius:8px;border:1.5px solid #ddd;padding:7px 6px;background:white;font-family:inherit;"></select>
+      </div>
+      <input type="text" id="ev-time2" placeholder="例：18:30〜20:30（直接入力可）" oninput="syncTime2FromText()" style="margin-top:5px;width:100%;font-size:12px;border-radius:6px;border:1.5px solid #ddd;padding:5px 8px;font-family:inherit;box-sizing:border-box;">
     </div>
     <div class="form-row"><label>📍 会場名</label><input type="text" id="ev-venue" placeholder="例：東淀川区民ホール"></div>
     <div class="form-row"><label>🏠 住所（任意）</label><input type="text" id="ev-address" placeholder="例：大阪市東淀川区豊新2-1-4"></div>
@@ -550,108 +705,6 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f5f4f0;color:#1a1a1a;}
 </div>
 
 <script>
-
-function getPrefecture(venue){
-  if(!venue) return '';
-  var map = [
-    // 都道府県名そのまま
-    ['北海道','北海道'],['青森','青森'],['岩手','岩手'],['宮城','宮城'],['秋田','秋田'],
-    ['山形','山形'],['福島','福島'],['茨城','茨城'],['栃木','栃木'],['群馬','群馬'],
-    ['埼玉','埼玉'],['千葉','千葉'],['東京','東京'],['神奈川','神奈川'],
-    ['新潟','新潟'],['富山','富山'],['石川','石川'],['福井','福井'],
-    ['山梨','山梨'],['長野','長野'],['岐阜','岐阜'],['静岡','静岡'],['愛知','愛知'],
-    ['三重','三重'],['滋賀','滋賀'],['京都','京都'],['大阪','大阪'],['兵庫','兵庫'],
-    ['奈良','奈良'],['和歌山','和歌山'],['鳥取','鳥取'],['島根','島根'],['岡山','岡山'],
-    ['広島','広島'],['山口','山口'],['徳島','徳島'],['香川','香川'],['愛媛','愛媛'],
-    ['高知','高知'],['福岡','福岡'],['佐賀','佐賀'],['長崎','長崎'],['熊本','熊本'],
-    ['大分','大分'],['宮崎','宮崎'],['鹿児島','鹿児島'],['沖縄','沖縄'],
-    // 北海道
-    ['札幌','北海道'],['函館','北海道'],['旭川','北海道'],['釧路','北海道'],['帯広','北海道'],
-    ['苫小牧','北海道'],['江別','北海道'],['小樽','北海道'],
-    // 東北
-    ['仙台','宮城'],['石巻','宮城'],['多賀城','宮城'],
-    ['青森市','青森'],['弘前','青森'],['八戸','青森'],
-    ['盛岡','岩手'],['一関','岩手'],['花巻','岩手'],
-    ['秋田市','秋田'],['横手','秋田'],
-    ['山形市','山形'],['酒田','山形'],['鶴岡','山形'],
-    ['福島市','福島'],['郡山','福島'],['いわき','福島'],['会津','福島'],
-    // 関東
-    ['水戸','茨城'],['つくば','茨城'],['土浦','茨城'],['日立','茨城'],
-    ['宇都宮','栃木'],['小山','栃木'],['栃木市','栃木'],
-    ['前橋','群馬'],['高崎','群馬'],['伊勢崎','群馬'],['太田','群馬'],
-    ['さいたま','埼玉'],['川口','埼玉'],['越谷','埼玉'],['所沢','埼玉'],['熊谷','埼玉'],
-    ['浦和','埼玉'],['大宮','埼玉'],['川越','埼玉'],
-    ['千葉市','千葉'],['船橋','千葉'],['松戸','千葉'],['市川','千葉'],['柏','千葉'],
-    ['新宿','東京'],['渋谷','東京'],['豊洲','東京'],['荒川','東京'],['江東','東京'],
-    ['亀戸','東京'],['銀座','東京'],['北区','東京'],['すみだ','東京'],['墨田','東京'],
-    ['赤羽','東京'],['大和田','東京'],['クレオ','大阪'],['北とぴあ','東京'],
-    ['池袋','東京'],['新木場','東京'],['立川','東京'],['八王子','東京'],
-    ['町田','東京'],['調布','東京'],['府中','東京'],['三鷹','東京'],['武蔵野','東京'],
-    ['江戸川','東京'],['葛飾','東京'],['足立','東京'],['練馬','東京'],['板橋','東京'],
-    ['中野','東京'],['杉並','東京'],['世田谷','東京'],['目黒','東京'],['品川','東京'],
-    ['大田区','東京'],['港区','東京'],['中央区','東京'],['千代田','東京'],['台東','東京'],
-    ['文京','東京'],['新宿区','東京'],['豊島','東京'],
-    ['BIZ新宿','東京'],['Biz新宿','東京'],['サンパール','東京'],
-    ['横浜','神奈川'],['川崎','神奈川'],['相模','神奈川'],['厚木','神奈川'],
-    ['藤沢','神奈川'],['茅ヶ崎','神奈川'],['平塚','神奈川'],['小田原','神奈川'],
-    ['エポック','神奈川'],['エポックなかはら','神奈川'],['汐田','神奈川'],
-    // 中部
-    ['新潟市','新潟'],['長岡','新潟'],['上越','新潟'],['三条','新潟'],
-    ['富山市','富山'],['高岡','富山'],
-    ['金沢','石川'],['小松','石川'],
-    ['福井市','福井'],['敦賀','福井'],
-    ['甲府','山梨'],
-    ['長野市','長野'],['松本','長野'],['上田','長野'],['諏訪','長野'],
-    ['岐阜市','岐阜'],['大垣','岐阜'],['高山','岐阜'],
-    ['浜松','静岡'],['静岡市','静岡'],['沼津','静岡'],['富士','静岡'],
-    ['名古屋','愛知'],['尾西','愛知'],['あま市','愛知'],['一宮','愛知'],['春日井','愛知'],
-    ['豊橋','愛知'],['岡崎','愛知'],['豊田','愛知'],['刈谷','愛知'],['安城','愛知'],
-    ['ウィルあいち','愛知'],['ウィル愛知','愛知'],['吹上ホール','愛知'],
-    ['港ポートビル','愛知'],['青少年文化センター','愛知'],
-    ['津市','三重'],['四日市','三重'],['桑名','三重'],['鈴鹿','三重'],
-    ['大津','滋賀'],['草津','滋賀'],['彦根','滋賀'],
-    ['京都市','京都'],['宇治','京都'],['亀岡','京都'],
-    // 近畿
-    ['大阪市','大阪'],['堺市','大阪'],['堺','大阪'],['高石','大阪'],['たかいし','大阪'],
-    ['東淀川','大阪'],['松原','大阪'],['アプラ','大阪'],['ソフィア','大阪'],
-    ['阿倍野','大阪'],['豊中','大阪'],['吹田','大阪'],['枚方','大阪'],['茨木','大阪'],
-    ['高槻','大阪'],['東大阪','大阪'],['八尾','大阪'],['守口','大阪'],
-    ['寝屋川','大阪'],['門真','大阪'],['交野','大阪'],
-    ['住まい情報センター','大阪'],['大淀','大阪'],['エル・おおさか','大阪'],
-    ['エルおおさか','大阪'],['旭区','大阪'],['旭区民','大阪'],
-    ['神戸','兵庫'],['尼崎','兵庫'],['西宮','兵庫'],['姫路','兵庫'],['北条','兵庫'],
-    ['明石','兵庫'],['加古川','兵庫'],['宝塚','兵庫'],['伊丹','兵庫'],['川西','兵庫'],
-    ['芦屋','兵庫'],
-    ['三田','兵庫'],['丹波','兵庫'],['豊岡','兵庫'],
-    ['奈良市','奈良'],['橿原','奈良'],['生駒','奈良'],
-    ['和歌山市','和歌山'],['田辺','和歌山'],
-    // 中国・四国
-    ['米子','鳥取'],['鳥取市','鳥取'],
-    ['松江','島根'],['出雲','島根'],
-    ['岡山市','岡山'],['倉敷','岡山'],['津山','岡山'],
-    ['広島市','広島'],['福山','広島'],['呉','広島'],['東広島','広島'],
-    ['山口市','山口'],['下関','山口'],['宇部','山口'],['周南','山口'],
-    ['徳島市','徳島'],['鳴門','徳島'],
-    ['高松','香川'],['丸亀','香川'],
-    ['松山','愛媛'],['今治','愛媛'],['新居浜','愛媛'],
-    ['高知市','高知'],['南国','高知'],
-    // 九州
-    ['博多','福岡'],['パピオン','福岡'],['パピヨン','福岡'],['石橋','福岡'],
-    ['北九州','福岡'],['久留米','福岡'],['飯塚','福岡'],
-    ['佐賀市','佐賀'],['唐津','佐賀'],
-    ['長崎市','長崎'],['佐世保','長崎'],
-    ['熊本市','熊本'],['八代','熊本'],
-    ['大分市','大分'],['別府','大分'],
-    ['宮崎市','宮崎'],['都城','宮崎'],
-    ['鹿児島市','鹿児島'],['霧島','鹿児島'],
-    ['那覇','沖縄'],['沖縄市','沖縄'],['うるま','沖縄']
-  ];
-  for(var i=0;i<map.length;i++){
-    if(venue.indexOf(map[i][0])>-1) return map[i][1];
-  }
-  return '';
-}
-
 // ══ グローバル変数 ══
 var currentEdition = 'all';
 var currentYear = new Date().getFullYear();
@@ -683,7 +736,7 @@ function fbPath(){return 'schedule/'+currentEdition+'/'+currentYear+'/'+currentM
 var RC={kansai:'#c62828',kanto:'#1565c0',tokai:'#e65100',kyushu:'#1b5e20',other:'#424242',zoom:'#6a1b9a'};
 var RB={kansai:'#ffebee',kanto:'#e3f2fd',tokai:'#fff3e0',kyushu:'#e8f5e9',other:'#f5f5f5',zoom:'#f3e5f5'};
 var RBR={kansai:'#e53935',kanto:'#1565c0',tokai:'#f57c00',kyushu:'#2e7d32',other:'#555',zoom:'#7b1fa2'};
-var TICON={PBS:'📋',BE:'💼',BT:'📈',BS:'💡','分科会':'🔖','コンベンション':'🎉','遊び':'🎊'};
+var TICON={PBS:'📋',BE:'💼',BT:'📈','BE&BT':'💼📈','BT&BE':'📈💼','BE&BE':'💼💼','BT&BT':'📈📈',BS:'💡','分科会':'🔖','コンベンション':'🎉','遊び':'🎊'};
 
 function sk(){return 'prime_v11_'+currentYear+'_'+currentMonth;}
 function reiwa(y){return y-2018;}
@@ -764,9 +817,14 @@ function libYomi(name){
 // prefToRegion -> see above
 
 function initTimeSelects(){
-  [['ev-ts','ev-te'],['ev-ts2','ev-te2']].forEach(function(pair){
-    var ss=document.getElementById(pair[0]), se=document.getElementById(pair[1]);
-    if(!ss||!se) return;
+  var targets=[
+    ['ev-ts','ev-te'],
+    ['ev-ts2','ev-te2']
+  ];
+  targets.forEach(function(pair){
+    var ss=document.getElementById(pair[0]);
+    var se=document.getElementById(pair[1]);
+    if(!ss||!se)return;
     ss.innerHTML='<option value="">開始</option>';
     se.innerHTML='<option value="">終了</option>';
     for(var h=8;h<24;h++){
@@ -780,7 +838,21 @@ function initTimeSelects(){
 }
 function syncTime(){
   var s=document.getElementById('ev-ts').value, e=document.getElementById('ev-te').value;
-  document.getElementById('ev-time').value=(s&&e)?s+'〜'+e:(s||e||'');
+  if(s||e) document.getElementById('ev-time').value=(s&&e)?s+'〜'+e:(s||e||'');
+}
+function syncTime2(){
+  var s=document.getElementById('ev-ts2').value;
+  var e=document.getElementById('ev-te2').value;
+  if(s||e) document.getElementById('ev-time2').value=(s&&e)?s+'〜'+e:(s||e||'');
+}
+function syncTimeFromText(){
+  // テキスト直接入力時はセレクトをリセット
+  document.getElementById('ev-ts').value='';
+  document.getElementById('ev-te').value='';
+}
+function syncTime2FromText(){
+  document.getElementById('ev-ts2').value='';
+  document.getElementById('ev-te2').value='';
 }
 function changeMonth(d){
   currentMonth+=d;
@@ -796,7 +868,7 @@ function openSeminarSite(){
   window.open(url,'_blank');
 }
 
-function makeCard(ev,d,ei,single,dayEvs){
+function makeCard(ev,d,idx,single){
   var f=!!ev.focus;
   var tc=getTypeColor(ev.type);
   var col=f?'#333':tc.col;
@@ -809,18 +881,28 @@ function makeCard(ev,d,ei,single,dayEvs){
   card.style.background=bg;
   card.style.borderLeft=bl;
   card.onclick=function(){
-    if(isEditMode){ openEdit(d,ei); }
-    else{ window._detailDay=d; window._dayEvents=dayEvs||[ev]; openAttendModal(ev,d); }
+    if(isEditMode){ openEdit(d,idx); }
+    else{ openDetail(ev); }
   };
   var inner=document.createElement('div');inner.className='ev-inner';
   var text=document.createElement('div');text.className='ev-text';
-  var tb=document.createElement('div');tb.className='ev-type-badge';tb.style.color=col;var pref=getPrefecture(ev.venue||'');
-  tb.textContent=(TICON[ev.type]||'')+' '+ev.type+(pref?' '+pref:'');text.appendChild(tb);
+  var tb=document.createElement('div');tb.className='ev-type-badge';tb.style.color=col;tb.textContent=(TICON[ev.type]||'')+' '+ev.type;text.appendChild(tb);
   var hasP2c=ev.koushi2||ev.photo2;
   // 左：講師名（コラボ時は2名分）
   if(ev.koushi){var nm=document.createElement('div');nm.className='ev-name';nm.style.color=col;nm.textContent=ev.koushi;text.appendChild(nm);}
   if(hasP2c&&ev.koushi2){var nm2=document.createElement('div');nm2.className='ev-name';nm2.style.color=col;nm2.textContent=ev.koushi2;text.appendChild(nm2);}
-  if(ev.time){var tm=document.createElement('div');tm.className='ev-time';tm.style.color=col;tm.textContent='🕐 '+ev.time;text.appendChild(tm);}
+  if(ev.time){
+    var tm=document.createElement('div');tm.className='ev-time';tm.style.color=col;
+    var timeStr=ev.time;
+    // BE&BT系で複数時間の場合、分かりやすく表示
+    if((ev.type==='BE&BT'||ev.type==='BT&BE')&&ev.time.indexOf(' / ')>-1){
+      var tparts=ev.time.split(' / ');
+      var t1type=ev.type.split('&')[0];
+      var t2type=ev.type.split('&')[1];
+      timeStr=t1type+' '+tparts[0]+' / '+t2type+' '+(tparts[1]||'');
+    }
+    tm.textContent='🕐 '+timeStr;text.appendChild(tm);
+  }
   if(ev.venue){var vn=document.createElement('div');vn.className='ev-venue';vn.style.color=col;vn.textContent='📍 '+ev.venue;text.appendChild(vn);}
   if(ev.shusai){var sh=document.createElement('div');sh.className='ev-shusai';sh.style.color=col;sh.textContent='👥 '+ev.shusai;text.appendChild(sh);}
   if(ev.note){var nt=document.createElement('div');nt.className='ev-note-tag';nt.style.color=col;nt.textContent=ev.note;text.appendChild(nt);}
@@ -840,18 +922,14 @@ function makeCard(ev,d,ei,single,dayEvs){
   }
   inner.appendChild(wrap);
   card.appendChild(inner);
-  // スマホではsingle以外のposition調整
-  if(window.innerWidth <= 640){
-    if(!f){
-      // 通常カード：static
-      card.style.setProperty('position','static','important');
-      card.style.setProperty('top','','important');
-      card.style.setProperty('left','','important');
-      card.style.setProperty('right','','important');
-      card.style.setProperty('bottom','','important');
-      card.style.setProperty('flex','none','important');
-    }
-    // 集中会場：CSSのposition:relativeに任せる（インラインスタイル不要）
+  // スマホ：focus以外は全てstaticに
+  if(window.innerWidth <= 640 && !f){
+    card.style.setProperty('position','static','important');
+    card.style.setProperty('top','auto','important');
+    card.style.setProperty('left','auto','important');
+    card.style.setProperty('right','auto','important');
+    card.style.setProperty('bottom','auto','important');
+    card.style.setProperty('flex','none','important');
   }
   return card;
 }
@@ -883,14 +961,23 @@ function render(){
     var displayList = focusList.length > 0
       ? focusList
       : de.filter(editionFilter);
+    // 表示順：集中会場→PBS→開催時間が早い順
     displayList = displayList.slice().sort(function(a,b){
-      if(a.focus&&!b.focus) return -1; if(!a.focus&&b.focus) return 1;
-      var ap=(a.type||'').indexOf('PBS')>-1||(a.type||'').indexOf('コンベンション')>-1;
-      var bp=(b.type||'').indexOf('PBS')>-1||(b.type||'').indexOf('コンベンション')>-1;
-      if(ap&&!bp) return -1; if(!ap&&bp) return 1;
-      var at=(a.time||'').split('/')[0].split('〜')[0].trim();
-      var bt=(b.time||'').split('/')[0].split('〜')[0].trim();
-      return at&&bt?at.localeCompare(bt):at?-1:bt?1:0;
+      // 1. 集中会場優先
+      if(a.focus && !b.focus) return -1;
+      if(!a.focus && b.focus) return 1;
+      // 2. PBS優先
+      var aIsPbs = (a.type||'').indexOf('PBS')>-1 || (a.type||'').indexOf('コンベンション')>-1;
+      var bIsPbs = (b.type||'').indexOf('PBS')>-1 || (b.type||'').indexOf('コンベンション')>-1;
+      if(aIsPbs && !bIsPbs) return -1;
+      if(!aIsPbs && bIsPbs) return 1;
+      // 3. 開催時間が早い順（HH:MM形式の先頭を比較）
+      var aTime = (a.time||'').replace('〜','~').split('/')[0].trim().split('~')[0].trim();
+      var bTime = (b.time||'').replace('〜','~').split('/')[0].trim().split('~')[0].trim();
+      if(aTime && bTime) return aTime.localeCompare(bTime);
+      if(aTime) return -1;
+      if(bTime) return 1;
+      return 0;
     });
     var single=displayList.length===1;
     var pCls=displayList.length>=4?' print-4':displayList.length===3?' print-3':'';
@@ -899,9 +986,34 @@ function render(){
     var dn=document.createElement('div');
     dn.className='date-num'+(dow===0?' sun-num':dow===6?' sat-num':'');
     dn.textContent=d; cell.appendChild(dn);
-    (function(dl){
-      for(var ei=0;ei<dl.length;ei++){cell.appendChild(makeCard(dl[ei],d,de.indexOf(dl[ei]),single,dl));}
-    })(displayList);
+    var printMax=3;
+    var displayFull=displayList;
+    var displayCapped=displayList.length>printMax?displayList.slice(0,printMax):displayList;
+    // 画面表示は全件、印刷時はCSSで制御するためdata属性に件数を付与
+    cell.dataset.total=displayList.length;
+    for(var ei=0;ei<displayFull.length;ei++){cell.appendChild(makeCard(displayFull[ei],d,de.indexOf(displayFull[ei]),single));}
+    // 「他N件」バッジ（印刷時のみ表示）
+    if(displayList.length>printMax){
+      var moreDiv=document.createElement('div');
+      moreDiv.className='print-more-badge';
+      var hiddenCount=displayList.length-printMax;
+      moreDiv.textContent='他 '+hiddenCount+' 件';
+      // タップで非表示カードをトグル
+      (function(cell,moreDiv,hiddenCount){
+        moreDiv.style.cssText='display:block;font-size:10px;color:#1565c0;padding:2px 4px;cursor:pointer;text-align:center;background:#e3f2fd;border-radius:3px;margin-top:1px;flex-shrink:0;';
+        moreDiv.onclick=function(e){
+          e.stopPropagation();
+          var cards=cell.querySelectorAll('.event-card');
+          var hidden=moreDiv.dataset.expanded!=='1';
+          cards.forEach(function(c,i){
+            if(i>=printMax) c.style.display=hidden?'block':'none';
+          });
+          moreDiv.textContent=hidden?'▲ 閉じる':'他 '+hiddenCount+' 件';
+          moreDiv.dataset.expanded=hidden?'1':'0';
+        };
+      })(cell,moreDiv,hiddenCount);
+      cell.appendChild(moreDiv);
+    }
     var ab=document.createElement('div');ab.className='add-btn';ab.textContent='＋';
     (function(day){ab.onclick=function(){openAdd(day);};})(d);
     cell.appendChild(ab);
@@ -919,6 +1031,21 @@ function openEdit(d,idx){
   document.getElementById('ev-modal-title').textContent=d+'日 イベントを編集';
   resetForm();
   setEvType(ev.type||'PBS');
+  // BE&BT系は時間を分割して時間1・時間2にセット
+  var needTime2=(ev.type==='BE&BT'||ev.type==='BT&BE'||ev.type==='BE&BE'||ev.type==='BT&BT');
+  var t2row=document.getElementById('time2-row');
+  if(t2row) t2row.style.display=needTime2?'block':'none';
+  if(needTime2&&ev.time&&ev.time.indexOf(' / ')>-1){
+    var tParts=ev.time.split(' / ');
+    var t1Parts=tParts[0].split('〜');
+    var t2Parts=tParts[1]?tParts[1].split('〜'):['',''];
+    if(document.getElementById('ev-ts')) document.getElementById('ev-ts').value=t1Parts[0]||'';
+    if(document.getElementById('ev-te')) document.getElementById('ev-te').value=t1Parts[1]||'';
+    if(document.getElementById('ev-ts2')) document.getElementById('ev-ts2').value=t2Parts[0]||'';
+    if(document.getElementById('ev-te2')) document.getElementById('ev-te2').value=t2Parts[1]||'';
+    document.getElementById('ev-time').value=tParts[0]||'';
+    document.getElementById('ev-time2').value=tParts[1]||'';
+  }
   document.getElementById('ev-koushi').value=ev.koushi||'';
   document.getElementById('ev-koushi2').value=ev.koushi2||'';
   document.getElementById('ev-venue').value=ev.venue||'';
@@ -948,7 +1075,12 @@ function closeEvModal(){document.getElementById('ev-modal').style.display='none'
 function saveEvent(){
   var k1=document.getElementById('ev-koushi').value, k2=document.getElementById('ev-koushi2').value;
   if(k1&&p1)addToLib(k1,p1,libYomi(k1)!==k1?libYomi(k1):''); if(k2&&p2)addToLib(k2,p2,libYomi(k2)!==k2?libYomi(k2):'');
-  var ev={type:getEvType(),koushi:k1,koushi2:k2,time:document.getElementById('ev-time').value,venue:document.getElementById('ev-venue').value,address:document.getElementById('ev-address').value,region:document.getElementById('ev-region').value,shusai:document.getElementById('ev-shusai').value,note:document.getElementById('ev-note').value,focus:document.getElementById('ev-focus').checked,photo:p1,photo2:p2};
+  var ev={type:getEvType(),koushi:k1,koushi2:k2,time:(function(){
+      var t1=document.getElementById('ev-time').value;
+      var t2row=document.getElementById('time2-row');
+      var t2=(t2row&&t2row.style.display!=='none')?document.getElementById('ev-time2').value:'';
+      return t2?t1+' / '+t2:t1;
+    })(),venue:document.getElementById('ev-venue').value,address:document.getElementById('ev-address').value,region:document.getElementById('ev-region').value,shusai:document.getElementById('ev-shusai').value,note:document.getElementById('ev-note').value,focus:document.getElementById('ev-focus').checked,photo:p1,photo2:p2};
   if(!events[editDate])events[editDate]=[];
   if(editIdx!==null){events[editDate][editIdx]=ev;}else{events[editDate].push(ev);}
   saveEvents();closeEvModal();render();
@@ -1224,8 +1356,12 @@ function parsePaste(){
     }
     // 状態行（種別より前に来る場合もスキップ・expectShusaiはL99で設定）
     if(parsedItems.length&&/^(開催済|受付終了|先着受付|予約終了|受付中|受付前|中止|満席|空席あり|抽選中|抽選|キャンセル待ち|締切|受付締切|開催中止)$/.test(l)){
-      if(/^(中止|開催中止)$/.test(l)){ parsedItems.pop(); }
-      else { parsedItems[parsedItems.length-1].expectShusai=true; }
+      // 中止・開催中止の場合はその日程を削除
+      if(/^(中止|開催中止)$/.test(l)){
+        parsedItems.pop();
+      } else {
+        parsedItems[parsedItems.length-1].expectShusai=true;
+      }
       continue;
     }
     if(!parsedItems.length&&/^(開催済|受付終了|先着受付|予約終了|受付中|受付前|中止|満席|空席あり|抽選中|抽選|キャンセル待ち|締切|受付締切|開催中止)$/.test(l)){continue;}
@@ -1562,10 +1698,13 @@ function mergeBebt(evList){
 
 // ── 種別手動入力 ──
 function toggleCustomType(){
-  var sel=document.getElementById('ev-type');
+  var val=document.getElementById('ev-type').value;
   var inp=document.getElementById('ev-type-custom');
-  if(sel.value==='__custom__'){inp.style.display='block';inp.focus();}
-  else{inp.style.display='none';}
+  var t2row=document.getElementById('time2-row');
+  inp.style.display=(val==='__custom__')?'block':'none';
+  // BE&BT系は時間2を表示
+  var needTime2=(val==='BE&BT'||val==='BT&BE'||val==='BE&BE'||val==='BT&BT');
+  if(t2row) t2row.style.display=needTime2?'block':'none';
 }
 function getEvType(){
   var sel=document.getElementById('ev-type');
@@ -1578,7 +1717,7 @@ function getEvType(){
 function setEvType(val){
   var sel=document.getElementById('ev-type');
   var inp=document.getElementById('ev-type-custom');
-  var opts=['PBS','BE','BT','BS','分科会','コンベンション','遊び'];
+  var opts=['PBS','BE','BT','BE&BT','BT&BE','BE&BE','BT&BT','BS','分科会','コンベンション','遊び'];
   if(opts.indexOf(val)>-1){sel.value=val;inp.style.display='none';}
   else{sel.value='__custom__';inp.value=val;inp.style.display='block';}
 }
@@ -1606,32 +1745,36 @@ function viewOnly(){
 
 function applyMode(){
   if(!isEditMode){
-    // 閲覧モード：ツールバー非表示、スマホは元の縦スクロール表示
+    // 閲覧モード：ツールバー非表示、編集モードと同じ表示
     document.getElementById('view-mode-style').textContent=
       '.toolbar{display:none!important;}'+
       '.add-btn{display:none!important;}'+
       '#view-toolbar{display:block!important;}';
-    document.body.classList.remove('edit-mode-mobile');
-  } else {
-    // 編集モード：スマホでもPC版横スクロール表示
-    document.getElementById('view-mode-style').textContent='';
-    document.body.classList.add('edit-mode-mobile');
   }
   loadLib(function(){loadEvents(function(){render();startSync();});});
 }
 
-
+// ── 印刷 ──
 function doPrint(){
   var ed=EDITIONS[currentEdition]?EDITIONS[currentEdition].label:'全国版';
   var mns=['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
   document.title='三浦Gプライム日程表_'+ed+'_'+currentYear+'年'+mns[currentMonth];
+  // セル高さを動的計算（行数に応じて自動調整）
   var totalRows=Math.ceil((new Date(currentYear,currentMonth,1).getDay()+new Date(currentYear,currentMonth+1,0).getDate())/7);
-  var headerH=5; var availH=204-8-headerH-2; var cellH=Math.floor((availH/totalRows)*10)/10;
+  var headerH=7; // ヘッダー行の高さ(mm)
+  var availH=191-headerH; // A4横の有効高さ
+  var cellH=Math.floor((availH/totalRows)*10)/10;
   var ps=document.getElementById('dynamic-print-style');
   if(!ps){ps=document.createElement('style');ps.id='dynamic-print-style';document.head.appendChild(ps);}
-  ps.textContent='@media print{html,body{overflow-x:hidden!important;min-width:0!important;width:291mm!important;}.page{min-width:0!important;max-width:291mm!important;width:291mm!important;padding:0!important;}.cal-cell{height:'+cellH+'mm!important;}.cal-header-cell{height:'+headerH+'mm!important;line-height:'+headerH+'mm!important;}}';
+  ps.textContent='@media print{'+
+    '.cal-cell{height:'+cellH+'mm!important;}'+
+    '.cal-header-cell{height:'+headerH+'mm!important;line-height:'+headerH+'mm!important;}'+
+  '}';
   window.print();
-  setTimeout(function(){document.title='三浦グループ プライム日程表';if(ps)ps.textContent='';},3000);
+  setTimeout(function(){
+    document.title='三浦グループ プライム日程表';
+    if(ps)ps.textContent='';
+  },3000);
 }
 
 // ── テキスト保存・読込 ──
@@ -1712,128 +1855,33 @@ initTimeSelects();
 
 var helpCurrentTab='editor';
 var helpContent={
-  viewer:
-    '<div style="font-size:14px;font-weight:700;color:#cc0000;margin-bottom:12px;padding-bottom:6px;border-bottom:2px solid #ffcccc;">👁️ 閲覧者向け 使い方ガイド</div>'+
-
-    '<div style="font-size:13px;font-weight:700;color:#1565c0;margin:10px 0 6px;">📅 カレンダーの見方</div>'+
-    '<div style="font-size:12px;color:#444;line-height:1.8;margin-bottom:10px;">'+
-    '・カードの色：<span style="color:#cc0000;font-weight:700;">赤＝PBS/コンベンション</span>　<span style="color:#1565c0;font-weight:700;">青＝BE/BT/BS</span><br>'+
-    '・🌈レインボー枠＝集中会場<br>'+
-    '・種別バッジに都道府県名が表示されます<br>'+
-    '・上部の版選択で地域別に絞り込めます（全国版・関東版・関西版 等）'+
-    '</div>'+
-
-    '<div style="font-size:13px;font-weight:700;color:#1565c0;margin:10px 0 6px;">✋ 参加表明のやり方</div>'+
-    '<div style="font-size:12px;color:#444;line-height:1.8;margin-bottom:10px;">'+
-    '① カードをタップ → 参加表明モーダルが開く<br>'+
-    '② 同日に複数の日程がある場合は上部のボタンで切り替え<br>'+
-    '③ グループ名（直上ONE）を入力<br>'+
-    '④ 参加者名を半角スペース区切りで入力<br>'+
-    '　　例：<code style="background:#f5f5f5;padding:1px 4px;border-radius:3px;">田中 鈴木◎ 山田○ 佐藤★</code><br>'+
-    '⑤「参加表明する」ボタンをタップ'+
-    '</div>'+
-
-    '<div style="background:#e8f5e9;border-left:3px solid #2e7d32;border-radius:0 8px 8px 0;padding:10px 14px;font-size:12px;color:#1b5e20;margin-bottom:10px;">'+
-    '<strong>記号の意味</strong><br>'+
-    '◎ → 新規（未登録）<br>'+
-    '○ → 登録済み新規<br>'+
-    '★ → ZOOM参加<br>'+
-    '記号なし → 通常参加<br>'+
-    '※名前の後ろに記号をつけると自動で種別判定されます'+
-    '</div>'+
-
-    '<div style="font-size:13px;font-weight:700;color:#1565c0;margin:10px 0 6px;">✏️ 参加表明の編集・削除</div>'+
-    '<div style="font-size:12px;color:#444;line-height:1.8;margin-bottom:10px;">'+
-    '・自分が入力した参加表明には「編集」「削除」ボタンが表示されます<br>'+
-    '・「編集」→ 内容を修正して再登録<br>'+
-    '・「削除」→ 確認後に削除'+
-    '</div>'+
-
-    '<div style="font-size:13px;font-weight:700;color:#1565c0;margin:10px 0 6px;">👥 参加人数の集計</div>'+
-    '<div style="font-size:12px;color:#444;line-height:1.8;margin-bottom:10px;">'+
-    '・参加一覧の上部に「計〇名（新規〇名）」が自動表示されます<br>'+
-    '・グループ（直上ONE）単位で色分けして表示されます<br>'+
-    '・新規カウント：名前の後ろに◎または○がついている人数'+
-    '</div>'+
-
-    '<div style="font-size:13px;font-weight:700;color:#1565c0;margin:10px 0 6px;">📋 LINEへのコピー</div>'+
-    '<div style="font-size:12px;color:#444;line-height:1.8;margin-bottom:10px;">'+
-    '・「LINEグループ用にコピー」ボタンをタップ<br>'+
-    '・参加者一覧がテキスト形式でコピーされます<br>'+
-    '・LINEグループに貼り付けてご利用ください'+
-    '</div>'+
-
-    '<div style="font-size:13px;font-weight:700;color:#1565c0;margin:10px 0 6px;">🖨️ 印刷・PDF出力</div>'+
-    '<div style="font-size:12px;color:#444;line-height:1.8;">'+
-    '・「印刷・PDF出力」ボタンをタップ<br>'+
-    '・iPhoneはSafariの共有→「PDFとして保存」<br>'+
-    '・PCはブラウザの印刷→「PDFとして保存」<br>'+
-    '・A4横向きで1ページに収まるよう自動調整されます'+
-    '</div>',
-
-  editor:
-    '<div style="background:#fff8e1;border:1px solid #ffe082;border-radius:8px;padding:10px 14px;font-size:13px;color:#5d4037;margin-bottom:16px;"><strong>編集パスワード：miura2026</strong>（管理者のみ）</div>'+
-
-    '<div style="font-size:14px;font-weight:700;color:#cc0000;margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid #ffcccc;">✏️ 編集者向け 使い方ガイド</div>'+
-
-    '<div style="font-size:13px;font-weight:700;color:#1565c0;margin:10px 0 6px;">🔑 編集モードに入る</div>'+
-    '<div style="font-size:12px;color:#444;line-height:1.8;margin-bottom:10px;">'+
-    '「編集モードに切替」ボタン → パスワード入力（miura2026）'+
-    '</div>'+
-
-    '<div style="font-size:13px;font-weight:700;color:#1565c0;margin:10px 0 6px;">➕ 日程を追加する</div>'+
-    '<div style="font-size:12px;color:#444;line-height:1.8;margin-bottom:10px;">'+
-    '・日付セルの「＋」ボタンをタップ<br>'+
-    '・種別・講師名・時間・会場・主催者を入力<br>'+
-    '・時間はドロップダウンまたは直接入力が可能<br>'+
-    '・写真ライブラリから講師写真を選択<br>'+
-    '・「保存」で完了'+
-    '</div>'+
-
-    '<div style="font-size:13px;font-weight:700;color:#1565c0;margin:10px 0 6px;">✏️ 日程を編集・削除する</div>'+
-    '<div style="font-size:12px;color:#444;line-height:1.8;margin-bottom:10px;">'+
-    '・カードをタップ → 編集モーダルが開く<br>'+
-    '・内容を修正して「保存」<br>'+
-    '・「削除」ボタンで削除'+
-    '</div>'+
-
-    '<div style="font-size:13px;font-weight:700;color:#1565c0;margin:10px 0 6px;">📥 テキスト一括取り込み</div>'+
-    '<div style="font-size:12px;color:#444;line-height:1.8;margin-bottom:10px;">'+
-    '・「テキスト取り込み」ボタン<br>'+
-    '・セミナー情報のテキストを貼り付け<br>'+
-    '・自動で日程を解析して取り込み<br>'+
-    '・中止・開催中止は自動でスキップ'+
-    '</div>'+
-
-    '<div style="font-size:13px;font-weight:700;color:#1565c0;margin:10px 0 6px;">📸 写真ライブラリ管理</div>'+
-    '<div style="font-size:12px;color:#444;line-height:1.8;margin-bottom:10px;">'+
-    '・「写真ライブラリ」ボタンで管理画面を開く<br>'+
-    '・講師写真の登録・編集・削除が可能<br>'+
-    '・よみがなで五十音順に並び替え<br>'+
-    '・写真はFirebaseに保存されます'+
-    '</div>'+
-
-    '<div style="font-size:13px;font-weight:700;color:#1565c0;margin:10px 0 6px;">⭐ 集中会場の設定</div>'+
-    '<div style="font-size:12px;color:#444;line-height:1.8;margin-bottom:10px;">'+
-    '・日程編集で「集中会場」にチェック<br>'+
-    '・集中会場がある日はその日程のみ優先表示<br>'+
-    '・🌈レインボー枠で目立つように表示されます'+
-    '</div>'+
-
-    '<div style="font-size:13px;font-weight:700;color:#1565c0;margin:10px 0 6px;">🗾 版の管理</div>'+
-    '<div style="font-size:12px;color:#444;line-height:1.8;">'+
-    '・全国版・関東版・関西版・中部版・九州版 等から選択<br>'+
-    '・⭐重要版：集中会場のみを全国から自動収集して表示<br>'+
-    '・版は日程ごとに地域設定で自動振り分け'+
-    '</div>'
+  editor:'<div style="background:#fff8e1;border:1px solid #ffe082;border-radius:8px;padding:10px 14px;font-size:13px;color:#5d4037;margin-bottom:16px;"><strong>編集パスワード：miura2026</strong>（管理者のみ）</div>'+
+  '<div style="font-size:14px;font-weight:700;color:#cc0000;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #ffcccc;">システム更新後の必須手順</div>'+
+  '<div style="background:#fff8e1;border-left:3px solid #f57f17;border-radius:0 8px 8px 0;padding:10px 14px;font-size:13px;color:#5d4037;line-height:1.8;margin-bottom:16px;">'+
+  '<strong style="display:block;margin-bottom:6px;">Safariの場合</strong>① 設定→Safari→履歴とWebサイトデータを消去<br>② Safariを完全終了→再起動<br><br>'+
+  '<strong style="display:block;margin-bottom:6px;">ホーム画面アイコンの場合</strong>① アイコンを長押し→削除<br>② 設定→Safari→履歴とWebサイトデータを消去<br>③ SafariでURLを開く<br>④ 共有ボタン→ホーム画面に追加<br>'+
+  '<span style="color:#e65100;font-weight:700;">削除せずに再追加しても古いキャッシュが残ります</span></div>'+
+  '<div style="font-size:14px;font-weight:700;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #eee;">スケジュール取り込み</div>'+
+  '<div style="font-size:13px;color:#555;line-height:2;margin-bottom:16px;">① セミナーサイトを全選択してコピー<br>② 「📋 テキストを貼り付けて取り込む」<br>③ 貼り付け→解析する→内容確認<br>④「カレンダーに取り込む」で完了<br><span style="background:#e8f5e9;border-radius:4px;padding:2px 8px;font-size:12px;color:#2e7d32;">同日の既存予定は更新・テキストにない予定は削除・新規は追加</span></div>'+
+  '<div style="font-size:14px;font-weight:700;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #eee;">手動追加・編集</div>'+
+  '<div style="font-size:13px;color:#555;line-height:2;margin-bottom:16px;">セル内の「＋」→新規追加<br>既存カードをタップ→編集モーダル</div>'+
+  '<div style="font-size:14px;font-weight:700;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #eee;">色分け</div>'+
+  '<div style="font-size:13px;color:#555;line-height:2;">🔴 PBS・コンベンション・分科会<br>🔵 BE・BT・BS<br>🌈 集中会場</div>',
+  viewer:'<div style="background:#fff8e1;border-left:3px solid #f57f17;border-radius:0 8px 8px 0;padding:10px 14px;font-size:13px;color:#5d4037;line-height:1.8;margin-bottom:16px;">'+
+  '<strong style="display:block;margin-bottom:6px;">画面が古い・変わらない場合</strong>'+
+  '<strong>Safariの場合：</strong><br>① 設定→Safari→履歴とWebサイトデータを消去<br>② Safariを完全終了して再起動<br><br>'+
+  '<strong>ホーム画面アイコンの場合：</strong><br>① アイコンを長押し→削除<br>② 設定→Safari→キャッシュ消去<br>③ URLを開く<br>④ 共有ボタン→ホーム画面に追加<br>'+
+  '<span style="color:#e65100;font-weight:700;">削除せずに再追加しても古いキャッシュが残ります</span></div>'+
+  '<div style="font-size:14px;font-weight:700;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #eee;">基本操作</div>'+
+  '<div style="font-size:13px;color:#555;line-height:2;margin-bottom:16px;">◀▶ボタン：月の切り替え<br>ドロップダウン：地域版の切り替え<br>⭐重要版：全国の集中会場をまとめて確認<br>カードをタップ：詳細表示</div>'+
+  '<div style="font-size:14px;font-weight:700;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #eee;">色の意味</div>'+
+  '<div style="font-size:13px;color:#555;line-height:2;">🔴 PBS・コンベンション・分科会<br>🔵 BE・BT・BS<br>🌈 集中会場（重要）</div>'
 };
 function openHelp(){
-  // タブエリア自体を閲覧モードでは非表示
-  var tabs=document.getElementById('help-tabs');
-  if(tabs) tabs.style.display=isEditMode?'flex':'none';
-  switchHelpTab('viewer'); // 常にviewerから開始
-  if(isEditMode) switchHelpTab('editor'); // 編集モードなら編集者用
   document.getElementById('help-overlay').style.display='flex';
+  var edBtn=document.getElementById('help-tab-editor');
+  if(!isEditMode){edBtn.style.display='none';switchHelpTab('viewer');}
+  else{edBtn.style.display='';switchHelpTab('editor');}
 }
 function closeHelp(){document.getElementById('help-overlay').style.display='none';}
 function switchHelpTab(tab){
@@ -1907,214 +1955,13 @@ function openDetail(ev){
 
   var overlay = document.getElementById('detail-overlay');
   overlay.style.display = 'flex';
-  // 参加表明ボタン
-  var abtn = document.getElementById('attend-open-btn');
-  if(abtn){
-    var _ev=ev; var _day=window._detailDay||0;
-    abtn.onclick = function(){ openAttendModal(_ev, _day); };
-  }
 }
 
 function closeDetail(){
   document.getElementById('detail-overlay').style.display = 'none';
 }
 // 起動はapplyMode()で行う
-
-var currentAttendKey='';
-function makeAttKey(ev,day,subType){
-  var t=subType||ev.type||'';
-  return (currentYear+'_'+(currentMonth+1)+'_'+day+'_'+t+'_'+(ev.koushi||'').replace(/\s/g,'').slice(0,6)+'_'+(ev.venue||'').replace(/\s/g,'').slice(0,4));
-}
-function openAttendModal(ev,day){
-  window._currentDetailEv=ev;
-  window._currentAttendDay=day;
-  _switchAttend(ev,day);
-  document.getElementById('attend-overlay').style.display='block';
-  // 同日の複数イベントをボタンで表示
-  // 同日の全イベントを切替対象に（BE&BTは2つに分割）
-  var allDayEvs=window._dayEvents||[];
-  var dayEvs=[];
-  var seen={};
-  allDayEvs.forEach(function(e){
-    var types=(e.type||'').indexOf('&')>-1 ? (e.type||'').split('&') : [e.type||''];
-    types.forEach(function(t){
-      var k=makeAttKey(e,day,t);
-      if(!seen[k]){
-        seen[k]=true;
-        dayEvs.push({ev:e,subType:t,key:k});
-      }
-    });
-  });
-  var btnDiv=document.getElementById('attend-venue-btns');
-  if(btnDiv){
-    btnDiv.innerHTML='';
-    var activeKey=makeAttKey(ev,day,ev._subType);
-    dayEvs.forEach(function(item){
-      var isActive=(item.key===activeKey);
-      var btn=document.createElement('button');
-      var k2=item.ev.koushi2?' & '+item.ev.koushi2:'';
-      var label=item.subType+(item.ev.koushi?' '+item.ev.koushi+k2:'');
-      btn.textContent=label;
-      btn.style.cssText='font-size:11px;padding:4px 8px;border-radius:6px;cursor:pointer;font-family:inherit;border:1.5px solid '+(isActive?'#1565c0':'#ddd')+';background:'+(isActive?'#1565c0':'white')+';color:'+(isActive?'white':'#555')+';margin-bottom:4px;white-space:normal;text-align:left;line-height:1.4;';
-      (function(item2){ btn.onclick=function(){
-        currentAttendKey=item2.key;
-        var n2=item2.ev.koushi2?' & '+item2.ev.koushi2:'';
-        var pref2=getPrefecture(item2.ev.venue||'');
-        var prefStr2=pref2?' ('+pref2+')':'';
-        document.getElementById('attend-modal-title').textContent='✋ '+(item2.ev.koushi||'')+n2+' '+item2.subType+prefStr2;
-        document.getElementById('attend-list').innerHTML='<div style="color:#aaa;font-size:12px;">読み込み中...</div>';
-        document.getElementById('attend-total').textContent='';
-        if(fbOk()){
-          db.ref('attendance/'+currentAttendKey).off();
-          db.ref('attendance/'+currentAttendKey).on('value',function(s){ renderAttendList(s.val()||{}); });
-        }
-        btnDiv.querySelectorAll('button').forEach(function(b){ b.style.background='white';b.style.color='#555';b.style.borderColor='#ddd'; });
-        this.style.background='#1565c0';this.style.color='white';this.style.borderColor='#1565c0';
-      };})(item);
-      btnDiv.appendChild(btn);
-    });
-  }
-}
-function _switchAttend(ev,day,subType){
-  if(fbOk()&&currentAttendKey) db.ref('attendance/'+currentAttendKey).off();
-  var t=subType||(ev.type||'').indexOf('&')>-1?(ev.type||'').split('&')[0]:ev.type||'';
-  currentAttendKey=makeAttKey(ev,day,t);
-  var name2=ev.koushi2?' & '+ev.koushi2:'';
-  var pref=getPrefecture(ev.venue||'');
-  var prefStr=pref?' ('+pref+')':'';
-  document.getElementById('attend-modal-title').textContent='✋ '+(ev.koushi||'')+name2+' '+t+prefStr;
-  document.getElementById('attend-list').innerHTML='<div style="color:#aaa;font-size:12px;">読み込み中...</div>';
-  document.getElementById('attend-total').textContent='';
-  if(fbOk()){
-    db.ref('attendance/'+currentAttendKey).on('value',function(s){ renderAttendList(s.val()||{}); });
-  }
-}
-function closeAttendModal(){
-  document.getElementById('attend-overlay').style.display='none';
-  if(fbOk()&&currentAttendKey) db.ref('attendance/'+currentAttendKey).off();
-}
-var _attendData={};
-function renderAttendList(data){
-  _attendData=data;
-  var list=document.getElementById('attend-list');
-  var total=document.getElementById('attend-total');
-  var myUid=getAttendUid();
-  var entries=Object.keys(data).map(function(k){return Object.assign({},data[k],{_key:k});}).sort(function(a,b){return (a.ts||0)-(b.ts||0);});
-  if(!entries.length){ list.innerHTML='<div style="color:#aaa;font-size:12px;padding:4px 0;">まだ参加表明はありません</div>'; total.textContent=''; return; }
-  var groups={}, allCount=0, shinkiCount=0;
-  entries.forEach(function(e){
-    var g=e.group||'（グループ未記入）';
-    if(!groups[g]) groups[g]=[];
-    groups[g].push(e);
-    // ○◎の前にスペースを挿入してから分割（例：田中○鈴木→田中○ 鈴木）
-    var normalized=(e.name||'').replace(/([◎○◯★])([^\s◎○◯★])/g,'$1 $2');
-    var names=normalized.split(/[\s\u3000]+/).filter(function(n){return n;});
-    allCount+=names.length;
-    names.forEach(function(n){
-      // 名前の後ろに◎○◯がある場合のみ新規カウント（例：田中◎、鈴木○）
-      if(/[◎○◯]$/.test(n)) shinkiCount++;
-    });
-  });
-  var typeColor={'新規◎':'#e65100','登録済○':'#2e7d32','ZOOM★':'#6a1b9a','通常':'#1565c0'};
-  var typeBg={'新規◎':'#fff3e0','登録済○':'#e8f5e9','ZOOM★':'#f3e5f5','通常':'#e3f2fd'};
-  var html='';
-  Object.keys(groups).forEach(function(g){
-    html+='<div style="margin-bottom:10px;">';
-    html+='<div style="font-size:11px;font-weight:700;color:#1565c0;background:#e3f2fd;padding:4px 8px;border-radius:4px;margin-bottom:4px;">'+g+'</div>';
-    groups[g].forEach(function(e){
-      var tc=typeColor[e.type||'通常']||'#555';
-      var tb=typeBg[e.type||'通常']||'#f5f5f5';
-      var isMe=(e.uid===myUid);
-      html+='<div style="display:flex;align-items:center;gap:6px;padding:4px 6px;background:'+(isMe?'#fffde7':'white')+';border-radius:4px;border:0.5px solid #eee;margin-bottom:2px;">';
-      html+='<span style="font-size:10px;padding:2px 6px;border-radius:10px;background:'+tb+';color:'+tc+';font-weight:700;white-space:nowrap;">'+( e.type||'通常')+'</span>';
-      html+='<span style="font-size:12px;flex:1;">'+( e.name||'')+'</span>';
-      if(isMe){
-        html+='<button data-key="'+e._key+'" data-path="attendance/'+currentAttendKey+'/'+e._key+'" onclick="editAttend(this)" style="font-size:10px;padding:2px 6px;border-radius:4px;border:1px solid #1565c0;background:white;color:#1565c0;cursor:pointer;">編集</button>';
-        html+='<button data-key="'+e._key+'" data-path="attendance/'+currentAttendKey+'/'+e._key+'" onclick="deleteAttend(this)" style="font-size:10px;padding:2px 6px;border-radius:4px;border:1px solid #e53935;background:white;color:#e53935;cursor:pointer;">削除</button>';
-      }
-      html+='</div>';
-    });
-    html+='</div>';
-  });
-  total.textContent='計'+allCount+'名（新規'+shinkiCount+'名）';
-  list.innerHTML=html;
-  // 編集・削除ボタンにイベントを登録
-  list.querySelectorAll('button[data-key]').forEach(function(btn){
-    if(btn.textContent==='編集'){
-      btn.addEventListener('click', function(){ editAttend(this); });
-    } else if(btn.textContent==='削除'){
-      btn.addEventListener('click', function(){ deleteAttend(this); });
-    }
-  });
-}
-function editAttend(btn){
-  var key=btn.getAttribute('data-key');
-  var path=btn.getAttribute('data-path');
-  var entry=_attendData[key];
-  if(!entry) return;
-  document.getElementById('attend-group').value=entry.group||'';
-  document.getElementById('attend-name').value=entry.name||'';
-  // 削除してから再登録（編集として扱う）
-  if(path){ db.ref(path).remove(); }
-  else { db.ref('attendance/'+currentAttendKey+'/'+key).remove(); }
-  document.getElementById('attend-name').focus();
-}
-function deleteAttend(btn){
-  if(!confirm('この参加表明を削除しますか？')) return;
-  var path=btn.getAttribute('data-path');
-  if(path){ db.ref(path).remove(); return; }
-  var key=btn.getAttribute('data-key');
-  db.ref('attendance/'+currentAttendKey+'/'+key).remove();
-}
-function showDetailFromAttend(){
-  if(window._currentDetailEv) openDetail(window._currentDetailEv);
-}
-function detectType(name){
-  // 名前全体に記号があれば判別（複数名でも対応）
-  if(name.indexOf('◎')>-1) return '新規◎';
-  if(name.indexOf('○')>-1||name.indexOf('◯')>-1) return '登録済○';
-  if(name.indexOf('★')>-1) return 'ZOOM★';
-  return '通常';
-}
-function detectTypeForDisplay(name){
-  // 表示用：名前後ろの記号で判別（新規・登録済・ZOOM・通常）
-  var hasShinkiCircle=name.indexOf('◎')>-1;
-  var hasTorokuzumi=name.indexOf('○')>-1||name.indexOf('◯')>-1;
-  var hasZoom=name.indexOf('★')>-1;
-  if(hasShinkiCircle&&hasTorokuzumi) return '新規◎・登録済○';
-  if(hasShinkiCircle) return '新規◎';
-  if(hasTorokuzumi) return '登録済○';
-  if(hasZoom) return 'ZOOM★';
-  return '通常';
-}
-function submitAttend(){
-  var group=(document.getElementById('attend-group').value||'').trim();
-  var name=(document.getElementById('attend-name').value||'').trim();
-  if(!group){alert('グループ名を入力してください');return;}
-  if(!name){alert('参加者名を入力してください');return;}
-  if(!fbOk()){alert('Firebase未接続');return;}
-  // 種別は名前の記号から自動判別
-  var type=detectType(name)||'通常';
-  var uid=getAttendUid();
-  var key=currentAttendKey+'/'+uid+'_'+Date.now();
-  db.ref('attendance/'+key).set({group:group,name:name,type:type,ts:Date.now(),uid:uid}).then(function(){
-    document.getElementById('attend-name').value='';
-  });
-}
-function getAttendUid(){
-  var k='prime_uid_v2';
-  var v=localStorage.getItem(k);
-  if(!v){v='u'+Date.now().toString(36)+Math.random().toString(36).slice(2,8);localStorage.setItem(k,v);}
-  return v;
-}
-function copyAttendLine(){
-  var total=document.getElementById('attend-total').textContent;
-  var list=document.getElementById('attend-list').innerText||'';
-  var title=document.getElementById('attend-modal-title').textContent;
-  var text=title+'\n'+total+'\n\n'+list;
-  if(navigator.clipboard){navigator.clipboard.writeText(text).then(function(){alert('✅ コピーしました');});}
-  else{var ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);alert('✅ コピーしました');}
-}</script>
+</script>
 <script>
 document.addEventListener('DOMContentLoaded', function(){
   var pwInput = document.getElementById('pw-input');
@@ -2129,10 +1976,7 @@ document.addEventListener('DOMContentLoaded', function(){
   <div id="detail-modal" style="background:white;border-radius:18px 18px 0 0;width:100%;max-width:500px;padding:20px;max-height:80vh;overflow-y:auto;box-shadow:0 -4px 20px rgba(0,0,0,0.15);" onclick="event.stopPropagation()">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
       <div id="detail-badge" style="font-size:12px;font-weight:700;padding:3px 10px;border-radius:20px;"></div>
-      <div style="display:flex;gap:8px;align-items:center;">
-        <button id="attend-open-btn" style="padding:6px 14px;border-radius:8px;border:none;background:#1565c0;color:white;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">✋ 参加表明</button>
-        <button onclick="closeDetail()" style="background:none;border:none;font-size:22px;cursor:pointer;color:#888;line-height:1;">✕</button>
-      </div>
+      <button onclick="closeDetail()" style="background:none;border:none;font-size:22px;cursor:pointer;color:#888;line-height:1;">✕</button>
     </div>
     <div style="display:flex;gap:14px;align-items:flex-start;">
       <div id="detail-photos" style="display:flex;flex-direction:column;gap:6px;align-items:center;flex-shrink:0;"></div>
@@ -2154,41 +1998,11 @@ document.addEventListener('DOMContentLoaded', function(){
       <div style="font-size:16px;font-weight:700;color:#1a1a1a;">💬 使い方ガイド</div>
       <button onclick="closeHelp()" style="background:none;border:none;font-size:22px;cursor:pointer;color:#888;line-height:1;">✕</button>
     </div>
-    <div id="help-tabs" style="display:flex;gap:8px;padding:12px 18px;">
+    <div style="display:flex;gap:8px;padding:12px 18px;">
       <button id="help-tab-editor" onclick="switchHelpTab('editor')" style="flex:1;padding:8px;border-radius:8px;border:1px solid #1565c0;background:#1565c0;color:white;font-size:13px;font-family:inherit;font-weight:700;cursor:pointer;">✏️ 編集者用</button>
       <button id="help-tab-viewer" onclick="switchHelpTab('viewer')" style="flex:1;padding:8px;border-radius:8px;border:1px solid #ddd;background:white;color:#555;font-size:13px;font-family:inherit;cursor:pointer;">👁️ 閲覧者用</button>
     </div>
     <div id="help-body" style="overflow-y:auto;padding:0 18px 20px;flex:1;-webkit-overflow-scrolling:touch;"></div>
-  </div>
-</div>
-
-<div id="attend-overlay" style="position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:none;z-index:600;overflow-y:auto;-webkit-overflow-scrolling:touch;">
-  <div style="min-height:100%;display:flex;align-items:flex-end;justify-content:center;">
-  <div id="attend-modal" style="background:white;border-radius:18px 18px 0 0;width:100%;max-width:500px;padding:20px;box-sizing:border-box;">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-      <div>
-        <div id="attend-modal-title" style="font-size:14px;font-weight:700;">✋ 参加表明</div>
-        <div id="attend-venue-btns" style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;width:100%;"></div>
-      </div>
-      <div style="display:flex;gap:6px;align-items:center;">
-        <button id="attend-detail-btn" onclick="showDetailFromAttend()" style="font-size:11px;padding:3px 8px;border-radius:6px;border:1px solid #ddd;background:white;color:#555;cursor:pointer;">📋 詳細</button>
-      </div>
-      <button onclick="closeAttendModal()" style="background:none;border:none;font-size:22px;cursor:pointer;color:#888;padding:4px;">✕</button>
-    </div>
-    <div style="margin-bottom:12px;">
-      <div style="font-size:12px;font-weight:700;margin-bottom:6px;">👥 参加一覧 <span id="attend-total" style="font-size:11px;color:#888;font-weight:400;"></span></div>
-      <div id="attend-list" style="font-size:12px;color:#555;min-height:20px;"></div>
-    </div>
-    <div style="background:#f9f9f9;border-radius:10px;padding:12px;margin-bottom:10px;">
-      <div style="font-size:11px;color:#888;margin-bottom:3px;">グループ名（直上ONE）</div>
-      <input type="text" id="attend-group" placeholder="例：大石GM" style="width:100%;font-size:16px;border-radius:8px;border:1.5px solid #ddd;padding:8px 10px;font-family:inherit;box-sizing:border-box;margin-bottom:8px;background:white;">
-      <div style="font-size:11px;color:#888;margin-bottom:3px;">参加者名（複数は半角スペース）</div>
-      <input type="text" id="attend-name" placeholder="例：田中 鈴木◎ 山田○ 佐藤★（◎新規 ○登録済 ★ZOOM）" style="width:100%;font-size:16px;border-radius:8px;border:1.5px solid #ddd;padding:8px 10px;font-family:inherit;box-sizing:border-box;margin-bottom:10px;background:white;">
-
-      <button onclick="submitAttend()" style="width:100%;padding:12px;border-radius:8px;border:none;background:#1565c0;color:white;font-size:15px;font-family:inherit;font-weight:700;cursor:pointer;">参加表明する</button>
-    </div>
-    <button onclick="copyAttendLine()" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid #25D366;background:white;color:#25D366;font-size:13px;font-family:inherit;font-weight:700;cursor:pointer;">📋 LINEグループ用にコピー</button>
-  </div>
   </div>
 </div>
 </body>
